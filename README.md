@@ -10,7 +10,7 @@
 
 #### Alternatively
 
-- Clone the project: `git clone https://github.com/wmcadigital/wmn-create-react-app-template.git`
+- Clone the project: `git clone https://github.com/wmcadigital/wmn-ticket-finder.git`
 - `npm i` to install dependencies
 
 ## Installed pacakges
