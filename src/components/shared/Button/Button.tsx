@@ -1,7 +1,19 @@
 // Import packages
 import React from 'react';
-import PropTypes from 'prop-types';
-import Icon from 'components/shared/Icon/Icon';
+import Icon from '../Icon/Icon';
+
+interface ButtonProps {
+  btnClass?: string;
+  disabled?: boolean;
+  iconLeft?: string;
+  iconRight?: string;
+  isActive?: boolean;
+  isFetching?: boolean;
+  onClick?: () => void;
+  text?: string;
+  title?: string;
+  type?: 'button' | 'submit' | 'reset' | undefined;
+}
 
 const Button = ({
   btnClass,
@@ -14,7 +26,7 @@ const Button = ({
   text,
   title,
   type,
-}) => {
+}: ButtonProps) => {
   return (
     // eslint-disable-next-line react/button-has-type
     <button
@@ -52,20 +64,6 @@ const Button = ({
   );
 };
 
-// Set props
-Button.propTypes = {
-  btnClass: PropTypes.string, // Set custom button classes, will default to wmnds-btn (primary btn)
-  disabled: PropTypes.bool, // Sets if the button is disabled or not
-  iconLeft: PropTypes.string, // Set icon left on button
-  iconRight: PropTypes.string, // Set icon right on button
-  isActive: PropTypes.bool, // If button is active, add active class
-  isFetching: PropTypes.bool,
-  onClick: PropTypes.func, // Set an onclick event
-  text: PropTypes.string, // text inside button
-  type: PropTypes.string, // button type, by default it is type="button"
-  title: PropTypes.string, // title on the button
-};
-
 Button.defaultProps = {
   btnClass: '',
   disabled: false,
@@ -74,7 +72,7 @@ Button.defaultProps = {
   isActive: false,
   isFetching: false,
   onClick: null,
-  text: '',
+  text: null,
   title: null,
   type: 'button',
 };

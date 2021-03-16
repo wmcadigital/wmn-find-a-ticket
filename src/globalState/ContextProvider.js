@@ -10,7 +10,7 @@ function ProviderComposer({ contexts, children }) {
       React.cloneElement(parent, {
         children: kids,
       }),
-    children
+    children,
   );
 }
 
