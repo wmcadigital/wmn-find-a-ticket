@@ -1,11 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Icon from 'components/shared/Icon/Icon';
 import dompurify from 'dompurify';
+import Icon from '../Icon/Icon';
 
 const { sanitize } = dompurify;
 
-const Message = ({ type, title, message, showRetry, retryCallback }) => {
+interface MessageProps {
+  type?: string;
+  title?: string;
+  message?: string | Node;
+  showRetry?: boolean;
+  retryCallback?: () => void;
+}
+
+const Message = ({ type, title, message = '', showRetry, retryCallback }: MessageProps) => {
   let iconName;
   switch (type) {
     case 'error':
@@ -16,15 +23,6 @@ const Message = ({ type, title, message, showRetry, retryCallback }) => {
       iconName = 'success';
       break;
   }
-
-  // Placeholder styles until btn--as-link goes live on design-system
-  const buttonAsLinkStyle = {
-    fontSize: '1rem',
-    background: 'none',
-    border: 0,
-    borderRadius: 0,
-    padding: 0,
-  };
 
   return (
     <div
@@ -38,26 +36,13 @@ const Message = ({ type, title, message, showRetry, retryCallback }) => {
       <div className="wmnds-msg-summary__info">
         <p className="wmnds-m-b-sm">{sanitize(message)}</p>
         {showRetry && (
-          <button
-            type="button"
-            className="wmnds-btn wmnds-link"
-            style={buttonAsLinkStyle}
-            onClick={retryCallback}
-          >
+          <button type="button" className="wmnds-btn wmnds-btn--link" onClick={retryCallback}>
             Retry search
           </button>
         )}
       </div>
     </div>
   );
-};
-
-Message.propTypes = {
-  type: PropTypes.string,
-  title: PropTypes.string,
-  message: PropTypes.string,
-  showRetry: PropTypes.bool,
-  retryCallback: PropTypes.func,
 };
 
 Message.defaultProps = {

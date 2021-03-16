@@ -34,6 +34,7 @@
     "react-scripts": "4.0.2"
   },
   "devDependencies": {
+    "@types/dompurify": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^12.3.1",

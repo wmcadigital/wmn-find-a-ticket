@@ -2,14 +2,14 @@
 import React from 'react';
 import Icon from '../Icon/Icon';
 
-interface IButton {
+interface ButtonProps {
   btnClass?: string;
   disabled?: boolean;
   iconLeft?: string;
   iconRight?: string;
   isActive?: boolean;
   isFetching?: boolean;
-  onClick?: any;
+  onClick?: () => void;
   text?: string;
   title?: string;
   type?: 'button' | 'submit' | 'reset' | undefined;
@@ -26,7 +26,7 @@ const Button = ({
   text,
   title,
   type,
-}: IButton) => {
+}: ButtonProps) => {
   return (
     // eslint-disable-next-line react/button-has-type
     <button
