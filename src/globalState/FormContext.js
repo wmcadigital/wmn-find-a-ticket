@@ -6,11 +6,15 @@ export const FormProvider = (props) => {
   const { children } = props || {};
 
   // Set intial state
-  const initialState = {};
+  const initialState = {
+    modes: { bus: false, train: false, tram: false },
+  };
 
   // Set up a reducer so we can change state based on centralised logic here
   const reducer = (state, action) => {
     switch (action.type) {
+      case 'UPDATE_MODE':
+        return { ...state, modes: action.payload };
       // Default should return intial state if error
       default:
         return initialState;
