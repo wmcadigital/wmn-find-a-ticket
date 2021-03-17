@@ -8,7 +8,16 @@ function StartPage() {
   const [formState, formDispatch] = useContext(FormContext);
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState(false);
-  const [selectedModes, setSelectedModes] = useState({ ...formState.modes });
+  const initialState: { [key: string]: boolean } = {
+    bus: false,
+    train: false,
+    tram: false,
+  };
+  formState.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
+    initialState[mode] = true;
+  });
+
+  const [selectedModes, setSelectedModes] = useState(initialState);
 
   const toggleMode = (mode: 'bus' | 'tram' | 'train') => {
     if (!touched) {
@@ -18,7 +27,7 @@ function StartPage() {
   };
 
   useEffect(() => {
-    if (Object.keys(selectedModes).some((mode) => selectedModes[mode])) {
+    if (Object.values(selectedModes).some((m) => m)) {
       setError(false);
     } else if (touched) {
       setError(true);
@@ -28,7 +37,10 @@ function StartPage() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!error) {
-      formDispatch({ type: 'UPDATE_MODE', payload: selectedModes });
+      formDispatch({
+        type: 'UPDATE_MODE',
+        payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
+      });
     }
   };
 

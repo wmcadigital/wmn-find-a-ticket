@@ -1,4 +1,5 @@
 import React, { useReducer, createContext } from 'react';
+import { setSearchParam, getSearchParam } from './helpers/URLSearchParams'; // (used to sync state with URL)
 
 export const FormContext = createContext(); // Create from context
 
@@ -7,13 +8,14 @@ export const FormProvider = (props) => {
 
   // Set intial state
   const initialState = {
-    modes: { bus: false, train: false, tram: false },
+    modes: getSearchParam('modes').split(' '),
   };
 
   // Set up a reducer so we can change state based on centralised logic here
   const reducer = (state, action) => {
     switch (action.type) {
       case 'UPDATE_MODE':
+        setSearchParam('modes', action.payload.join(' '));
         return { ...state, modes: action.payload };
       // Default should return intial state if error
       default:
