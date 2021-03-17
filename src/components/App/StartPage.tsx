@@ -29,17 +29,27 @@ function StartPage() {
   useEffect(() => {
     if (Object.values(selectedModes).some((m) => m)) {
       setError(false);
+      formDispatch({
+        type: 'UPDATE_MODE',
+        payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
+      });
     } else if (touched) {
       setError(true);
     }
-  }, [touched, selectedModes]);
+  }, [touched, error, formDispatch, selectedModes]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!error) {
+      let ticketRoute = 'nTicket';
+      if (formState.modes.includes('bus') && !formState.modes.includes('train')) {
+        ticketRoute = 'busTram';
+      } else if (formState.modes.includes('tram') && formState.modes.length === 1) {
+        ticketRoute = 'tram';
+      }
       formDispatch({
-        type: 'UPDATE_MODE',
-        payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
+        type: 'UPDATE_TICKET_ROUTE',
+        payload: ticketRoute,
       });
     }
   };

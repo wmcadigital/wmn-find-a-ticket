@@ -9,6 +9,7 @@ export const FormProvider = (props) => {
   // Set intial state
   const initialState = {
     modes: getSearchParam('modes').split(' '),
+    route: getSearchParam('route'),
   };
 
   // Set up a reducer so we can change state based on centralised logic here
@@ -17,6 +18,9 @@ export const FormProvider = (props) => {
       case 'UPDATE_MODE':
         setSearchParam('modes', action.payload.join(' '));
         return { ...state, modes: action.payload };
+      case 'UPDATE_TICKET_ROUTE':
+        setSearchParam('route', action.payload);
+        return { ...state, route: action.payload };
       // Default should return intial state if error
       default:
         return initialState;
