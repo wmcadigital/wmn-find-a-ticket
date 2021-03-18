@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // Contexts
-import { FormContext } from '../../globalState';
+import useStepLogic from './Form/customHooks/useStepLogic';
 import Button from '../shared/Button/Button';
 import GenericError from '../shared/Errors/GenericError';
 
 function StartPage() {
-  const [formState, formDispatch] = useContext(FormContext);
+  const { formState, formDispatch, setStep } = useStepLogic();
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState(false);
   const initialState: { [key: string]: boolean } = {
@@ -13,12 +13,12 @@ function StartPage() {
     train: false,
     tram: false,
   };
-  formState.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
-    initialState[mode] = true;
-  });
-
+  if (formState.modes) {
+    formState.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
+      initialState[mode] = true;
+    });
+  }
   const [selectedModes, setSelectedModes] = useState(initialState);
-
   const toggleMode = (mode: 'bus' | 'tram' | 'train') => {
     if (!touched) {
       setTouched(true);
@@ -41,16 +41,7 @@ function StartPage() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!error) {
-      let ticketRoute = 'nTicket';
-      if (formState.modes.includes('bus') && !formState.modes.includes('train')) {
-        ticketRoute = 'busTram';
-      } else if (formState.modes.includes('tram') && formState.modes.length === 1) {
-        ticketRoute = 'tram';
-      }
-      formDispatch({
-        type: 'UPDATE_TICKET_ROUTE',
-        payload: ticketRoute,
-      });
+      setStep(1);
     }
   };
 

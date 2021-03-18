@@ -8,8 +8,17 @@ export const FormProvider = (props) => {
 
   // Set intial state
   const initialState = {
-    modes: getSearchParam('modes').split(' '),
-    route: getSearchParam('route'),
+    modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
+    currentStep: 0,
+    ticketInfo: {
+      traveller: getSearchParam('traveller') || null,
+      ticketType: getSearchParam('type') || null,
+      busAreas: getSearchParam('busAreas') || null,
+      railZones: getSearchParam('railZones') || null,
+      travelTime: getSearchParam('travelTime') || null,
+      travelClass: getSearchParam('travelClass') || null,
+      ticketDuration: getSearchParam('duration') || null,
+    },
   };
 
   // Set up a reducer so we can change state based on centralised logic here
@@ -18,9 +27,10 @@ export const FormProvider = (props) => {
       case 'UPDATE_MODE':
         setSearchParam('modes', action.payload.join(' '));
         return { ...state, modes: action.payload };
-      case 'UPDATE_TICKET_ROUTE':
-        setSearchParam('route', action.payload);
-        return { ...state, route: action.payload };
+      case 'UPDATE_STEP':
+        return { ...state, currentStep: action.payload };
+      case 'UPDATE_TICKET_TYPE':
+        return { ...state, ticketInfo: { ...state.ticketInfo, ticketType: action.payload } };
       // Default should return intial state if error
       default:
         return initialState;

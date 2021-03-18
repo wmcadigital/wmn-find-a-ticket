@@ -5,7 +5,7 @@ import Form from './Form/Form';
 
 const ViewToShow = () => {
   const [formState] = useContext(FormContext);
-  return <div>{formState.route ? <Form /> : <StartPage />}</div>;
+  return <div>{formState.currentStep > 0 ? <Form /> : <StartPage />}</div>;
 };
 
 export default ViewToShow;
