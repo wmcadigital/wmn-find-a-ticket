@@ -15,7 +15,7 @@ interface RadiosProps {
 
 const Radios = ({ name, hint, label, radios, onChange }: RadiosProps) => {
   return (
-    <div className="wmnds-fe-group">
+    <div className="wmnds-fe-group wmnds-m-b-md">
       <fieldset className="wmnds-fe-fieldset">
         <legend className="wmnds-fe-fieldset__legend">
           <h2 className="wmnds-fe-question">{label}</h2>
