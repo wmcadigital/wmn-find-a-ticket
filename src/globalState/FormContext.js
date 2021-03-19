@@ -18,7 +18,7 @@ export const FormProvider = (props) => {
       busAreas: getSearchParam('busAreas') || null,
       railZones: getSearchParam('railZones') || null,
       travelTime: getSearchParam('travelTime') || null,
-      travelClass: getSearchParam('travelClass') || null,
+      firstClass: getSearchParam('firstClass') || null,
       ticketDuration: getSearchParam('duration') || null,
     },
   };

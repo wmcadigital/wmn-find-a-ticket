@@ -9,7 +9,7 @@ const Step2 = () => {
   let sectionToRender = null;
   if (formState.ticketInfo.ticketType === 'nBus' && !formState.ticketInfo.busAreas) {
     sectionToRender = <BusArea />;
-  } else if (formState.ticketInfo.ticketType === 'nTickets' && !formState.ticketInfo.railZones) {
+  } else if (formState.ticketInfo.ticketType === 'nTicket' && !formState.ticketInfo.railZones) {
     sectionToRender = <RailZone />;
   }
 

@@ -7,7 +7,7 @@ const Step3 = () => {
   const [formState] = useContext(FormContext);
   return (
     <>
-      {formState.modes.includes('train') && !formState.ticketInfo.ticketClass ? (
+      {formState.modes.includes('train') && !formState.ticketInfo.firstClass ? (
         <TicketClass />
       ) : (
         <TicketDuration />
