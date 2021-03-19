@@ -27,11 +27,11 @@ export const FormProvider = (props) => {
     switch (action.type) {
       case 'MOUNT_APP':
         return { ...state, mounted: true };
+      case 'UPDATE_STEP':
+        return { ...state, currentStep: action.payload };
       case 'UPDATE_MODE':
         setSearchParam('modes', action.payload.join(' '));
         return { ...state, modes: action.payload };
-      case 'UPDATE_STEP':
-        return { ...state, currentStep: action.payload };
       case 'UPDATE_TICKET_TYPE':
         setSearchParam('type', action.payload);
         return { ...state, ticketInfo: { ...state.ticketInfo, ticketType: action.payload } };
