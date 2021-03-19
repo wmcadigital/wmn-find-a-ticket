@@ -10,6 +10,7 @@ export const FormProvider = (props) => {
   const initialState = {
     modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
     currentStep: 0,
+    mounted: false,
     ticketInfo: {
       traveller: getSearchParam('traveller') || null,
       ticketType: getSearchParam('type') || null,
@@ -24,12 +25,15 @@ export const FormProvider = (props) => {
   // Set up a reducer so we can change state based on centralised logic here
   const reducer = (state, action) => {
     switch (action.type) {
+      case 'MOUNT_APP':
+        return { ...state, mounted: true };
       case 'UPDATE_MODE':
         setSearchParam('modes', action.payload.join(' '));
         return { ...state, modes: action.payload };
       case 'UPDATE_STEP':
         return { ...state, currentStep: action.payload };
       case 'UPDATE_TICKET_TYPE':
+        setSearchParam('type', action.payload);
         return { ...state, ticketInfo: { ...state.ticketInfo, ticketType: action.payload } };
       // Default should return intial state if error
       default:

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useContext, useCallback } from 'react';
+import React, { useLayoutEffect, useContext, useCallback } from 'react';
 // Import contexts
 import { FormContext } from '../../../../globalState';
 // Import components
@@ -6,8 +6,8 @@ import Button from '../../../shared/Button/Button';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const { modes, ticketInfo } = formState;
-  const [mounted, setMounted] = useState(false);
+  const { modes, ticketInfo, mounted } = formState;
+  const { traveller, ticketType, travelTime, ticketDuration } = ticketInfo;
 
   // Function for setting the step of the form
 
@@ -22,52 +22,54 @@ const useStepLogic = () => {
     [formDispatch],
   );
 
-  useLayoutEffect(() => {
-    const { traveller, ticketType, travelTime, ticketDuration } = ticketInfo;
-
-    const setTicketType = () => {
-      let tType = null;
-      if (modes.includes('train')) {
-        // If train mode is selected it will be nTicket
-        tType = 'nTicket';
-      } else if (!modes.includes('bus')) {
-        // If bus mode isn't selected it will be a single
-        tType = 'single';
-      }
-      if (
-        tType ||
-        (modes.includes('bus') && ticketType !== 'nBus') ||
-        (modes.includes('bus') && ticketType !== 'single')
-      ) {
-        formDispatch({
-          type: 'UPDATE_TICKET_TYPE',
-          payload: tType,
-        });
-      }
-    };
-
-    if (!mounted && modes) {
-      setTicketType();
-      if (ticketType) {
-        if (traveller) {
-          if (travelTime) {
-            if (ticketDuration) {
-              setStep(4);
-            } else {
-              setStep(3);
-            }
+  const runStepLogic = useCallback(() => {
+    if (ticketType) {
+      if (traveller) {
+        if (travelTime) {
+          if (ticketDuration) {
+            setStep(4);
           } else {
-            setStep(2);
+            setStep(3);
           }
         } else {
-          setStep(1);
+          setStep(2);
         }
       } else {
         setStep(1);
       }
-      setMounted(true);
+    } else {
+      setStep(1);
     }
-  }, [modes, mounted, setStep, ticketInfo, formDispatch]);
+  }, [setStep, traveller, ticketType, travelTime, ticketDuration]);
+
+  const setTicketType = useCallback(() => {
+    let tType = null;
+    if (modes.includes('train')) {
+      // If train mode is selected it will be nTicket
+      tType = 'nTicket';
+    } else if (!modes.includes('bus')) {
+      // If bus mode isn't selected it will be a single
+      tType = 'single';
+    }
+    if (
+      tType ||
+      (modes.includes('bus') && ticketType !== 'nBus') ||
+      (modes.includes('bus') && ticketType !== 'single')
+    ) {
+      formDispatch({
+        type: 'UPDATE_TICKET_TYPE',
+        payload: tType,
+      });
+    }
+  }, [modes, ticketType, formDispatch]);
+
+  useLayoutEffect(() => {
+    if (!mounted && modes) {
+      formDispatch({ type: 'MOUNT_APP' });
+      setTicketType();
+      runStepLogic();
+    }
+  }, [modes, mounted, setTicketType, runStepLogic, formDispatch]);
 
   // Update the current step to the correct one depending on users selection
   const handleSubmit = async (e: any) => {
@@ -85,6 +87,7 @@ const useStepLogic = () => {
 
   return {
     setStep,
+    setTicketType,
     handleSubmit,
     // showGenericError,
     continueButton,
