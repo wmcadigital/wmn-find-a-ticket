@@ -51,11 +51,7 @@ const useStepLogic = () => {
       // If bus mode isn't selected it will be a single
       tType = 'single';
     }
-    if (
-      tType ||
-      (modes.includes('bus') && ticketType !== 'nBus') ||
-      (modes.includes('bus') && ticketType !== 'single')
-    ) {
+    if (tType || (modes.includes('bus') && ticketType !== 'nBus' && ticketType !== 'single')) {
       formDispatch({
         type: 'UPDATE_TICKET_TYPE',
         payload: tType,
