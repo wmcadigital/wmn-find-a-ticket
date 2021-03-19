@@ -14,6 +14,7 @@ export const FormProvider = (props) => {
     ticketInfo: {
       traveller: getSearchParam('traveller') || null,
       ticketType: getSearchParam('type') || null,
+      busCompany: getSearchParam('busCompany') || null,
       busAreas: getSearchParam('busAreas') || null,
       railZones: getSearchParam('railZones') || null,
       travelTime: getSearchParam('travelTime') || null,

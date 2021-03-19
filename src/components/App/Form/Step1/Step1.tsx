@@ -1,24 +1,17 @@
 import React from 'react';
 import Traveller from './Traveller/Traveller';
-import BusOperator from './BusOperator/BusOperator';
+import BusCompany from './BusCompany/BusCompany';
 import useStepLogic from '../customHooks/useStepLogic';
 
 const Step1 = () => {
   const { formState } = useStepLogic();
   const { modes, ticketInfo } = formState;
-  // const continue = () => {
-  //   setTicketType();
-  // };
-
-  return (
-    <>
-      {modes.includes('bus') && !modes.includes('train') && !ticketInfo.ticketType ? (
-        <BusOperator />
-      ) : (
-        <Traveller />
-      )}
-    </>
-  );
+  const showBusCompany =
+    modes.includes('bus') &&
+    !modes.includes('train') &&
+    ticketInfo.ticketType !== 'nBus' &&
+    !ticketInfo.busCompany;
+  return showBusCompany ? <BusCompany /> : <Traveller />;
 };
 
 export default Step1;

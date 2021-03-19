@@ -2,12 +2,11 @@ import React from 'react';
 import Radios from '../../../../shared/Radios/Radios';
 import Button from '../../../../shared/Button/Button';
 
-const BusOperator = () => {
+const Step1 = () => {
   const radioOptions = [
     { name: 'busNetwork', text: 'Yes', value: 'yes' },
     { name: 'busNetwork', text: 'No', value: 'no' },
   ];
-
   return (
     <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
       <Radios
@@ -24,4 +23,4 @@ const BusOperator = () => {
   );
 };
 
-export default BusOperator;
+export default Step1;
