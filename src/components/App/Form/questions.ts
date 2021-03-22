@@ -1,4 +1,4 @@
-export default {
+const questions: { [key: string]: any } = {
   busNetwork: {
     question: 'Do you want to travel on any bus?',
     hint: 'Travel on any bus company in the West Midlands Network',
@@ -95,3 +95,5 @@ export default {
     ],
   },
 };
+
+export default questions;
