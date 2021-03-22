@@ -6,41 +6,52 @@ import GenericError from '../shared/Errors/GenericError';
 
 function StartPage() {
   const { formState, formDispatch, setStep } = useStepLogic();
-  const [touched, setTouched] = useState(false);
-  const [error, setError] = useState(false);
+  const [touched, setTouched] = useState(false); // state set to true when user has made a change
+  const [error, setError] = useState(false); // init error state
+  // Initial state for selected modes
   const initialState: { [key: string]: boolean } = {
     bus: false,
     train: false,
     tram: false,
   };
+  // Set initial state to match globalState if modes are already selected
   if (formState.modes) {
     formState.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
       initialState[mode] = true;
     });
   }
-  const [selectedModes, setSelectedModes] = useState(initialState);
+  const [selectedModes, setSelectedModes] = useState(initialState); // init selected modes with initialState
+  // FN to toggle selected modes on or off
   const toggleMode = (mode: 'bus' | 'tram' | 'train') => {
     if (!touched) {
+      // Set touched to true as user made a change
       setTouched(true);
     }
+    // Add new mode state to selected modes
     setSelectedModes({ ...selectedModes, [mode]: !selectedModes[mode] });
   };
 
   useEffect(() => {
+    // Check if at least one selectedMode value is true
     if (Object.values(selectedModes).some((m) => m)) {
+      // If so set error to false
       setError(false);
-      formDispatch({
-        type: 'UPDATE_MODE',
-        payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
-      });
     } else if (touched) {
+      // If not there is an error so set error to true
       setError(true);
     }
-  }, [touched, error, formDispatch, selectedModes]);
+  }, [touched, error, selectedModes]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!error) {
+      // If no errors, proceed to update state
+      formDispatch({
+        type: 'UPDATE_MODE',
+        // Spread the object keys with true values to update global state
+        payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
+      });
+      // Run step logic to move to next step
       setStep(1);
     }
   };
