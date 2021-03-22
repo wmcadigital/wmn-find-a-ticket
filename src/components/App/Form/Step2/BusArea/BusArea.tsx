@@ -7,8 +7,8 @@ import questions from '../../questions';
 const BusArea = () => {
   const name = 'busAreas';
   const { question, options } = questions[name];
-  const regionOptions = [...options.filter((option) => option.group === 'region')];
-  const localOptions = [...options.filter((option) => option.group === 'local')];
+  const regionOptions = [...options.filter((option: any) => option.group === 'region')];
+  const localOptions = [...options.filter((option: any) => option.group === 'local')];
 
   const handleChange = (e: any) => {
     console.log(e);

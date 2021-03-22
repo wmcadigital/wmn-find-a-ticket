@@ -1,0 +1,15 @@
+// Refer to https://create-react-app.dev/docs/adding-a-css-modules-stylesheet
+// On how to use scss modules with React
+
+// Import WMN Design System scss for use in this scss file
+// Tilde (~) represents the root folder(src)
+@import '../../../../assets/wmnds/vars';
+@import '../../../../assets/wmnds/mixins';
+
+.summary {
+  &:not(:last-child) {
+    margin-bottom: $size-sm;
+    padding-bottom: $size-sm;
+    border-bottom: 1px solid get-color(text, 70);
+  }
+}

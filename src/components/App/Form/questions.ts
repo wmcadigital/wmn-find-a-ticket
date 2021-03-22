@@ -32,27 +32,32 @@ const questions: { [key: string]: any } = {
     question: 'Select your bus area',
     options: [
       {
-        text: '<strong>West Midlands</strong><br> From £64.00*',
+        html: '<strong>West Midlands</strong><br> From £64.00*',
+        text: 'West Midlands',
         value: 'westmidlands',
         group: 'region',
       },
       {
-        text: '<strong>Black Country</strong><br> From £55.50*',
+        html: '<strong>Black Country</strong><br> From £55.50*',
+        text: 'Black Country',
         value: 'blackcountry',
         group: 'region',
       },
       {
-        text: '<strong>Coventry</strong><br> From £53.00*',
+        html: '<strong>Coventry</strong><br> From £53.00*',
+        text: 'Coventry',
         value: 'coventry',
         group: 'local',
       },
       {
-        text: '<strong>Sandwell and Dudley</strong><br> From £40.00*',
+        html: '<strong>Sandwell and Dudley</strong><br> From £40.00*',
+        text: 'Sandwell and Dudley',
         value: 'sandwelldudley',
         group: 'local',
       },
       {
-        text: '<strong>Walsall</strong><br> From £40.00*',
+        html: '<strong>Walsall</strong><br> From £40.00*',
+        text: 'Walsall',
         value: 'walsall',
         group: 'local',
       },
@@ -63,16 +68,19 @@ const questions: { [key: string]: any } = {
     hint: 'Sometimes you can get a cheaper ticket if you only travel after 9.30am.',
     options: [
       {
-        text: '<strong>Peak</strong><br>I need to travel before 9.30am',
+        html: '<strong>Peak</strong><br>I need to travel before 9.30am',
+        text: 'Peak',
         value: 'peak',
       },
       {
-        text: '<strong>Off-peak</strong><br>I will only travel after 9.30am',
+        html: '<strong>Off-peak</strong><br>I will only travel after 9.30am',
+        text: 'Off peak',
         value: 'offpeak',
       },
       {
-        text:
+        html:
           '<strong>Disabled or Older Person’s pass holder</strong><br>I need to travel before 9.30am ',
+        text: 'Disabled or Older Person’s pass holder',
         value: 'senior',
       },
     ],
