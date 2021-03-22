@@ -2,14 +2,13 @@ import React, { useState, useContext } from 'react';
 import { FormContext } from '../../../../../globalState';
 import Radios from '../../../../shared/Radios/Radios';
 import Button from '../../../../shared/Button/Button';
+import questions from '../../questions';
 
-const Step1 = () => {
+const BusCompanyStep1 = () => {
   const [, formDispatch] = useContext(FormContext);
   const [state, setState] = useState('');
-  const radioOptions = [
-    { name: 'busNetwork', text: 'Yes', value: 'yes' },
-    { name: 'busNetwork', text: 'No', value: 'no' },
-  ];
+  const name = 'busNetwork';
+  const { question, hint, options } = questions[name];
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
   };
@@ -20,10 +19,10 @@ const Step1 = () => {
   return (
     <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
       <Radios
-        name="busNetwork"
-        hint="Travel on any bus company in the West Midlands Network"
-        label="Do you want to travel on any bus?"
-        radios={radioOptions}
+        name={name}
+        question={question}
+        hint={hint}
+        radios={options}
         onChange={handleChange}
       />
       <div className="wmnds-p-b-lg">
@@ -34,4 +33,4 @@ const Step1 = () => {
   );
 };
 
-export default Step1;
+export default BusCompanyStep1;

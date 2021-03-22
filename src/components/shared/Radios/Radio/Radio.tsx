@@ -8,7 +8,7 @@ import RadioProps from './RadioProps';
 
 const { sanitize } = dompurify;
 
-const Radio = ({ name, onChange, text, value }: RadioProps) => {
+const Radio = ({ name = '', onChange, text, value }: RadioProps) => {
   const [formState] = useContext(FormContext); // Get the state/dispatch of form data from FormContext
 
   return (
@@ -21,7 +21,7 @@ const Radio = ({ name, onChange, text, value }: RadioProps) => {
           name={name}
           type="radio"
           onChange={onChange}
-          defaultChecked={formState.ticketInfo[name] === value}
+          defaultChecked={formState.ticketInfo[name] && formState.ticketInfo[name] === value}
         />
         <span className="wmnds-fe-radios__checkmark" />
       </label>
@@ -30,6 +30,7 @@ const Radio = ({ name, onChange, text, value }: RadioProps) => {
 };
 
 Radio.defaultProps = {
+  name: '',
   onChange: null,
 };
 

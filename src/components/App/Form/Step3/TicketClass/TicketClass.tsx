@@ -1,28 +1,15 @@
 import React from 'react';
 import Radios from '../../../../shared/Radios/Radios';
 import Button from '../../../../shared/Button/Button';
+import questions from '../../questions';
 
 const TicketClass = () => {
-  const radioOptions = [
-    {
-      name: 'firstClass',
-      text: 'Yes',
-      value: 'yes',
-    },
-    {
-      name: 'firstClass',
-      text: 'No',
-      value: 'no',
-    },
-  ];
+  const name = 'firstClass';
+  const { question, hint, options } = questions[name];
+
   return (
     <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
-      <Radios
-        name="firstClass"
-        label="Do you want to sit in first class?"
-        hint="First class is only available on CrossCountry, Avanti West Coast and some London Northwestern trains."
-        radios={radioOptions}
-      />
+      <Radios name={name} question={question} hint={hint} radios={options} />
       <Button text="Continue" />
     </div>
   );

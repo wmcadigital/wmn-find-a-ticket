@@ -2,37 +2,13 @@ import React from 'react';
 import Radio from '../../../../shared/Radios/Radio/Radio';
 import Button from '../../../../shared/Button/Button';
 import RadioProps from '../../../../shared/Radios/Radio/RadioProps';
+import questions from '../../questions';
 
 const BusArea = () => {
-  const regionOptions = [
-    {
-      name: 'busAreas',
-      text: '<strong>West Midlands</strong><br> From £64.00*',
-      value: 'westmidlands',
-    },
-    {
-      name: 'busAreas',
-      text: '<strong>Black Country</strong><br> From £55.50*',
-      value: 'blackcountry',
-    },
-  ];
-  const localOptions = [
-    {
-      name: 'busAreas',
-      text: '<strong>Coventry</strong><br> From £53.00*',
-      value: 'coventry',
-    },
-    {
-      name: 'busAreas',
-      text: '<strong>Sandwell and Dudley</strong><br> From £40.00*',
-      value: 'sandwelldudley',
-    },
-    {
-      name: 'busAreas',
-      text: '<strong>Walsall</strong><br> From £40.00*',
-      value: 'walsall',
-    },
-  ];
+  const name = 'busAreas';
+  const { question, options } = questions[name];
+  const regionOptions = [...options.filter((option) => option.group === 'region')];
+  const localOptions = [...options.filter((option) => option.group === 'local')];
 
   const handleChange = (e: any) => {
     console.log(e);
@@ -56,7 +32,7 @@ const BusArea = () => {
       <div className="wmnds-fe-group wmnds-m-b-md">
         <fieldset className="wmnds-fe-fieldset">
           <legend className="wmnds-fe-fieldset__legend">
-            <h2 className="wmnds-fe-question">Select your bus area</h2>
+            <h2 className="wmnds-fe-question">{question}</h2>
           </legend>
           <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
             <h3 className="wmnds-m-b-md">Region</h3>
@@ -64,7 +40,7 @@ const BusArea = () => {
             {regionOptions.map((radio: RadioProps) => (
               <Radio
                 key={radio.text}
-                name="busAreas"
+                name={name}
                 text={radio.text}
                 value={radio.value}
                 onChange={handleChange}
@@ -76,7 +52,7 @@ const BusArea = () => {
             {localOptions.map((radio: RadioProps) => (
               <Radio
                 key={radio.text}
-                name="busAreas"
+                name={name}
                 text={radio.text}
                 value={radio.value}
                 onChange={handleChange}
