@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import dompurify from 'dompurify';
+// import ReactDOMServer from 'react-dom/server';
+// import dompurify from 'dompurify';
 import Icon from '../Icon/Icon';
-import style from './GenericError.module.scss';
+// import style from './GenericError.module.scss';
 
-const { sanitize } = dompurify;
+// const { sanitize } = dompurify;
 
 interface GenericErrorProps {
   errors: any;
@@ -27,10 +27,11 @@ const GenericError = ({ errors }: GenericErrorProps) => {
         </h3>
       </div>
 
-      <div className="wmnds-msg-summary__info">
+      {/* <div className="wmnds-msg-summary__info">
         {Object.keys(errors).map((errorName) => {
           return (
             <div key={errorName}>
+              {errors[errorName].message}
               <button
                 className={`${style.errorLink} wmnds-btn wmnds-btn--link`}
                 type="button"
@@ -45,7 +46,7 @@ const GenericError = ({ errors }: GenericErrorProps) => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };

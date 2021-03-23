@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 // Import contexts
 import { FormContext } from '../../../../globalState';
+import GenericError from '../../../shared/Errors/GenericError';
 
 interface IError {
   message: string;
@@ -26,10 +27,13 @@ const useHandleChange = (name: string) => {
     }
   };
 
+  const genericError = error && <GenericError errors={{ required: { message: error?.message } }} />;
+
   return {
     value,
     handleChange,
     handleContinue,
+    genericError,
     formDispatch,
     error,
     setError,

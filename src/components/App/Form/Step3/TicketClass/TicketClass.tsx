@@ -6,21 +6,24 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const TicketClass = () => {
   const name = 'firstClass';
-  const { handleChange, handleContinue, error } = useHandleChange(name);
+  const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
 
   return (
-    <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
-      <Radios
-        name={name}
-        question={question}
-        hint={hint}
-        error={error}
-        radios={options}
-        onChange={handleChange}
-      />
-      <Button text="Continue" onClick={handleContinue} />
-    </div>
+    <>
+      {genericError}
+      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+        <Radios
+          name={name}
+          question={question}
+          hint={hint}
+          error={error}
+          radios={options}
+          onChange={handleChange}
+        />
+        <Button text="Continue" onClick={handleContinue} />
+      </div>
+    </>
   );
 };
 
