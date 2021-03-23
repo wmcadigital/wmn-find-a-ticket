@@ -5,17 +5,11 @@ import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
 const BusArea = () => {
-  const { formDispatch, handleChange, value } = useHandleChange();
   const name = 'busAreas';
+  const { handleChange, handleContinue } = useHandleChange(name);
   const { question, options } = questions[name];
   const regionOptions = [...options.filter((option: any) => option.group === 'region')];
   const localOptions = [...options.filter((option: any) => option.group === 'local')];
-
-  const handleContinue = () => {
-    if (value) {
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
-    }
-  };
 
   return (
     <div className="bg-white wmnds-p-lg wmnds-m-b-lg">

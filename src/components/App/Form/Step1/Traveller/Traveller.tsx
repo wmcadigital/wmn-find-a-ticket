@@ -5,15 +5,9 @@ import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
 const Traveller = () => {
-  const { formDispatch, handleChange, value } = useHandleChange();
   const name = 'traveller';
+  const { handleChange, handleContinue } = useHandleChange(name);
   const { question, options } = questions[name];
-
-  const handleContinue = () => {
-    if (value) {
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
-    }
-  };
 
   return (
     <div className="bg-white wmnds-p-lg wmnds-m-b-lg">

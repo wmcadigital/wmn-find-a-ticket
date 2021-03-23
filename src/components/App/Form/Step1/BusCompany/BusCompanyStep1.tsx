@@ -5,12 +5,16 @@ import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
 const BusCompanyStep1 = () => {
-  const { formDispatch, handleChange, value } = useHandleChange();
   const name = 'busNetwork';
+  const { formDispatch, handleChange, value, error, setError } = useHandleChange(name);
   const { question, hint, options } = questions[name];
 
   const handleContinue = () => {
-    formDispatch({ type: 'UPDATE_TICKET_TYPE', payload: value === 'yes' ? 'nBus' : 'single' });
+    if (value) {
+      formDispatch({ type: 'UPDATE_TICKET_TYPE', payload: value === 'yes' ? 'nBus' : 'single' });
+    } else {
+      setError({ message: 'Please select an answer' });
+    }
   };
 
   return (
@@ -20,6 +24,7 @@ const BusCompanyStep1 = () => {
         question={question}
         hint={hint}
         radios={options}
+        error={error}
         onChange={handleChange}
       />
       <div className="wmnds-p-b-lg">
