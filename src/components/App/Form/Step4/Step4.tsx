@@ -3,7 +3,7 @@ import React from 'react';
 const Step4 = () => {
   return (
     <div>
-      <h2>Purchase</h2>
+      <h2>Purchase journey</h2>
     </div>
   );
 };

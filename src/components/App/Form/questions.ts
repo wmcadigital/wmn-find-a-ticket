@@ -91,14 +91,42 @@ const questions: { [key: string]: any } = {
       'First class is only available on CrossCountry, Avanti West Coast and some London Northwestern trains.',
     options: [
       {
-        name: 'firstClass',
         text: 'Yes',
         value: 'yes',
       },
       {
-        name: 'firstClass',
         text: 'No',
         value: 'no',
+      },
+    ],
+  },
+  ticketDuration: {
+    question: 'How long do you need your ticket to last?',
+    hint: 'Select the ticket duration below.',
+    options: [
+      {
+        text: '1 week',
+        totalPrice: '25.90',
+        dailyPrice: '3.70',
+        value: '1week',
+      },
+      {
+        duration: '28 days',
+        totalPrice: '87.50',
+        dailyPrice: '3.12',
+        value: '28days',
+      },
+      {
+        text: 'Monthly Direct Debit',
+        totalPrice: '70.20',
+        dailyPrice: '2.34',
+        value: 'directDebit',
+      },
+      {
+        text: '52 weeks',
+        totalPrice: '843.00',
+        dailyPrice: '2.32',
+        value: '52weeks',
       },
     ],
   },
