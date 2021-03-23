@@ -62,6 +62,14 @@ const SidebarSummary = () => {
           />
         </>
       )}
+      {ticketInfo.firstClass && (
+        <>
+          <SummarySection
+            title="First class"
+            value={getOptionText('firstClass', ticketInfo.firstClass)}
+          />
+        </>
+      )}
     </div>
   );
 };

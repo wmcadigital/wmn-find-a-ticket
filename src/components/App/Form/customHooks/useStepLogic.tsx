@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useContext, useCallback } from 'react';
+import React, { useLayoutEffect, useContext, useEffect, useCallback } from 'react';
 // Import contexts
 import { FormContext } from '../../../../globalState';
 // Import components
@@ -10,7 +10,6 @@ const useStepLogic = () => {
   const { traveller, ticketType, travelTime, ticketDuration } = ticketInfo;
 
   // Function for setting the step of the form
-
   const setStep = useCallback(
     (step: number) => {
       formDispatch({
@@ -22,6 +21,7 @@ const useStepLogic = () => {
     [formDispatch],
   );
 
+  // Logic which determines which step to go to based on data available
   const runStepLogic = useCallback(() => {
     if (ticketType) {
       if (traveller) {
@@ -42,6 +42,7 @@ const useStepLogic = () => {
     }
   }, [setStep, traveller, ticketType, travelTime, ticketDuration]);
 
+  // Try to set the ticket type based on data available
   const setTicketType = useCallback(() => {
     let tType = null;
     if (modes.includes('train')) {
@@ -60,6 +61,7 @@ const useStepLogic = () => {
   }, [modes, ticketType, formDispatch]);
 
   useLayoutEffect(() => {
+    // If app is just mounted run setTicketType and stepLogic
     if (!mounted && modes) {
       formDispatch({ type: 'MOUNT_APP' });
       setTicketType();
@@ -67,11 +69,12 @@ const useStepLogic = () => {
     }
   }, [modes, mounted, setTicketType, runStepLogic, formDispatch]);
 
-  // useEffect(() => {
-  //   if(mounted) {
-  //     runStepLogic();
-  //   }
-  // }, [mounted, ticketInfo, runStepLogic]);
+  // Run step logic when ticketInfo is updated
+  useEffect(() => {
+    if (mounted) {
+      runStepLogic();
+    }
+  }, [mounted, ticketInfo, runStepLogic]);
 
   // Update the current step to the correct one depending on users selection
   const handleSubmit = async (e: any) => {
@@ -83,15 +86,10 @@ const useStepLogic = () => {
     <Button btnClass="wmnds-btn wmnds-col-1 wmnds-m-t-md" type="submit" text="Continue" />
   );
 
-  // const showGenericError = Object.keys(errors).length > 0 && isContinuePressed && (
-  //   <GenericError errors={errors} />
-  // );
-
   return {
     setStep,
     setTicketType,
     handleSubmit,
-    // showGenericError,
     continueButton,
     formState,
     formDispatch,

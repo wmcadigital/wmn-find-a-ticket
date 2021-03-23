@@ -2,15 +2,19 @@ import React from 'react';
 import Radio from '../../../../shared/Radios/Radio/Radio';
 import Button from '../../../../shared/Button/Button';
 import questions from '../../questions';
+import useHandleChange from '../../customHooks/useHandleChange';
 
 const BusArea = () => {
+  const { formDispatch, handleChange, value } = useHandleChange();
   const name = 'busAreas';
   const { question, options } = questions[name];
   const regionOptions = [...options.filter((option: any) => option.group === 'region')];
   const localOptions = [...options.filter((option: any) => option.group === 'local')];
 
-  const handleChange = (e: any) => {
-    console.log(e);
+  const handleContinue = () => {
+    if (value) {
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+    }
   };
 
   return (
@@ -36,14 +40,26 @@ const BusArea = () => {
           <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
             <h3 className="wmnds-m-b-md">Region</h3>
             {/* Loop through radios and display each radio button */}
-            {regionOptions.map(({ text, html, value }) => (
-              <Radio key={text} name={name} text={html} value={value} onChange={handleChange} />
+            {regionOptions.map((radio) => (
+              <Radio
+                key={radio.text}
+                name={name}
+                text={radio.html}
+                value={radio.value}
+                onChange={handleChange}
+              />
             ))}
           </div>
           <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
             <h3 className="wmnds-m-b-md">Local</h3>
-            {localOptions.map(({ text, html, value }) => (
-              <Radio key={text} name={name} text={html} value={value} onChange={handleChange} />
+            {localOptions.map((radio) => (
+              <Radio
+                key={radio.text}
+                name={name}
+                text={radio.html}
+                value={radio.value}
+                onChange={handleChange}
+              />
             ))}
           </div>
           <div className="wmnds-grid">
@@ -54,7 +70,7 @@ const BusArea = () => {
           </div>
         </fieldset>
       </div>
-      <Button text="Continue" />
+      <Button text="Continue" onClick={handleContinue} />
     </div>
   );
 };
