@@ -67,6 +67,12 @@ const useStepLogic = () => {
     }
   }, [modes, mounted, setTicketType, runStepLogic, formDispatch]);
 
+  // useEffect(() => {
+  //   if(mounted) {
+  //     runStepLogic();
+  //   }
+  // }, [mounted, ticketInfo, runStepLogic]);
+
   // Update the current step to the correct one depending on users selection
   const handleSubmit = async (e: any) => {
     e.preventDefault();

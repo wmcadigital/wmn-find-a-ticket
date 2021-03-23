@@ -36,6 +36,12 @@ export const FormProvider = (props) => {
       case 'UPDATE_TICKET_TYPE':
         setSearchParam('type', action.payload);
         return { ...state, ticketInfo: { ...state.ticketInfo, ticketType: action.payload } };
+      case 'UPDATE_TICKET_INFO':
+        setSearchParam(action.payload.name, action.payload.value);
+        return {
+          ...state,
+          ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
+        };
       // Default should return intial state if error
       default:
         return initialState;
