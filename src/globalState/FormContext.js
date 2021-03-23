@@ -12,7 +12,9 @@ export const FormProvider = (props) => {
     modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
     currentStep: 0,
     mounted: false,
-    ticketInfo: {},
+    ticketInfo: {
+      ticketType: getSearchParam('type'),
+    },
   };
 
   // loop through questions object

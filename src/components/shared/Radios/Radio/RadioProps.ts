@@ -1,5 +1,5 @@
 export default interface RadioProps {
-  name?: string;
+  name: string;
   onChange?: any;
   text: string;
   value: string;

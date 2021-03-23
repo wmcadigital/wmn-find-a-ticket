@@ -1,7 +1,6 @@
 import React from 'react';
 import Radio from '../../../../shared/Radios/Radio/Radio';
 import Button from '../../../../shared/Button/Button';
-import RadioProps from '../../../../shared/Radios/Radio/RadioProps';
 import questions from '../../questions';
 
 const BusArea = () => {
@@ -37,26 +36,14 @@ const BusArea = () => {
           <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
             <h3 className="wmnds-m-b-md">Region</h3>
             {/* Loop through radios and display each radio button */}
-            {regionOptions.map((radio: RadioProps) => (
-              <Radio
-                key={radio.text}
-                name={name}
-                text={radio.text}
-                value={radio.value}
-                onChange={handleChange}
-              />
+            {regionOptions.map(({ text, html, value }) => (
+              <Radio key={text} name={name} text={html} value={value} onChange={handleChange} />
             ))}
           </div>
           <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
             <h3 className="wmnds-m-b-md">Local</h3>
-            {localOptions.map((radio: RadioProps) => (
-              <Radio
-                key={radio.text}
-                name={name}
-                text={radio.text}
-                value={radio.value}
-                onChange={handleChange}
-              />
+            {localOptions.map(({ text, html, value }) => (
+              <Radio key={text} name={name} text={html} value={value} onChange={handleChange} />
             ))}
           </div>
           <div className="wmnds-grid">
