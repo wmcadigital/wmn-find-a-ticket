@@ -32,14 +32,8 @@ const Radios = ({ name, hint, question, radios, onChange }: RadiosProps) => {
         </legend>
         <div className="wmnds-fe-radios">
           {/* Loop through radios and display each radio button */}
-          {radios.map((radio: RadioProps) => (
-            <Radio
-              key={radio.text}
-              name={name}
-              text={radio.text}
-              value={radio.value}
-              onChange={onChange}
-            />
+          {radios.map(({ text, html, value }: RadioProps) => (
+            <Radio key={text} name={name} text={html || text} value={value} onChange={onChange} />
           ))}
         </div>
       </fieldset>
