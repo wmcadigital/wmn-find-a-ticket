@@ -6,7 +6,7 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const TravelTime = () => {
   const name = 'travelTime';
-  const { handleChange, handleContinue } = useHandleChange(name);
+  const { handleChange, handleContinue, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
 
   return (
@@ -14,6 +14,7 @@ const TravelTime = () => {
       <Radios
         name={name}
         question={question}
+        error={error}
         hint={hint}
         radios={options}
         onChange={handleChange}

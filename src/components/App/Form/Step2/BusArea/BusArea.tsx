@@ -1,12 +1,15 @@
 import React from 'react';
+import dompurify from 'dompurify';
 import Radio from '../../../../shared/Radios/Radio/Radio';
 import Button from '../../../../shared/Button/Button';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
+const { sanitize } = dompurify;
+
 const BusArea = () => {
   const name = 'busAreas';
-  const { handleChange, handleContinue } = useHandleChange(name);
+  const { handleChange, handleContinue, error } = useHandleChange(name);
   const { question, options } = questions[name];
   const regionOptions = [...options.filter((option: any) => option.group === 'region')];
   const localOptions = [...options.filter((option: any) => option.group === 'local')];
@@ -31,30 +34,41 @@ const BusArea = () => {
           <legend className="wmnds-fe-fieldset__legend">
             <h2 className="wmnds-fe-question">{question}</h2>
           </legend>
-          <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
-            <h3 className="wmnds-m-b-md">Region</h3>
-            {/* Loop through radios and display each radio button */}
-            {regionOptions.map((radio) => (
-              <Radio
-                key={radio.text}
-                name={name}
-                text={radio.html}
-                value={radio.value}
-                onChange={handleChange}
+          <div className={error ? ' wmnds-fe-group--error' : ''}>
+            {/* If there is an error, show here */}
+            {error && (
+              <span
+                className="wmnds-fe-error-message"
+                dangerouslySetInnerHTML={{
+                  __html: sanitize(error.message),
+                }}
               />
-            ))}
-          </div>
-          <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
-            <h3 className="wmnds-m-b-md">Local</h3>
-            {localOptions.map((radio) => (
-              <Radio
-                key={radio.text}
-                name={name}
-                text={radio.html}
-                value={radio.value}
-                onChange={handleChange}
-              />
-            ))}
+            )}
+            <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
+              <h3 className="wmnds-m-b-md">Region</h3>
+              {/* Loop through radios and display each radio button */}
+              {regionOptions.map((radio) => (
+                <Radio
+                  key={radio.text}
+                  name={name}
+                  text={radio.html}
+                  value={radio.value}
+                  onChange={handleChange}
+                />
+              ))}
+            </div>
+            <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
+              <h3 className="wmnds-m-b-md">Local</h3>
+              {localOptions.map((radio) => (
+                <Radio
+                  key={radio.text}
+                  name={name}
+                  text={radio.html}
+                  value={radio.value}
+                  onChange={handleChange}
+                />
+              ))}
+            </div>
           </div>
           <div className="wmnds-grid">
             <p className="wmnds-col-2-3">

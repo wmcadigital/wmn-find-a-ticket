@@ -6,7 +6,7 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const BusCompanyStep2 = () => {
   const name = 'busCompany';
-  const { handleChange, handleContinue } = useHandleChange(name);
+  const { handleChange, handleContinue, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
 
   return (
@@ -15,6 +15,7 @@ const BusCompanyStep2 = () => {
         label={question}
         hint={hint}
         name={name}
+        error={error}
         options={options}
         onChange={handleChange}
       />

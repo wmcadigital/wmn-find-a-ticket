@@ -19,7 +19,7 @@ const useHandleChange = (name: string) => {
   };
 
   const handleContinue = () => {
-    if (value) {
+    if (value && value.length !== 0) {
       formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
     } else {
       setError({ message: 'Please select an answer' });

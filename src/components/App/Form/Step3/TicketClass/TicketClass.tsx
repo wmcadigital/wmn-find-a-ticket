@@ -6,7 +6,7 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const TicketClass = () => {
   const name = 'firstClass';
-  const { handleChange, handleContinue } = useHandleChange(name);
+  const { handleChange, handleContinue, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
 
   return (
@@ -15,6 +15,7 @@ const TicketClass = () => {
         name={name}
         question={question}
         hint={hint}
+        error={error}
         radios={options}
         onChange={handleChange}
       />
