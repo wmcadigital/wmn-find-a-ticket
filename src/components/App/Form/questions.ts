@@ -12,8 +12,80 @@ const questions: { [key: string]: any } = {
     hint: 'Please choose a company',
     options: [
       {
+        text: 'A & M Group',
+        value: 'AMG',
+      },
+      {
+        text: 'Arriva Fox County',
+        value: 'AFC',
+      },
+      {
+        text: 'Arriva Midlands',
+        value: 'AMN',
+      },
+      {
+        text: 'Chaserider',
+        value: 'CRD',
+      },
+      {
+        text: 'D & G Bus',
+        value: 'DGC',
+      },
+      {
+        text: 'Diamond Bus',
+        value: 'DIA',
+      },
+      {
+        text: 'First Bus Potteries',
+        value: 'NXB',
+      },
+      {
+        text: "Johnson's Excelbus",
+        value: 'JOH',
+      },
+      {
+        text: 'LandFlight',
+        value: 'SIL',
+      },
+      {
+        text: "Let's Go!",
+        value: 'SIL',
+      },
+      {
+        text: 'Lilbourne Community Minibus',
+        value: 'LCM',
+      },
+      {
+        text: 'Midland Classic',
+        value: 'MDC',
+      },
+      {
+        text: 'National Express Coventry',
+        value: 'TCV',
+      },
+      {
         text: 'National Express West Midlands',
-        value: 'NXWM',
+        value: 'PMT',
+      },
+      {
+        text: 'NN Cresswell',
+        value: 'CWL',
+      },
+      {
+        text: 'Roberts Travel',
+        value: 'RTS',
+      },
+      {
+        text: 'Stagecoach Midlands',
+        value: 'SMR',
+      },
+      {
+        text: 'Trent Barton',
+        value: 'TRN',
+      },
+      {
+        text: 'Wyre Forest Dial a Ride',
+        value: 'WFD',
       },
     ],
   },
