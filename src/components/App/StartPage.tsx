@@ -44,7 +44,7 @@ function StartPage() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!error) {
+    if (Object.values(selectedModes).some((m) => m) && !error) {
       // If no errors, proceed to update state
       formDispatch({
         type: 'UPDATE_MODE',
@@ -53,6 +53,8 @@ function StartPage() {
       });
       // Run step logic to move to next step
       setStep(1);
+    } else {
+      setError(true);
     }
   };
 
