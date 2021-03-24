@@ -8,8 +8,8 @@ interface IError {
 }
 
 const useHandleChange = (name: string) => {
-  const [, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const [value, setValue] = useState<string | null>(null);
+  const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
+  const [value, setValue] = useState<string | null>(formState.ticketInfo[name] || null);
   const [error, setError] = useState<IError | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +21,7 @@ const useHandleChange = (name: string) => {
 
   const handleContinue = () => {
     if (value && value.length !== 0) {
+      formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
     } else {
       setError({ message: 'Please select an answer' });

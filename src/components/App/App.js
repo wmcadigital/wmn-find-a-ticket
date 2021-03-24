@@ -1,6 +1,6 @@
 import React from 'react';
 // Contexts
-import ContextProvider from '../../globalState/ContextProvider';
+import ContextProvider from 'globalState/ContextProvider';
 import ViewToShow from './ViewToShow';
 
 function App() {

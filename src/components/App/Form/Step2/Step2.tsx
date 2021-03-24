@@ -7,7 +7,7 @@ import TravelTime from './TravelTime/TravelTime';
 const Step2 = () => {
   const [formState] = useContext(FormContext);
   let sectionToRender = null;
-  if (formState.ticketInfo.ticketType === 'nBus' && !formState.ticketInfo.busAreas) {
+  if (formState.ticketInfo.ticketType === 'nBus' && !formState.ticketInfo.busArea) {
     sectionToRender = <BusArea />;
   } else if (formState.ticketInfo.ticketType === 'nTicket' && !formState.ticketInfo.railZones) {
     sectionToRender = <RailZone />;

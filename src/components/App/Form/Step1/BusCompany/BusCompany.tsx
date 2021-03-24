@@ -6,7 +6,11 @@ import { FormContext } from '../../../../../globalState';
 const BusOperator = () => {
   const [formState] = useContext(FormContext);
 
-  return !formState.ticketInfo.ticketType ? <BusCompanyStep1 /> : <BusCompanyStep2 />;
+  return !formState.ticketInfo.ticketType || formState.editMode ? (
+    <BusCompanyStep1 />
+  ) : (
+    <BusCompanyStep2 />
+  );
 };
 
 export default BusOperator;

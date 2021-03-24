@@ -100,7 +100,7 @@ const questions: { [key: string]: any } = {
       { text: 'Disabled person', value: 'disabled' },
     ],
   },
-  busAreas: {
+  busArea: {
     question: 'Select your bus area',
     options: [
       {
