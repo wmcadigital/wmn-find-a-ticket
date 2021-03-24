@@ -21,7 +21,16 @@ export const FormProvider = (props) => {
   // loop through questions object
   Object.keys(questions).forEach((key) => {
     // get search params if present and assign to initial state
-    initialState.ticketInfo[key] = getSearchParam(key) || null;
+    if (key === 'railZones') {
+      initialState.ticketInfo[key] =
+        (getSearchParam(key) &&
+          getSearchParam(key)
+            .split(' ')
+            .map((num) => parseInt(num, 10))) ||
+        null;
+    } else {
+      initialState.ticketInfo[key] = getSearchParam(key) || null;
+    }
   });
 
   // Returns an array of params to be removed based on ticket type

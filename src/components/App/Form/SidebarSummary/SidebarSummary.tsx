@@ -81,6 +81,19 @@ const SidebarSummary = () => {
           />
         </>
       )}
+      {ticketInfo.railZones && (
+        <>
+          <SummarySection
+            title="Rail zones"
+            value={
+              ticketInfo.railZones.length > 1
+                ? `Zones ${Math.min(...ticketInfo.railZones)}-${Math.max(...ticketInfo.railZones)}`
+                : `Zone ${ticketInfo.railZones[0]}`
+            }
+            onChange={() => editStep(2, 'railZones')}
+          />
+        </>
+      )}
       {ticketInfo.travelTime && (
         <>
           <SummarySection

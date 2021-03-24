@@ -135,6 +135,7 @@ const questions: { [key: string]: any } = {
       },
     ],
   },
+  railZones: {},
   travelTime: {
     question: 'Will you travel during peak hours?',
     hint: 'Sometimes you can get a cheaper ticket if you only travel after 9.30am.',
