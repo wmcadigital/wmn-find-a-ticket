@@ -99,7 +99,9 @@ const useStepLogic = () => {
   }, [mounted, editMode, ticketInfo, runStepLogic]);
 
   useEffect(() => {
-    setTicketType();
+    if (modes) {
+      setTicketType();
+    }
   }, [modes, setTicketType]);
 
   // Update the current step to the correct one depending on users selection
