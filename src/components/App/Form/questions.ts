@@ -184,7 +184,7 @@ const questions: { [key: string]: any } = {
         value: '1week',
       },
       {
-        duration: '28 days',
+        text: '28 days',
         totalPrice: '87.50',
         dailyPrice: '3.12',
         value: '28days',
