@@ -47,7 +47,7 @@ const useStepLogic = () => {
     const step3Check =
       (ticketDuration && ticketType !== 'nTicket') ||
       (ticketDuration && firstClass) ||
-      (ticketDuration && railZones && Math.max(railZones) <= 5);
+      (ticketDuration && railZones && Math.max(...railZones) > 5);
 
     if (step1Check) {
       if (step2Check) {
