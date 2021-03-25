@@ -100,7 +100,7 @@ const questions: { [key: string]: any } = {
       { text: 'Disabled person', value: 'disabled' },
     ],
   },
-  busAreas: {
+  busArea: {
     question: 'Select your bus area',
     options: [
       {
@@ -135,6 +135,7 @@ const questions: { [key: string]: any } = {
       },
     ],
   },
+  railZones: {},
   travelTime: {
     question: 'Will you travel during peak hours?',
     hint: 'Sometimes you can get a cheaper ticket if you only travel after 9.30am.',
@@ -183,7 +184,7 @@ const questions: { [key: string]: any } = {
         value: '1week',
       },
       {
-        duration: '28 days',
+        text: '28 days',
         totalPrice: '87.50',
         dailyPrice: '3.12',
         value: '28days',

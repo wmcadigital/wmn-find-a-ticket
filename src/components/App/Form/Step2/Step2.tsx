@@ -6,10 +6,17 @@ import TravelTime from './TravelTime/TravelTime';
 
 const Step2 = () => {
   const [formState] = useContext(FormContext);
-  let sectionToRender = null;
-  if (formState.ticketInfo.ticketType === 'nBus' && !formState.ticketInfo.busAreas) {
+  const { editMode } = formState;
+  let sectionToRender;
+  if (
+    (formState.ticketInfo.ticketType === 'nBus' && !formState.ticketInfo.busArea) ||
+    editMode === 'busArea'
+  ) {
     sectionToRender = <BusArea />;
-  } else if (formState.ticketInfo.ticketType === 'nTicket' && !formState.ticketInfo.railZones) {
+  } else if (
+    (formState.ticketInfo.ticketType === 'nTicket' && !formState.ticketInfo.railZones) ||
+    editMode === 'railZones'
+  ) {
     sectionToRender = <RailZone />;
   }
 

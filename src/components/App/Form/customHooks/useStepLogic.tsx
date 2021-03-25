@@ -6,8 +6,8 @@ import Button from '../../../shared/Button/Button';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const { modes, ticketInfo, mounted } = formState;
-  const { traveller, ticketType, travelTime, ticketDuration } = ticketInfo;
+  const { modes, ticketInfo, mounted, editMode } = formState;
+  const { ticketType } = ticketInfo;
 
   // Function for setting the step of the form
   const setStep = useCallback(
@@ -23,34 +23,56 @@ const useStepLogic = () => {
 
   // Logic which determines which step to go to based on data available
   const runStepLogic = useCallback(() => {
-    if (ticketType) {
-      if (traveller) {
-        if (travelTime) {
-          if (ticketDuration) {
-            setStep(4);
-          } else {
-            setStep(3);
-          }
+    const {
+      traveller,
+      travelTime,
+      busCompany,
+      busArea,
+      railZones,
+      firstClass,
+      ticketDuration,
+    } = ticketInfo;
+    formDispatch({ type: 'EDIT_MODE', payload: null });
+
+    // Checks to see if step 1 is complete
+    const step1Check =
+      (ticketType && traveller && busCompany) ||
+      (ticketType && traveller && ticketType !== 'single');
+    // Checks to see if step 2 is complete
+    const step2Check =
+      (travelTime && busArea && ticketType === 'nBus') ||
+      (travelTime && railZones && ticketType === 'nTicket') ||
+      (travelTime && (ticketType === 'single' || ticketType === 'tram'));
+    // Checks to see if step 3 is complete
+    const step3Check =
+      (ticketDuration && ticketType !== 'nTicket') ||
+      (ticketDuration && firstClass) ||
+      (ticketDuration && railZones && Math.max(...railZones) > 5);
+
+    if (step1Check) {
+      if (step2Check) {
+        if (step3Check) {
+          setStep(4);
         } else {
-          setStep(2);
+          setStep(3);
         }
       } else {
-        setStep(1);
+        setStep(2);
       }
     } else {
       setStep(1);
     }
-  }, [setStep, traveller, ticketType, travelTime, ticketDuration]);
+  }, [setStep, formDispatch, ticketInfo, ticketType]);
 
   // Try to set the ticket type based on data available
   const setTicketType = useCallback(() => {
     let tType = null;
     if (modes.includes('train')) {
-      // If train mode is selected it will be nTicket
+      // If train mode is selected it will be 'nTicket'
       tType = 'nTicket';
     } else if (!modes.includes('bus')) {
-      // If bus mode isn't selected it will be a single
-      tType = 'single';
+      // If bus mode isn't selected it will be 'single'
+      tType = 'tram';
     }
     if (tType || (modes.includes('bus') && ticketType !== 'nBus' && ticketType !== 'single')) {
       formDispatch({
@@ -71,10 +93,16 @@ const useStepLogic = () => {
 
   // Run step logic when ticketInfo is updated
   useEffect(() => {
-    if (mounted) {
+    if (mounted && !editMode) {
       runStepLogic();
     }
-  }, [mounted, ticketInfo, runStepLogic]);
+  }, [mounted, editMode, ticketInfo, runStepLogic]);
+
+  useEffect(() => {
+    if (modes) {
+      setTicketType();
+    }
+  }, [modes, setTicketType]);
 
   // Update the current step to the correct one depending on users selection
   const handleSubmit = async (e: any) => {
@@ -90,6 +118,7 @@ const useStepLogic = () => {
     setStep,
     setTicketType,
     handleSubmit,
+    runStepLogic,
     continueButton,
     formState,
     formDispatch,

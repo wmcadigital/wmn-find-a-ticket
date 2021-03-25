@@ -5,7 +5,7 @@ import Button from '../shared/Button/Button';
 import GenericError from '../shared/Errors/GenericError';
 
 function StartPage() {
-  const { formState, formDispatch, setStep } = useStepLogic();
+  const { formState, formDispatch, runStepLogic } = useStepLogic();
   const [touched, setTouched] = useState(false); // state set to true when user has made a change
   const [error, setError] = useState(false); // init error state
   // Initial state for selected modes
@@ -51,8 +51,8 @@ function StartPage() {
         // Spread the object keys with true values to update global state
         payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
       });
-      // Run step logic to move to next step
-      setStep(1);
+      // setTicketType();
+      runStepLogic();
     } else {
       setError(true);
     }
@@ -119,7 +119,7 @@ function StartPage() {
               <Button
                 btnClass="wmnds-btn--start"
                 iconRight="general-chevron-right"
-                text="Start"
+                text={formState.editMode ? 'Continue' : 'Start'}
                 type="submit"
               />
             </form>

@@ -8,7 +8,7 @@ import useHandleChange from '../../customHooks/useHandleChange';
 const { sanitize } = dompurify;
 
 const BusArea = () => {
-  const name = 'busAreas';
+  const name = 'busArea';
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, options } = questions[name];
   const regionOptions = [...options.filter((option: any) => option.group === 'region')];

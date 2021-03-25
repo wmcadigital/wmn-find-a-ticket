@@ -18,7 +18,7 @@ const arrayToSentence = (array: string[]) => {
 };
 
 const SidebarSummary = () => {
-  const [formState] = useContext(FormContext);
+  const [formState, formDispatch] = useContext(FormContext);
   const { ticketInfo } = formState;
 
   const capitalizedModes = formState.modes.map((m: string) => capitalize(m));
@@ -30,14 +30,36 @@ const SidebarSummary = () => {
     return o && o.text;
   };
 
+  // Function for setting the step of the form
+  const editStep = (step: number, page: string) => {
+    formDispatch({
+      type: 'UPDATE_STEP',
+      payload: step,
+    });
+    formDispatch({
+      type: 'EDIT_MODE',
+      payload: page,
+    });
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="bg-white wmnds-p-md">
-      <SummarySection title="Mode of travel" value={arrayToSentence(capitalizedModes)} />
-      {ticketInfo.busCompany && (
+      <SummarySection
+        title="Mode of travel"
+        value={arrayToSentence(capitalizedModes)}
+        onChange={() => editStep(0, 'modes')}
+      />
+      {(ticketInfo.busCompany || ticketInfo.ticketType === 'nBus') && (
         <>
           <SummarySection
             title="Bus company"
-            value={getOptionText('busCompany', ticketInfo.busCompany)}
+            value={
+              ticketInfo.busCompany
+                ? getOptionText('busCompany', ticketInfo.busCompany)
+                : 'nNetwork'
+            }
+            onChange={() => editStep(1, 'busCompany')}
           />
         </>
       )}
@@ -46,12 +68,30 @@ const SidebarSummary = () => {
           <SummarySection
             title="Traveller"
             value={getOptionText('traveller', ticketInfo.traveller)}
+            onChange={() => editStep(1, 'traveller')}
           />
         </>
       )}
-      {ticketInfo.busAreas && (
+      {ticketInfo.busArea && (
         <>
-          <SummarySection title="Bus area" value={getOptionText('busAreas', ticketInfo.busAreas)} />
+          <SummarySection
+            title="Bus area"
+            value={getOptionText('busArea', ticketInfo.busArea)}
+            onChange={() => editStep(2, 'busArea')}
+          />
+        </>
+      )}
+      {ticketInfo.railZones && (
+        <>
+          <SummarySection
+            title="Rail zones"
+            value={
+              ticketInfo.railZones.length > 1
+                ? `Zones ${Math.min(...ticketInfo.railZones)}-${Math.max(...ticketInfo.railZones)}`
+                : `Zone ${ticketInfo.railZones[0]}`
+            }
+            onChange={() => editStep(2, 'railZones')}
+          />
         </>
       )}
       {ticketInfo.travelTime && (
@@ -59,6 +99,7 @@ const SidebarSummary = () => {
           <SummarySection
             title="Travel time"
             value={getOptionText('travelTime', ticketInfo.travelTime)}
+            onChange={() => editStep(2, 'travelTime')}
           />
         </>
       )}
@@ -67,6 +108,16 @@ const SidebarSummary = () => {
           <SummarySection
             title="First class"
             value={getOptionText('firstClass', ticketInfo.firstClass)}
+            onChange={() => editStep(3, 'firstClass')}
+          />
+        </>
+      )}
+      {ticketInfo.ticketDuration && (
+        <>
+          <SummarySection
+            title="Ticket duration"
+            value={getOptionText('ticketDuration', ticketInfo.ticketDuration)}
+            onChange={() => editStep(3, 'ticketDuration')}
           />
         </>
       )}

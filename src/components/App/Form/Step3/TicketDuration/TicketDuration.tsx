@@ -8,6 +8,7 @@ const TicketDuration = () => {
   const { formDispatch } = useHandleChange(name);
   const { question, hint, options } = questions[name];
   const handleContinue = (value: string) => {
+    formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
   };
 

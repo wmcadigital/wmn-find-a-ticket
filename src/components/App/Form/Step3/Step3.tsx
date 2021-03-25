@@ -5,15 +5,17 @@ import TicketDuration from './TicketDuration/TicketDuration';
 
 const Step3 = () => {
   const [formState] = useContext(FormContext);
-  return (
-    <>
-      {formState.modes.includes('train') && !formState.ticketInfo.firstClass ? (
-        <TicketClass />
-      ) : (
-        <TicketDuration />
-      )}
-    </>
-  );
+  const { ticketInfo, editMode } = formState;
+  let sectionToRender;
+  if (
+    (ticketInfo.ticketType === 'nTicket' &&
+      !ticketInfo.firstClass &&
+      Math.max(...ticketInfo.railZones) < 5) ||
+    editMode === 'firstClass'
+  ) {
+    sectionToRender = <TicketClass />;
+  }
+  return sectionToRender || <TicketDuration />;
 };
 
 export default Step3;
