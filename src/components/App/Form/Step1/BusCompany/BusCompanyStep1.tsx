@@ -14,7 +14,8 @@ const BusCompanyStep1 = () => {
   const handleContinue = () => {
     if (value) {
       // turn off edit mode
-      formDispatch({ type: 'EDIT_MODE', payload: null });
+
+      formDispatch({ type: 'EDIT_MODE', payload: value === 'yes' ? null : 'busCompanyStep2' });
       formDispatch({ type: 'UPDATE_TICKET_TYPE', payload: value === 'yes' ? 'nBus' : 'single' });
     } else {
       setError({ message: 'Please select an answer' });
