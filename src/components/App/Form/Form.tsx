@@ -8,12 +8,12 @@ import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
 
 const Form = () => {
-  const { formState, handleSubmit } = useStepLogic();
+  const { formState } = useStepLogic();
   return (
     <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg">
       <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
         <div className="wmnds-col-2-3">
-          <form onSubmit={handleSubmit}>
+          <form>
             {formState.currentStep === 1 && <Step1 />}
             {formState.currentStep === 2 && <Step2 />}
             {formState.currentStep === 3 && <Step3 />}

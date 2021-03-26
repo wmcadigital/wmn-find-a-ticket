@@ -20,8 +20,9 @@ export const FormProvider = (props) => {
 
   // loop through questions object
   Object.keys(questions).forEach((key) => {
-    // get search params if present and assign to initial state
+    // get search params if present and assign tonitial state
     if (key === 'railZones') {
+      // split railzones key into array of integers
       initialState.ticketInfo[key] =
         (getSearchParam(key) &&
           getSearchParam(key)

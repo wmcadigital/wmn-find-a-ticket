@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Purchase Journey (TO DO)
 const Step4 = () => {
   return (
     <div>

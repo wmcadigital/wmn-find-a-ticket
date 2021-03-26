@@ -7,6 +7,7 @@ const Step3 = () => {
   const [formState] = useContext(FormContext);
   const { ticketInfo, editMode } = formState;
   let sectionToRender;
+  // Logic to determine which to section to show
   if (
     (ticketInfo.ticketType === 'nTicket' &&
       !ticketInfo.firstClass &&

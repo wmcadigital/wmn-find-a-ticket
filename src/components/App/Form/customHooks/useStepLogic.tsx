@@ -1,8 +1,6 @@
-import React, { useLayoutEffect, useContext, useEffect, useCallback } from 'react';
+import { useLayoutEffect, useContext, useEffect, useCallback } from 'react';
 // Import contexts
 import { FormContext } from '../../../../globalState';
-// Import components
-import Button from '../../../shared/Button/Button';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
@@ -49,6 +47,7 @@ const useStepLogic = () => {
       (ticketDuration && firstClass) ||
       (ticketDuration && railZones && Math.max(...railZones) > 5);
 
+    // If step checks fail (return false), go to the step to get the correct information
     if (step1Check) {
       if (step2Check) {
         if (step3Check) {
@@ -74,6 +73,9 @@ const useStepLogic = () => {
       // If bus mode isn't selected it will be 'single'
       tType = 'tram';
     }
+    // Do the ticket update only if:
+    // - tType is set (above)
+    // - or bus mode is selected and ticket type is not set to nBus or single (we set these in step 1)
     if (tType || (modes.includes('bus') && ticketType !== 'nBus' && ticketType !== 'single')) {
       formDispatch({
         type: 'UPDATE_TICKET_TYPE',
@@ -98,28 +100,17 @@ const useStepLogic = () => {
     }
   }, [mounted, editMode, ticketInfo, runStepLogic]);
 
+  // Run ticket type logic when modes are updated
   useEffect(() => {
     if (modes) {
       setTicketType();
     }
   }, [modes, setTicketType]);
 
-  // Update the current step to the correct one depending on users selection
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-  };
-
-  // Continue button
-  const continueButton = (
-    <Button btnClass="wmnds-btn wmnds-col-1 wmnds-m-t-md" type="submit" text="Continue" />
-  );
-
   return {
     setStep,
     setTicketType,
-    handleSubmit,
     runStepLogic,
-    continueButton,
     formState,
     formDispatch,
   };

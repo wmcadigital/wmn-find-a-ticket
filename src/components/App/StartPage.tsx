@@ -42,7 +42,7 @@ function StartPage() {
     }
   }, [touched, error, selectedModes]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (Object.values(selectedModes).some((m) => m) && !error) {
       // If no errors, proceed to update state

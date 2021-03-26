@@ -15,6 +15,7 @@ const Step1 = () => {
     !modes.includes('train') &&
     ticketInfo.ticketType !== 'nBus' &&
     !ticketInfo.busCompany;
+  // Set showBusCompany true if edit mode is set and not set to traveller
   if (editMode && modes.includes('bus') && editMode !== 'traveller') {
     showBusCompany = true;
   }

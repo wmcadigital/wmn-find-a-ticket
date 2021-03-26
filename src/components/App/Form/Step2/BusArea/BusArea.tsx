@@ -11,6 +11,7 @@ const BusArea = () => {
   const name = 'busArea';
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, options } = questions[name];
+  // Filter out options into groups
   const regionOptions = [...options.filter((option: any) => option.group === 'region')];
   const localOptions = [...options.filter((option: any) => option.group === 'local')];
 
