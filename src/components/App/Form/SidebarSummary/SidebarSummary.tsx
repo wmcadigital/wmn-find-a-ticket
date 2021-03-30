@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { FormContext } from '../../../../globalState';
 import questions from '../questions';
 import SummarySection from './SummarySection';
+import Icon from '../../../shared/Icon/Icon';
+import s from './SidebarSummary.module.scss';
 
 // helpers
 const capitalize = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
@@ -44,7 +46,13 @@ const SidebarSummary = () => {
   };
 
   return (
-    <div className="bg-white wmnds-p-md">
+    <div className={`${s.sidebarSummary} bg-white wmnds-p-md`}>
+      <div className={`${s.mobileHeader} wmnds-hide-desktop wmnds-m-b-md wmnds-grid`}>
+        <h3 className="wmnds-col-auto wmnds-m-none">Change my answers</h3>
+        <button className={`${s.closeBtn} wmnds-col-auto`} type="button">
+          <Icon iconName="general-cross" />
+        </button>
+      </div>
       <SummarySection
         title="Mode of travel"
         value={arrayToSentence(capitalizedModes)}

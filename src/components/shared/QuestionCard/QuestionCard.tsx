@@ -5,27 +5,37 @@ import Button from '../Button/Button';
 interface QuestionCardProps {
   children: JSX.Element | JSX.Element[];
   handleContinue?: () => void;
+  showChangeBtn?: boolean;
 }
-
-const QuestionCard = ({ children, handleContinue }: QuestionCardProps) => {
+const ChangeAnswers = () => {
+  return (
+    <Button
+      btnClass="wmnds-col-1 wmnds-col-sm-auto wmnds-btn--secondary"
+      text="Change my answers"
+    />
+  );
+};
+const QuestionCard = ({ children, handleContinue, showChangeBtn }: QuestionCardProps) => {
   return (
     <div className={`${s.card} bg-white wmnds-m-b-lg`}>
       {children}
       {handleContinue && (
-        <Button btnClass="wmnds-col-1 wmnds-col-md-auto" text="Continue" onClick={handleContinue} />
+        <Button btnClass="wmnds-col-1 wmnds-col-sm-auto" text="Continue" onClick={handleContinue} />
       )}
-      <div className="wmnds-hide-desktop wmnds-p-t-md">
-        <Button
-          btnClass="wmnds-col-1 wmnds-col-md-auto wmnds-btn--secondary"
-          text="Change my answers"
-        />
-      </div>
+      {showChangeBtn && (
+        <div className="wmnds-hide-desktop wmnds-p-t-md">
+          <ChangeAnswers />
+        </div>
+      )}
     </div>
   );
 };
 
 QuestionCard.defaultProps = {
   handleContinue: null,
+  showChangeBtn: true,
 };
+
+export { ChangeAnswers };
 
 export default QuestionCard;

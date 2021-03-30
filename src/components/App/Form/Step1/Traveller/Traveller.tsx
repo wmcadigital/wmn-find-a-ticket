@@ -1,6 +1,6 @@
 import React from 'react';
 import Radios from '../../../../shared/Radios/Radios';
-import Button from '../../../../shared/Button/Button';
+import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -12,7 +12,7 @@ const Traveller = () => {
   return (
     <>
       {genericError}
-      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+      <QuestionCard handleContinue={handleContinue}>
         <Radios
           name="traveller"
           question={question}
@@ -20,8 +20,7 @@ const Traveller = () => {
           error={error}
           onChange={handleChange}
         />
-        <Button text="Continue" onClick={handleContinue} />
-      </div>
+      </QuestionCard>
     </>
   );
 };

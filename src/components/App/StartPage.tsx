@@ -123,7 +123,7 @@ function StartPage() {
                   )}
                 </div>
                 <Button
-                  btnClass="wmnds-btn--start"
+                  btnClass="wmnds-btn--start wmnds-col-1 wmnds-col-sm-auto"
                   iconRight="general-chevron-right"
                   text={formState.editMode ? 'Continue' : 'Start'}
                   type="submit"

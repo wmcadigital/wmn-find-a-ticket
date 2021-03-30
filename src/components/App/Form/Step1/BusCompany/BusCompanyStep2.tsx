@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../../../shared/Button/Button';
 import Dropdown from '../../../../shared/Dropdown/Dropdown';
+import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -12,7 +13,7 @@ const BusCompanyStep2 = () => {
   return (
     <>
       {genericError}
-      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+      <QuestionCard handleContinue={handleContinue}>
         <Dropdown
           label={question}
           hint={hint}
@@ -24,8 +25,7 @@ const BusCompanyStep2 = () => {
         <div className="wmnds-p-b-lg">
           <Button btnClass="wmnds-btn--link" text="I don't know the bus company I travel with" />
         </div>
-        <Button text="Continue" onClick={handleContinue} />
-      </div>
+      </QuestionCard>
     </>
   );
 };
