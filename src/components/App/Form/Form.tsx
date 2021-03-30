@@ -11,8 +11,8 @@ import s from './Form.module.scss';
 const Form = () => {
   const { formState } = useStepLogic();
   return (
-    <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg">
-      <div className={`${s.grid} wmnds-grid wmnds-grid--spacing-md-2-md`}>
+    <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
+      <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
         <div className="wmnds-col-1-1 wmnds-col-md-2-3">
           <form>
             {formState.currentStep === 1 && <Step1 />}
@@ -22,7 +22,14 @@ const Form = () => {
           </form>
         </div>
         <div className="wmnds-col-1-1 wmnds-col-md-1-3">
-          <SidebarSummary />
+          {formState.showAnswers && (
+            <div className="wmnds-hide-desktop">
+              <SidebarSummary />
+            </div>
+          )}
+          <div className="wmnds-hide-mobile">
+            <SidebarSummary />
+          </div>
         </div>
       </div>
     </div>

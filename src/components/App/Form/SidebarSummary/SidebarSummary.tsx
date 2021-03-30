@@ -32,6 +32,10 @@ const SidebarSummary = () => {
     return o && o.text;
   };
 
+  const handleClose = () => {
+    formDispatch({ type: 'TOGGLE_SHOW_ANSWERS', payload: false });
+  };
+
   // Function for setting the step of the form
   const editStep = (step: number, page: string) => {
     formDispatch({
@@ -42,6 +46,7 @@ const SidebarSummary = () => {
       type: 'EDIT_MODE',
       payload: page,
     });
+    handleClose();
     window.scrollTo(0, 0);
   };
 
@@ -49,7 +54,7 @@ const SidebarSummary = () => {
     <div className={`${s.sidebarSummary} bg-white wmnds-p-md`}>
       <div className={`${s.mobileHeader} wmnds-hide-desktop wmnds-m-b-md wmnds-grid`}>
         <h3 className="wmnds-col-auto wmnds-m-none">Change my answers</h3>
-        <button className={`${s.closeBtn} wmnds-col-auto`} type="button">
+        <button className={`${s.closeBtn} wmnds-col-auto`} type="button" onClick={handleClose}>
           <Icon iconName="general-cross" />
         </button>
       </div>

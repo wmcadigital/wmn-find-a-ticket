@@ -22,7 +22,7 @@ const TicketDuration = () => {
       <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
         {options.map((option: { [key: string]: string }) => (
           <div key={`${name}-${option.value}`} className="wmnds-col-1 wmnds-col-md-1-2">
-            <QuestionCard showChangeBtn={false}>
+            <div className="bg-white wmnds-p-md wmnds-m-b-lg">
               <h4>
                 {option.text} <span>£{option.totalPrice}</span>
               </h4>
@@ -32,11 +32,14 @@ const TicketDuration = () => {
                 text="Select"
                 onClick={() => handleContinue(option.value)}
               />
-            </QuestionCard>
+            </div>
           </div>
         ))}
-        <div className="wmnds-col-1 wmnds-hide-desktop">
-          <ChangeAnswers />
+
+        <div className="wmnds-col-1">
+          <div className="wmnds-hide-desktop">
+            <ChangeAnswers />
+          </div>
         </div>
       </div>
     </>

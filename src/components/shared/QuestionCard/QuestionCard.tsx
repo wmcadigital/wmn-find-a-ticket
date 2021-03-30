@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { FormContext } from '../../../globalState';
 import s from './QuestionCard.module.scss';
 import Button from '../Button/Button';
 
@@ -8,10 +9,15 @@ interface QuestionCardProps {
   showChangeBtn?: boolean;
 }
 const ChangeAnswers = () => {
+  const [, formDispatch] = useContext(FormContext);
+  const handleChange = () => {
+    formDispatch({ type: 'TOGGLE_SHOW_ANSWERS', payload: true });
+  };
   return (
     <Button
       btnClass="wmnds-col-1 wmnds-col-sm-auto wmnds-btn--secondary"
       text="Change my answers"
+      onClick={handleChange}
     />
   );
 };

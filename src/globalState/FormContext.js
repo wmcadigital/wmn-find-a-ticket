@@ -13,6 +13,7 @@ export const FormProvider = (props) => {
     currentStep: 0,
     editMode: false,
     mounted: false,
+    showAnswers: false,
     ticketInfo: {
       ticketType: getSearchParam('type'),
     },
@@ -90,6 +91,12 @@ export const FormProvider = (props) => {
           ...state,
           ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
         };
+      case 'TOGGLE_SHOW_ANSWERS':
+        return {
+          ...state,
+          showAnswers: action.payload,
+        };
+
       // Default should return intial state if error
       default:
         return initialState;

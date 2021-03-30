@@ -5,3 +5,9 @@
 // Tilde (~) represents the root folder(src)
 @import '~assets/wmnds/vars';
 @import '~assets/wmnds/mixins';
+
+.container {
+  @media (min-width: $breakpoint-md) {
+    margin-top: $size-lg;
+  }
+}

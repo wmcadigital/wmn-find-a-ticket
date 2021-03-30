@@ -62,9 +62,9 @@ function StartPage() {
   };
 
   return (
-    <div className="wmnds-container wmnds-p-t-lg wmnds-p-b-lg wmnds-grid">
+    <div className="wmnds-container wmnds-p-b-lg wmnds-grid">
       <div className="wmnds-col-1">
-        <h1>Find a ticket</h1>
+        <h1 className="wmnds-p-t-md">Find a ticket</h1>
         <p>Find and buy day, week and season tickets based on the way you travel.</p>
         <div className="wmnds-grid">
           <div className="wmnds-col-md-2-3">
@@ -72,7 +72,7 @@ function StartPage() {
               <GenericError errors={{ required: { message: 'Please check your responses' } }} />
             )}
             <form onSubmit={handleSubmit}>
-              <QuestionCard>
+              <QuestionCard showChangeBtn={false}>
                 <h2 className="wmnds-fe-question">Which modes of transport will you use? </h2>
                 <p>
                   Tickets can cover different modes of transport. This means you will not need to
