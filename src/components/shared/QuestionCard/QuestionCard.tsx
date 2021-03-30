@@ -14,6 +14,12 @@ const QuestionCard = ({ children, handleContinue }: QuestionCardProps) => {
       {handleContinue && (
         <Button btnClass="wmnds-col-1 wmnds-col-md-auto" text="Continue" onClick={handleContinue} />
       )}
+      <div className="wmnds-hide-desktop wmnds-p-t-md">
+        <Button
+          btnClass="wmnds-col-1 wmnds-col-md-auto wmnds-btn--secondary"
+          text="Change my answers"
+        />
+      </div>
     </div>
   );
 };
