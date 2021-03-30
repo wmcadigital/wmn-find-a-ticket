@@ -36,8 +36,15 @@ const Radios = ({ name, hint, question, error, radios, onChange }: RadiosProps) 
             />
           )}
           {/* Loop through radios and display each radio button */}
-          {radios.map(({ text, html, value }: RadioProps) => (
-            <Radio key={text} name={name} text={html || text} value={value} onChange={onChange} />
+          {radios.map(({ text, html, value, info }: RadioProps) => (
+            <Radio
+              key={text}
+              name={name}
+              text={html || text}
+              value={value}
+              onChange={onChange}
+              info={info}
+            />
           ))}
         </div>
       </fieldset>
