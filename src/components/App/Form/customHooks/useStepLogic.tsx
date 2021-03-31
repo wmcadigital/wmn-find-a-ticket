@@ -61,6 +61,8 @@ const useStepLogic = () => {
     } else {
       setStep(1);
     }
+    // save state to session storage
+    sessionStorage.setItem('ticketInfo', JSON.stringify(ticketInfo));
   }, [setStep, formDispatch, ticketInfo, ticketType]);
 
   // Try to set the ticket type based on data available

@@ -7,21 +7,20 @@ export const FormContext = createContext(); // Create from context
 export const FormProvider = (props) => {
   const { children } = props || {};
 
-  let initialState;
+  const initialState = {
+    currentStep: 0,
+    editMode: false,
+    mounted: false,
+  };
 
   if (sessionStorage.getItem('ticketInfo')) {
     const storedInfo = sessionStorage.getItem('ticketInfo');
-    initialState = JSON.parse(storedInfo);
+    initialState.ticketInfo = JSON.parse(storedInfo);
   } else {
     // Set intial state
-    initialState = {
-      currentStep: 0,
-      editMode: false,
-      mounted: false,
-      ticketInfo: {
-        modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
-        ticketType: getSearchParam('type'),
-      },
+    initialState.ticketInfo = {
+      modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
+      ticketType: getSearchParam('type'),
     };
 
     // loop through questions object
@@ -80,24 +79,18 @@ export const FormProvider = (props) => {
         return { ...state, editMode: action.payload };
       case 'UPDATE_MODE':
         setSearchParam('modes', action.payload.join(' '));
-        // save state to session storage
-        sessionStorage.setItem('ticketInfo', JSON.stringify(state));
         return {
           ...state,
           ticketInfo: { ...amendTicketType(state.ticketInfo.ticketType), modes: action.payload },
         };
       case 'UPDATE_TICKET_TYPE':
         setSearchParam('type', action.payload);
-        // save state to session storage
-        sessionStorage.setItem('ticketInfo', JSON.stringify(state));
         return {
           ...state,
           ticketInfo: { ...amendTicketType(action.payload), ticketType: action.payload },
         };
       case 'UPDATE_TICKET_INFO':
         setSearchParam(action.payload.name, action.payload.value);
-        // save state to session storage
-        sessionStorage.setItem('ticketInfo', JSON.stringify(state));
         return {
           ...state,
           ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
