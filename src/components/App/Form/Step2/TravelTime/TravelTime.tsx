@@ -1,6 +1,6 @@
 import React from 'react';
 import Radios from '../../../../shared/Radios/Radios';
-import Button from '../../../../shared/Button/Button';
+import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -12,7 +12,7 @@ const TravelTime = () => {
   return (
     <>
       {genericError}
-      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+      <QuestionCard handleContinue={handleContinue}>
         <Radios
           name={name}
           question={question}
@@ -21,8 +21,7 @@ const TravelTime = () => {
           radios={options}
           onChange={handleChange}
         />
-        <Button text="Continue" onClick={handleContinue} />
-      </div>
+      </QuestionCard>
     </>
   );
 };

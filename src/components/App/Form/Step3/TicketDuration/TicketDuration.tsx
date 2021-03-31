@@ -1,4 +1,5 @@
 import React from 'react';
+import QuestionCard, { ChangeAnswers } from '../../../../shared/QuestionCard/QuestionCard';
 import Button from '../../../../shared/Button/Button';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
@@ -14,13 +15,13 @@ const TicketDuration = () => {
 
   return (
     <>
-      <div className="bg-white wmnds-p-lg wmnds-m-b-md">
+      <QuestionCard showChangeBtn={false}>
         <h2 className="wmnds-fe-question">{question}</h2>
         <p className="wmnds-m-none">{hint}</p>
-      </div>
+      </QuestionCard>
       <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
         {options.map((option: { [key: string]: string }) => (
-          <div key={`${name}-${option.value}`} className="wmnds-col-md-1-2">
+          <div key={`${name}-${option.value}`} className="wmnds-col-1 wmnds-col-md-1-2">
             <div className="bg-white wmnds-p-md wmnds-m-b-lg">
               <h4>
                 {option.text} <span>£{option.totalPrice}</span>
@@ -34,6 +35,12 @@ const TicketDuration = () => {
             </div>
           </div>
         ))}
+
+        <div className="wmnds-col-1">
+          <div className="wmnds-hide-desktop">
+            <ChangeAnswers />
+          </div>
+        </div>
       </div>
     </>
   );

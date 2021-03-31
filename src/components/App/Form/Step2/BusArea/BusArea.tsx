@@ -1,7 +1,7 @@
 import React from 'react';
 import dompurify from 'dompurify';
 import Radio from '../../../../shared/Radios/Radio/Radio';
-import Button from '../../../../shared/Button/Button';
+import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -18,7 +18,7 @@ const BusArea = () => {
   return (
     <>
       {genericError}
-      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+      <QuestionCard handleContinue={handleContinue}>
         <h2 className="wmnds-fe-question">Which bus area will you travel in?</h2>
         <div className="wmnds-m-b-lg">
           <p>The West Midlands is split into different bus areas.</p>
@@ -83,8 +83,7 @@ const BusArea = () => {
             </div>
           </fieldset>
         </div>
-        <Button text="Continue" onClick={handleContinue} />
-      </div>
+      </QuestionCard>
     </>
   );
 };
