@@ -4,8 +4,8 @@ import { FormContext } from '../../../../globalState';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const { modes, ticketInfo, mounted, editMode } = formState;
-  const { ticketType } = ticketInfo;
+  const { ticketInfo, mounted, editMode } = formState;
+  const { modes, ticketType } = ticketInfo;
 
   // Function for setting the step of the form
   const setStep = useCallback(

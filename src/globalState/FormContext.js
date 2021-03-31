@@ -7,32 +7,39 @@ export const FormContext = createContext(); // Create from context
 export const FormProvider = (props) => {
   const { children } = props || {};
 
-  // Set intial state
-  const initialState = {
-    modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
-    currentStep: 0,
-    editMode: false,
-    mounted: false,
-    ticketInfo: {
-      ticketType: getSearchParam('type'),
-    },
-  };
+  let initialState;
 
-  // loop through questions object
-  Object.keys(questions).forEach((key) => {
-    // get search params if present and assign tonitial state
-    if (key === 'railZones') {
-      // split railzones key into array of integers
-      initialState.ticketInfo[key] =
-        (getSearchParam(key) &&
-          getSearchParam(key)
-            .split(' ')
-            .map((num) => parseInt(num, 10))) ||
-        null;
-    } else {
-      initialState.ticketInfo[key] = getSearchParam(key) || null;
-    }
-  });
+  if (sessionStorage.getItem('ticketInfo')) {
+    const storedInfo = sessionStorage.getItem('ticketInfo');
+    initialState = JSON.parse(storedInfo);
+  } else {
+    // Set intial state
+    initialState = {
+      currentStep: 0,
+      editMode: false,
+      mounted: false,
+      ticketInfo: {
+        modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
+        ticketType: getSearchParam('type'),
+      },
+    };
+
+    // loop through questions object
+    Object.keys(questions).forEach((key) => {
+      // get search params if present and assign tonitial state
+      if (key === 'railZones') {
+        // split railzones key into array of integers
+        initialState.ticketInfo[key] =
+          (getSearchParam(key) &&
+            getSearchParam(key)
+              .split(' ')
+              .map((num) => parseInt(num, 10))) ||
+          null;
+      } else {
+        initialState.ticketInfo[key] = getSearchParam(key) || null;
+      }
+    });
+  }
 
   // Returns an array of params to be removed based on ticket type
   const infoToRemove = (ticketType) => {
@@ -73,19 +80,24 @@ export const FormProvider = (props) => {
         return { ...state, editMode: action.payload };
       case 'UPDATE_MODE':
         setSearchParam('modes', action.payload.join(' '));
+        // save state to session storage
+        sessionStorage.setItem('ticketInfo', JSON.stringify(state));
         return {
           ...state,
-          modes: action.payload,
-          ticketInfo: { ...amendTicketType(state.ticketInfo.ticketType) },
+          ticketInfo: { ...amendTicketType(state.ticketInfo.ticketType), modes: action.payload },
         };
       case 'UPDATE_TICKET_TYPE':
         setSearchParam('type', action.payload);
+        // save state to session storage
+        sessionStorage.setItem('ticketInfo', JSON.stringify(state));
         return {
           ...state,
           ticketInfo: { ...amendTicketType(action.payload), ticketType: action.payload },
         };
       case 'UPDATE_TICKET_INFO':
         setSearchParam(action.payload.name, action.payload.value);
+        // save state to session storage
+        sessionStorage.setItem('ticketInfo', JSON.stringify(state));
         return {
           ...state,
           ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
