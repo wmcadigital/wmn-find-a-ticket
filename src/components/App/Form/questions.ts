@@ -93,42 +93,65 @@ const questions: { [key: string]: any } = {
     question: 'Who will be travelling?',
     options: [
       { text: 'Adult', value: 'adult' },
-      { text: 'Young person (5-18)', value: 'youngPerson' },
-      { text: 'Student (16+)', value: 'student' },
-      { text: 'Group or Family', value: 'group' },
-      { text: 'Older person', value: 'senior' },
-      { text: 'Disabled person', value: 'disabled' },
+      {
+        text: 'Young person (5-18)',
+        value: 'youngPerson',
+        info:
+          'If you&rsquo;re over 16, you need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18</a> or <a href="https://wmnetwork.co.uk/swift/swift-for-you/student-season-tickets/" target="_blank" rel="nofollow">student Swift card</a>. If you look older than 16, you&rsquo;ll need to prove your age.',
+      },
+      {
+        text: 'Student (16+)',
+        value: 'student',
+        info:
+          'You need a student Swift card. If you can&rsquo;t get one, you&rsquo;ll need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18 Swift card</a> or pay adult fare.',
+      },
+      {
+        text: 'Group or Family',
+        value: 'group',
+      },
+      {
+        text: 'Older person',
+        value: 'senior',
+        info:
+          'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/older-persons-pass/" target="_blank" rel="nofollow">WMCA older person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
+      },
+      {
+        text: 'Disabled person',
+        value: 'disabled',
+        info:
+          'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/disabled-persons-pass/" target="_blank" rel="nofollow">WMCA disabled person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
+      },
     ],
   },
   busArea: {
     question: 'Select your bus area',
     options: [
       {
-        html: '<strong>West Midlands</strong><br> From £64.00*',
+        html: '<strong>West Midlands</strong> From £64.00*',
         text: 'West Midlands',
         value: 'westmidlands',
         group: 'region',
       },
       {
-        html: '<strong>Black Country</strong><br> From £55.50*',
+        html: '<strong>Black Country</strong> From £55.50*',
         text: 'Black Country',
         value: 'blackcountry',
         group: 'region',
       },
       {
-        html: '<strong>Coventry</strong><br> From £53.00*',
+        html: '<strong>Coventry</strong> From £53.00*',
         text: 'Coventry',
         value: 'coventry',
         group: 'local',
       },
       {
-        html: '<strong>Sandwell and Dudley</strong><br> From £40.00*',
+        html: '<strong>Sandwell and Dudley</strong> From £40.00*',
         text: 'Sandwell and Dudley',
         value: 'sandwelldudley',
         group: 'local',
       },
       {
-        html: '<strong>Walsall</strong><br> From £40.00*',
+        html: '<strong>Walsall</strong> From £40.00*',
         text: 'Walsall',
         value: 'walsall',
         group: 'local',
@@ -141,20 +164,22 @@ const questions: { [key: string]: any } = {
     hint: 'Sometimes you can get a cheaper ticket if you only travel after 9.30am.',
     options: [
       {
-        html: '<strong>Peak</strong><br>I need to travel before 9.30am',
+        html: '<strong>Peak</strong> I need to travel before 9.30am',
         text: 'Peak',
         value: 'peak',
       },
       {
-        html: '<strong>Off-peak</strong><br>I will only travel after 9.30am',
+        html: '<strong>Off-peak</strong> I will only travel after 9.30am',
         text: 'Off peak',
         value: 'offpeak',
       },
       {
         html:
-          '<strong>Disabled or Older Person’s pass holder</strong><br>I need to travel before 9.30am ',
+          '<strong>Disabled or Older Person’s pass holder</strong> I need to travel before 9.30am ',
         text: 'Disabled or Older Person’s pass holder',
         value: 'senior',
+        info:
+          'As a disabled or older person’s pass holder, you get free travel after 9.30am on weekdays and all weekend. You only need a ticket if you need to regularly travel before 9.30am.',
       },
     ],
   },

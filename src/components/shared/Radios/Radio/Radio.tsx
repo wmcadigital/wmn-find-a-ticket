@@ -6,23 +6,31 @@ import dompurify from 'dompurify';
 import { FormContext } from '../../../../globalState';
 import RadioProps from './RadioProps';
 
+import s from './Radio.module.scss';
+
 const { sanitize } = dompurify;
 
-const Radio = ({ name = '', onChange, text, value }: RadioProps) => {
+const Radio = ({ name = '', onChange, text, value, info }: RadioProps) => {
   const [formState] = useContext(FormContext); // Get the state/dispatch of form data from FormContext
 
   return (
     <>
-      <label className="wmnds-fe-radios__container">
-        <div dangerouslySetInnerHTML={{ __html: sanitize(text) }} />
+      <label className={`${s.radioContainer} wmnds-fe-radios__container`}>
+        <div className={s.text} dangerouslySetInnerHTML={{ __html: sanitize(text) }} />
         <input
-          className="wmnds-fe-radios__input"
+          className={`${s.radio} wmnds-fe-radios__input`}
           value={value}
           name={name}
           type="radio"
           onChange={onChange}
           defaultChecked={formState.ticketInfo[name] && formState.ticketInfo[name] === value}
         />
+        {info && (
+          <div
+            className={`${s.insetText} wmnds-inset-text wmnds-m-t-xs`}
+            dangerouslySetInnerHTML={{ __html: sanitize(info) }}
+          />
+        )}
         <span className="wmnds-fe-radios__checkmark" />
       </label>
     </>
@@ -32,6 +40,7 @@ const Radio = ({ name = '', onChange, text, value }: RadioProps) => {
 Radio.defaultProps = {
   name: '',
   onChange: null,
+  info: null,
 };
 
 export default Radio;
