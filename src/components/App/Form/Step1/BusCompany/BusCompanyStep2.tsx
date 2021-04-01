@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Button from '../../../../shared/Button/Button';
 import Dropdown from '../../../../shared/Dropdown/Dropdown';
+import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 import { FormContext } from '../../../../../globalState';
@@ -14,7 +15,7 @@ const BusCompanyStep2 = () => {
   return (
     <>
       {genericError}
-      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+      <QuestionCard handleContinue={handleContinue}>
         <Dropdown
           label={question}
           hint={hint}
@@ -33,8 +34,7 @@ const BusCompanyStep2 = () => {
             I don&rsquo;t know the bus company I travel with
           </a>
         </div>
-        <Button text="Continue" onClick={handleContinue} />
-      </div>
+      </QuestionCard>
     </>
   );
 };

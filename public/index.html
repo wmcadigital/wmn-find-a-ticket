@@ -168,9 +168,7 @@
             </a>
           </div>
           <!-- Header title -->
-          <span class="wmnds-header__title h1 wmnds-col-1 wmnds-col-sm-auto"
-            >%REACT_APP_TITLE%</span
-          >
+          <span class="wmnds-header__title h1 wmnds-col-auto wmnds-m-none">%REACT_APP_TITLE%</span>
         </div>
       </div>
       <div class="wmnds-container">
@@ -287,7 +285,7 @@
       ajax.open(
         'GET',
         '//unpkg.com/wmn-design-system@%REACT_APP_WMNDS_VERSION%/build/img/wmnds-icons.min.svg',
-        true
+        true,
       );
       ajax.send();
       ajax.onload = function () {

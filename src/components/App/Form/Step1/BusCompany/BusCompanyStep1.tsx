@@ -1,6 +1,7 @@
 import React from 'react';
 import Radios from '../../../../shared/Radios/Radios';
 import Button from '../../../../shared/Button/Button';
+import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -25,7 +26,7 @@ const BusCompanyStep1 = () => {
   return (
     <>
       {genericError}
-      <div className="bg-white wmnds-p-lg wmnds-m-b-lg">
+      <QuestionCard handleContinue={handleContinue}>
         <Radios
           name={name}
           question={question}
@@ -37,8 +38,7 @@ const BusCompanyStep1 = () => {
         <div className="wmnds-p-b-lg">
           <Button btnClass="wmnds-btn--link" text="I don't know which bus I need" />
         </div>
-        <Button text="Continue" onClick={handleContinue} />
-      </div>
+      </QuestionCard>
     </>
   );
 };
