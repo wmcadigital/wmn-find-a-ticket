@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import Button from '../../../../shared/Button/Button';
 import Dropdown from '../../../../shared/Dropdown/Dropdown';
 import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
