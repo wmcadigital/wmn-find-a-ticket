@@ -18,8 +18,8 @@ function StartPage() {
     tram: false,
   };
   // Set initial state to match globalState if modes are already selected
-  if (formState.modes) {
-    formState.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
+  if (formState.ticketInfo.modes) {
+    formState.ticketInfo.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
       initialState[mode] = true;
     });
   }

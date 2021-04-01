@@ -4,8 +4,8 @@ import { FormContext } from '../../../../globalState';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const { modes, ticketInfo, mounted, editMode } = formState;
-  const { ticketType } = ticketInfo;
+  const { ticketInfo, mounted, editMode } = formState;
+  const { modes, ticketType } = ticketInfo;
 
   // Function for setting the step of the form
   const setStep = useCallback(
@@ -61,6 +61,8 @@ const useStepLogic = () => {
     } else {
       setStep(1);
     }
+    // save state to session storage
+    sessionStorage.setItem('ticketInfo', JSON.stringify(ticketInfo));
   }, [setStep, formDispatch, ticketInfo, ticketType]);
 
   // Try to set the ticket type based on data available

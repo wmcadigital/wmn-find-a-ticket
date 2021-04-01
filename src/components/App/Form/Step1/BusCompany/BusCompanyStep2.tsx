@@ -1,12 +1,13 @@
-import React from 'react';
-import Button from '../../../../shared/Button/Button';
+import React, { useContext } from 'react';
 import Dropdown from '../../../../shared/Dropdown/Dropdown';
 import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import { FormContext } from '../../../../../globalState';
 
 const BusCompanyStep2 = () => {
   const name = 'busCompany';
+  const [formState] = useContext(FormContext);
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
 
@@ -23,7 +24,14 @@ const BusCompanyStep2 = () => {
           onChange={handleChange}
         />
         <div className="wmnds-p-b-lg">
-          <Button btnClass="wmnds-btn--link" text="I don't know the bus company I travel with" />
+          <a
+            className="wmnds-link"
+            href={`https://https://find-bus-operator.wmnetwork.co.uk/?modes=${formState.ticketInfo.modes.join(
+              '+',
+            )}`}
+          >
+            I don&rsquo;t know the bus company I travel with
+          </a>
         </div>
       </QuestionCard>
     </>

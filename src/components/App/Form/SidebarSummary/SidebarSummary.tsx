@@ -23,7 +23,7 @@ const SidebarSummary = () => {
   const [formState, formDispatch] = useContext(FormContext);
   const { ticketInfo } = formState;
 
-  const capitalizedModes = formState.modes.map((m: string) => capitalize(m));
+  const capitalizedModes = ticketInfo.modes.map((m: string) => capitalize(m));
 
   const getOptionText = (key: string, val: string) => {
     const o = questions[key].options.find(
