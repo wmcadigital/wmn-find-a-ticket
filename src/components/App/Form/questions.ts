@@ -37,7 +37,7 @@ const questions: { [key: string]: any } = {
       },
       {
         text: 'First Bus Potteries',
-        value: 'NXB',
+        value: 'PMT',
       },
       {
         text: "Johnson's Excelbus",
@@ -65,7 +65,7 @@ const questions: { [key: string]: any } = {
       },
       {
         text: 'National Express West Midlands',
-        value: 'PMT',
+        value: 'NXB',
       },
       {
         text: 'NN Cresswell',
