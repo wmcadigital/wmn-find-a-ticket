@@ -13,32 +13,41 @@ export const FormProvider = (props) => {
     mounted: false,
   };
 
-  if (sessionStorage.getItem('ticketInfo')) {
-    const storedInfo = sessionStorage.getItem('ticketInfo');
-    initialState.ticketInfo = JSON.parse(storedInfo);
-  } else {
-    // Set intial state
-    initialState.ticketInfo = {
-      modes: getSearchParam('modes') ? getSearchParam('modes').split(' ') : null,
-      ticketType: getSearchParam('type'),
-    };
+  const storedInfo = JSON.parse(sessionStorage.getItem('ticketInfo')) || {};
 
-    // loop through questions object
-    Object.keys(questions).forEach((key) => {
-      // get search params if present and assign tonitial state
-      if (key === 'railZones') {
-        // split railzones key into array of integers
-        initialState.ticketInfo[key] =
-          (getSearchParam(key) &&
-            getSearchParam(key)
-              .split(' ')
-              .map((num) => parseInt(num, 10))) ||
-          null;
-      } else {
-        initialState.ticketInfo[key] = getSearchParam(key) || null;
-      }
-    });
+  // Set search params for modes & ticketType if stored
+  if (storedInfo.modes) {
+    setSearchParam('modes', storedInfo.modes);
   }
+  if (storedInfo.ticketType) {
+    setSearchParam('type', storedInfo.ticketType);
+  }
+
+  // Set intial state
+  initialState.ticketInfo = {
+    modes: storedInfo.modes || getSearchParam('modes')?.split(' ') || null,
+    ticketType: storedInfo.ticketType || getSearchParam('type') || null,
+  };
+
+  // loop through questions object
+  Object.keys(questions).forEach((key) => {
+    // split string into array of integers
+    const strToIntArray = (str) => (str ? str.split(' ').map((num) => parseInt(num, 10)) : null);
+
+    if (storedInfo[key]) {
+      initialState.ticketInfo[key] = storedInfo[key];
+      if (key === 'railZones') {
+        setSearchParam(key, storedInfo[key].join(' '));
+      } else {
+        setSearchParam(key, storedInfo[key]);
+      }
+    } else if (key === 'railZones') {
+      // get search params if present and assign to initial state
+      initialState.ticketInfo[key] = strToIntArray(getSearchParam(key)) || null;
+    } else {
+      initialState.ticketInfo[key] = getSearchParam(key) || null;
+    }
+  });
 
   // Returns an array of params to be removed based on ticket type
   const infoToRemove = (ticketType) => {

@@ -18,7 +18,8 @@ const Step2 = () => {
     (formState.ticketInfo.ticketType === 'nTicket' && !formState.ticketInfo.railZones) ||
     editMode === 'railZones'
   ) {
-    window.location.href = 'https://find-rail-zones.wmnetwork.co.uk';
+    sectionToRender = 'rail zones';
+    // window.location.href = 'https://find-rail-zones.wmnetwork.co.uk';
   }
 
   return <>{sectionToRender || <TravelTime />}</>;
