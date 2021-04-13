@@ -9,11 +9,15 @@ interface IError {
 
 const useHandleChange = (name: string) => {
   const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const [value, setValue] = useState<string | null>(formState.ticketInfo[name] || null);
+  const [value, setValue] = useState<string | string[] | null>(formState.ticketInfo[name] || null);
   const [error, setError] = useState<IError | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    if (name === 'railZones') {
+      setValue(e.target.value.split('+'));
+    } else {
+      setValue(e.target.value);
+    }
     if (e.target.value) {
       setError(null);
     }
