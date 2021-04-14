@@ -1,8 +1,8 @@
 import { useEffect, useContext, useState, useRef, useCallback } from 'react';
 // Import contexts
-import { AutoCompleteContext } from '../../AutoCompleteContext';
+import { AutoCompleteContext } from '../AutoCompleteContext';
 // Import json data
-import railData from '../RailData.json';
+import railData from '../../RailData.json';
 
 const useAutoCompleteAPI = (queryId) => {
   // State variables

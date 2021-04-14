@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AutoCompleteContext } from '../../../AutoCompleteContext';
+import { AutoCompleteContext } from '../../AutoCompleteContext';
 // Import styles
 import s from './TrainAutoCompleteResult.module.scss';
 
