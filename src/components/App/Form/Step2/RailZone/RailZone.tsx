@@ -5,6 +5,7 @@ import Icon from '../../../../shared/Icon/Icon';
 import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
 import useHandleChange from '../../customHooks/useHandleChange';
 import s from './RailZone.module.scss';
+import AutoComplete from './AutoComplete/AutoComplete';
 
 const { sanitize } = dompurify;
 
@@ -19,7 +20,7 @@ function RailZone() {
         <h2 className="wmnds-fe-question">Which train stations will you use?</h2>
         <p>Train stations in the West Midlands are in zones.</p>
         <p>You can choose which zones your train ticket will cover.</p>
-        <p>[TrainAutoComplete]</p>
+        <AutoComplete />
         <div className="wmnds-grid wmnds-grid--spacing-md-2-md wmnds-m-b-lg">
           <div className="wmnds-col-1 wmnds-col-md-1-2">
             <a

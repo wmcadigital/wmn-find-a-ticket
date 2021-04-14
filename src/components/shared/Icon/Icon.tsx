@@ -8,11 +8,13 @@ import React from 'react';
 interface IconProps {
   iconName: string;
   className?: string;
+  title?: string;
 }
 
-const Icon = ({ className, iconName }: IconProps) => {
+const Icon = ({ className, iconName, title }: IconProps) => {
   return (
     <svg className={className}>
+      {title && <title>{title}</title>}
       <use xlinkHref={`#wmnds-${iconName}`} href={`#wmnds-${iconName}`} />
     </svg>
   );
@@ -20,6 +22,7 @@ const Icon = ({ className, iconName }: IconProps) => {
 
 Icon.defaultProps = {
   className: null,
+  title: null,
 };
 
 export default Icon;
