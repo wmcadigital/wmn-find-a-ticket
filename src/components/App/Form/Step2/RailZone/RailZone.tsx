@@ -1,5 +1,3 @@
-import React from 'react';
-
 function RailZone() {
   return (
     <div className="bg-white wmnds-p-lg wmnds-m-b-lg">

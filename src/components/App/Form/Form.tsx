@@ -1,4 +1,3 @@
-import React from 'react';
 // Contexts
 import useStepLogic from './customHooks/useStepLogic';
 import SidebarSummary from './SidebarSummary/SidebarSummary';

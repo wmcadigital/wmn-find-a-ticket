@@ -1,21 +1,20 @@
-import React from 'react';
 import dompurify from 'dompurify';
+import { TForm } from 'globalState';
 // Import components
-import Radio from './Radio/Radio';
-import RadioProps from './Radio/RadioProps';
+import Radio, { OptionProps } from './Radio/Radio';
 
 import s from './Radios.module.scss';
 
 const { sanitize } = dompurify;
 
-interface RadiosProps {
-  name: string;
+type RadiosProps = {
+  name: keyof TForm.TicketInfo;
   hint?: string;
   question: string;
-  error?: { message: string } | null;
-  radios: RadioProps[];
-  onChange?: any;
-}
+  error: { message: string } | null;
+  radios: OptionProps[];
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const Radios = ({ name, hint, question, error, radios, onChange }: RadiosProps) => {
   return (
@@ -36,7 +35,7 @@ const Radios = ({ name, hint, question, error, radios, onChange }: RadiosProps) 
             />
           )}
           {/* Loop through radios and display each radio button */}
-          {radios.map(({ text, html, value, info }: RadioProps) => (
+          {radios.map(({ text, html, value, info }) => (
             <Radio
               key={text}
               name={name}
@@ -50,12 +49,6 @@ const Radios = ({ name, hint, question, error, radios, onChange }: RadiosProps) 
       </fieldset>
     </div>
   );
-};
-
-Radios.defaultProps = {
-  onChange: null,
-  error: null,
-  hint: null,
 };
 
 export default Radios;

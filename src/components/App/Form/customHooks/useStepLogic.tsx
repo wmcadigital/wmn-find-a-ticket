@@ -1,9 +1,9 @@
-import { useLayoutEffect, useContext, useEffect, useCallback } from 'react';
+import { useLayoutEffect, useEffect, useCallback } from 'react';
 // Import contexts
-import { FormContext } from '../../../../globalState';
+import { useFormContext, TForm } from 'globalState';
 
 const useStepLogic = () => {
-  const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
+  const [formState, formDispatch] = useFormContext(); // Get the state/dispatch of form data from FormDataContext
   const { ticketInfo, mounted, editMode } = formState;
   const { modes, ticketType } = ticketInfo;
 
@@ -67,18 +67,18 @@ const useStepLogic = () => {
 
   // Try to set the ticket type based on data available
   const setTicketType = useCallback(() => {
-    let tType = null;
-    if (modes.includes('train')) {
+    let tType: TForm.TicketTypes | null = null;
+    if (modes?.includes('train')) {
       // If train mode is selected it will be 'nTicket'
       tType = 'nTicket';
-    } else if (!modes.includes('bus')) {
+    } else if (!modes?.includes('bus')) {
       // If bus mode isn't selected it will be 'single'
       tType = 'tram';
     }
     // Do the ticket update only if:
     // - tType is set (above)
     // - or bus mode is selected and ticket type is not set to nBus or single (we set these in step 1)
-    if (tType || (modes.includes('bus') && ticketType !== 'nBus' && ticketType !== 'single')) {
+    if (tType || (modes?.includes('bus') && ticketType !== 'nBus' && ticketType !== 'single')) {
       formDispatch({
         type: 'UPDATE_TICKET_TYPE',
         payload: tType,

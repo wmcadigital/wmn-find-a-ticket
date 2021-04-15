@@ -1,6 +1,5 @@
-import React from 'react';
-import QuestionCard, { ChangeAnswers } from '../../../../shared/QuestionCard/QuestionCard';
-import Button from '../../../../shared/Button/Button';
+import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
+import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 

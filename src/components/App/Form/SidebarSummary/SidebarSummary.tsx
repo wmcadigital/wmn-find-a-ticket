@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
-import { FormContext } from '../../../../globalState';
+import { useFormContext, TForm } from 'globalState';
+import Icon from 'components/shared/Icon/Icon';
 import questions from '../questions';
 import SummarySection from './SummarySection';
-import Icon from '../../../shared/Icon/Icon';
 import s from './SidebarSummary.module.scss';
 
 // helpers
-const capitalize = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
+const capitalize = (str: string) => {
+  return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
+};
+
 const arrayToSentence = (array: string[]) => {
-  let sentence;
+  let sentence: string;
   if (array.length > 2) {
     sentence = `${array.slice(0, array.length - 1).join(', ')} and ${array.slice(-1)}`;
   } else if (array.length === 2) {
@@ -20,16 +22,16 @@ const arrayToSentence = (array: string[]) => {
 };
 
 const SidebarSummary = () => {
-  const [formState, formDispatch] = useContext(FormContext);
+  const [formState, formDispatch] = useFormContext();
   const { ticketInfo } = formState;
 
-  const capitalizedModes = ticketInfo.modes.map((m: string) => capitalize(m));
+  const capitalizedModes = ticketInfo.modes?.map((m) => capitalize(m!));
 
-  const getOptionText = (key: string, val: string) => {
+  const getOptionText = (key: TForm.QuestionKeys, val: string) => {
     const o = questions[key].options.find(
       (option: any) => option.value.toLowerCase() === val.toLowerCase(),
     );
-    return o && o.text;
+    return o ? o.text : '';
   };
 
   const handleClose = () => {
@@ -37,7 +39,7 @@ const SidebarSummary = () => {
   };
 
   // Function for setting the step of the form
-  const editStep = (step: number, page: string) => {
+  const editStep = (step: number, page: TForm.Pages) => {
     formDispatch({
       type: 'UPDATE_STEP',
       payload: step,
@@ -60,7 +62,7 @@ const SidebarSummary = () => {
       </div>
       <SummarySection
         title="Mode of travel"
-        value={arrayToSentence(capitalizedModes)}
+        value={arrayToSentence(capitalizedModes!)}
         onChange={() => editStep(0, 'modes')}
       />
       {(ticketInfo.busCompany || ticketInfo.ticketType === 'nBus') && (
