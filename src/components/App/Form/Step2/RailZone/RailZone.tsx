@@ -54,8 +54,9 @@ const RailZone = () => {
     // - at least one zones 1-5 station is selected
     // - no more than one out of county station is selected
     setZonesValid(
-      selectedStations.some((stn: any) => stn.railZone < 7) &&
-        selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1,
+      (selectedStations.some((stn: any) => stn.railZone < 7) &&
+        selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1) ||
+        !selectedStations.some((stn: any) => stn.id),
     );
 
     // Get valid selected stations
