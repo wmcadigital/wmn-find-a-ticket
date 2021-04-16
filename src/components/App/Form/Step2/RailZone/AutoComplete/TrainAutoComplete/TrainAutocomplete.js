@@ -15,7 +15,7 @@ const TrainAutoComplete = ({ id, label, queryId }) => {
   const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext);
 
   const resultsList = useRef(null);
-  const debounceInput = useRef(null);
+  const inputRef = useRef(null);
 
   const trainQuery = autoCompleteState.queries[queryId];
   const selectedService = autoCompleteState.selectedStations[queryId];
@@ -34,7 +34,7 @@ const TrainAutoComplete = ({ id, label, queryId }) => {
   };
 
   // Import handleKeyDown function from customHook (used by all modes)
-  const { handleKeyDown } = useHandleAutoCompleteKeys(resultsList, debounceInput, results);
+  const { handleKeyDown } = useHandleAutoCompleteKeys(resultsList, inputRef, results);
 
   return (
     <div className="wmnds-m-b-sm">
@@ -70,7 +70,7 @@ const TrainAutoComplete = ({ id, label, queryId }) => {
               aria-label="Search for a station"
               // debounceTimeout={600}
               onKeyDown={(e) => handleKeyDown(e)}
-              inputRef={debounceInput}
+              ref={inputRef}
             />
           </div>
           {/* If there is no data.length(results) and the user hasn't submitted a query and the state isn't loading then the user should be displayed with no results message, else show results */}

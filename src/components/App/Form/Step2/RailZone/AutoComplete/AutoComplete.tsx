@@ -1,58 +1,32 @@
 import React, { useContext } from 'react';
 // Import components
 import Button from 'components/shared/Button/Button';
-import Message from 'components/shared/Message/Message';
 import Icon from 'components/shared/Icon/Icon';
 // Import context
-import { FormContext } from 'globalState';
 import { AutoCompleteContext } from './AutoCompleteContext';
-// import Result from '../Result/Result';
+import Result from './Result/Result';
 import TrainAutoComplete from './TrainAutoComplete/TrainAutocomplete';
 import s from './AutoComplete.module.scss';
 
 const SearchComponents = () => {
   const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext);
-  const [formState] = useContext(FormContext);
   const { selectedStations } = autoCompleteState;
 
   const addStation = () => {
     autoCompleteDispatch({ type: 'ADD_STATION' });
   };
 
-  // const resetSearch = () => {
-  //   autoCompleteDispatch({ type: 'RESET_SELECTED_SERVICES' });
-  // };
+  const selectedStationIds = [...selectedStations.map((stn: any) => stn.id)];
 
-  const stationIds = [...selectedStations.map((stn: any) => stn.id)];
-
-  // Zone selection is valid if:
-  // - at least one zones 1-5 station is selected
-  // - no more than one out of county station is selected
-  const zonesValid =
-    selectedStations.some((stn: any) => stn.railZone < 7) &&
-    selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1;
-
-  // Show continue button if:
-  // - ticket search mode is true
-  // - zone selection is valid
-  // - more than one station is selected
-  const continueBtn =
-    formState.questionMode &&
-    zonesValid &&
-    selectedStations.filter((stn: any) => stn.id).length > 1;
+  let linkParams = '';
+  selectedStationIds.forEach((id, i) => {
+    if (id) {
+      linkParams += `&selectedStation${i}=${id}`;
+    }
+  });
 
   return (
     <>
-      {/* {showHeader && (
-        <div className={`${s.trayHeader}`}>
-          <Button
-            btnClass="wmnds-btn--link wmnds-m-l-md"
-            text="Clear search"
-            onClick={resetSearch}
-          />
-          <h2 className="h3">Enter your stations</h2>
-        </div>
-      )} */}
       <div className={`${s.traySearchContainer}`}>
         <div className="wmnds-m-b-md">
           <TrainAutoComplete label="From:" id="autocomplete_from" queryId={0} />
@@ -82,26 +56,27 @@ const SearchComponents = () => {
           disabled={selectedStations.length >= 12}
         />
       </div>
-      {/* <Result /> */}
-      {!zonesValid && (
-        <Message
-          type="error"
-          title="Select a station in a West Midlands zone"
-          message="Only one out of county station can be selected. Choose a station that is in a West Midlands rail zone."
-        />
-      )}
-      {continueBtn && (
-        <a
-          href={`https://find-a-ticket.wmnetwork.co.uk/?stations=${stationIds.join('+')}`}
-          className="wmnds-btn wmnds-btn--icon wmnds-col-1 wmnds-col-sm-auto"
-        >
-          Continue
-          <Icon
-            className="wmnds-btn__icon wmnds-btn__icon--right"
-            iconName="general-chevron-right"
-          />
-        </a>
-      )}
+      <Result />
+      <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
+        <div className="wmnds-col-1 wmnds-col-md-1-2">
+          <a
+            href={`https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}`}
+            className={`wmnds-btn--link ${s.btnLinkIconLeft}`}
+          >
+            <Icon className="wmnds-btn__icon" iconName="general-location-pin" />
+            View rail zones on a map
+          </a>
+        </div>
+        <div className="wmnds-col-1 wmnds-col-md-1-2">
+          <a
+            href={`https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}&mapView=false`}
+            className={`wmnds-btn--link ${s.btnLinkIconLeft}`}
+          >
+            <Icon className="wmnds-btn__icon" iconName="general-list" />
+            View rail zones in a list
+          </a>
+        </div>
+      </div>
     </>
   );
 };

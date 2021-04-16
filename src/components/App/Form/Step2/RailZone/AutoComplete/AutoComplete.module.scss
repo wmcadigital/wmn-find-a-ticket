@@ -33,3 +33,14 @@
 .traySearchContainer {
   max-width: 27rem;
 }
+
+.btnLinkIconLeft {
+  display: inline-flex;
+  text-align: left;
+  align-items: center;
+
+  svg {
+    margin-right: $size-sm;
+    fill: currentColor;
+  }
+}

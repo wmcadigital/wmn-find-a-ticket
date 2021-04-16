@@ -69,7 +69,7 @@ const useAutoCompleteAPI = (queryId) => {
         stationName.toLowerCase().includes(query.trim().toLowerCase()),
       );
     } else {
-      response = [];
+      response = railData.railStationAccess;
     }
     handleAutoCompleteApiResponse(response);
   }, [handleAutoCompleteApiResponse, query]);
