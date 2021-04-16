@@ -1,15 +1,16 @@
-import React, { useContext } from 'react';
-import Dropdown from '../../../../shared/Dropdown/Dropdown';
-import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
+import { TForm, useFormContext } from 'globalState';
+import Dropdown from 'components/shared/Dropdown/Dropdown';
+import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
-import { FormContext } from '../../../../../globalState';
 
 const BusCompanyStep2 = () => {
   const name = 'busCompany';
-  const [formState] = useContext(FormContext);
+  const [formState] = useFormContext();
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
-  const { question, hint, options } = questions[name];
+  const { question, hint, options } = questions[name] as typeof questions[typeof name];
+
+  const modesUrlString = (formState.ticketInfo as TForm.TicketInfo).modes.join('+');
 
   return (
     <>
@@ -21,14 +22,12 @@ const BusCompanyStep2 = () => {
           name={name}
           error={error}
           options={options}
-          onChange={handleChange}
+          onBlur={handleChange}
         />
         <div className="wmnds-p-b-lg">
           <a
             className="wmnds-link"
-            href={`https://https://find-bus-operator.wmnetwork.co.uk/?modes=${formState.ticketInfo.modes.join(
-              '+',
-            )}`}
+            href={`https://https://find-bus-operator.wmnetwork.co.uk/?modes=${modesUrlString}`}
           >
             I don&rsquo;t know the bus company I travel with
           </a>

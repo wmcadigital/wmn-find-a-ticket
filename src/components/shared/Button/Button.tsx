@@ -1,19 +1,18 @@
 // Import packages
-import React from 'react';
 import Icon from '../Icon/Icon';
 
-interface ButtonProps {
+type ButtonProps = {
   btnClass?: string;
   disabled?: boolean;
   iconLeft?: string;
   iconRight?: string;
   isActive?: boolean;
   isFetching?: boolean;
-  onClick?: any;
-  text?: string;
+  onClick?: () => void;
+  text: string;
   title?: string;
-  type?: 'button' | 'submit' | 'reset' | undefined;
-}
+  type?: 'button' | 'submit' | 'reset';
+};
 
 const Button = ({
   btnClass,
@@ -25,10 +24,9 @@ const Button = ({
   onClick,
   text,
   title,
-  type,
+  type = 'button',
 }: ButtonProps) => {
   return (
-    // eslint-disable-next-line react/button-has-type
     <button
       // eslint-disable-next-line react/button-has-type
       type={type}
@@ -62,19 +60,6 @@ const Button = ({
       )}
     </button>
   );
-};
-
-Button.defaultProps = {
-  btnClass: '',
-  disabled: false,
-  iconLeft: null,
-  iconRight: null,
-  isActive: false,
-  isFetching: false,
-  onClick: null,
-  text: null,
-  title: null,
-  type: 'button',
 };
 
 export default Button;

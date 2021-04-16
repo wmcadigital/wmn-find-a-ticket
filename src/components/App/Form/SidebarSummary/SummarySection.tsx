@@ -1,16 +1,13 @@
-import React from 'react';
-import Button from '../../../shared/Button/Button';
+import Button from 'components/shared/Button/Button';
 import s from './SidebarSummary.module.scss';
 
-const SummarySection = ({
-  title,
-  value,
-  onChange,
-}: {
+type SummarySectionProps = {
   title: string;
   value: string;
   onChange?: () => void;
-}) => {
+};
+
+const SummarySection = ({ title, value, onChange }: SummarySectionProps) => {
   return (
     <div className={s.summary}>
       <div className="wmnds-grid wmnds-grid--justify-between wmnds-m-b-xsm">
@@ -24,10 +21,6 @@ const SummarySection = ({
       <div>{value}</div>
     </div>
   );
-};
-
-SummarySection.defaultProps = {
-  onChange: null,
 };
 
 export default SummarySection;

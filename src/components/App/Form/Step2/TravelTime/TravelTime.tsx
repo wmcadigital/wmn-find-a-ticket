@@ -1,6 +1,5 @@
-import React from 'react';
-import Radios from '../../../../shared/Radios/Radios';
-import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
+import Radios from 'components/shared/Radios/Radios';
+import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 

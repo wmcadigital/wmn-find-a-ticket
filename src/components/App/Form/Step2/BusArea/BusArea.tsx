@@ -1,7 +1,6 @@
-import React from 'react';
 import dompurify from 'dompurify';
-import Radio from '../../../../shared/Radios/Radio/Radio';
-import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
+import Radio from 'components/shared/Radios/Radio/Radio';
+import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -12,8 +11,8 @@ const BusArea = () => {
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, options } = questions[name];
   // Filter out options into groups
-  const regionOptions = [...options.filter((option: any) => option.group === 'region')];
-  const localOptions = [...options.filter((option: any) => option.group === 'local')];
+  const regionOptions = [...options.filter((option) => option.group === 'region')];
+  const localOptions = [...options.filter((option) => option.group === 'local')];
 
   return (
     <>

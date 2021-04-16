@@ -1,4 +1,4 @@
-const questions: { [key: string]: any } = {
+const questions = {
   busNetwork: {
     question: 'Do you want to travel on any bus?',
     hint: 'Travel on any bus company in the West Midlands Network',
@@ -158,7 +158,15 @@ const questions: { [key: string]: any } = {
       },
     ],
   },
-  railZones: {},
+  railZones: {
+    quesion: '',
+    options: [
+      {
+        text: 'Yes',
+        value: 'yes',
+      },
+    ],
+  },
   travelTime: {
     question: 'Will you travel during peak hours?',
     hint: 'Sometimes you can get a cheaper ticket if you only travel after 9.30am.',
