@@ -1,7 +1,7 @@
 import dompurify from 'dompurify';
 import { TForm } from 'globalState';
 // Import components
-import Radio, { OptionProps } from './Radio/Radio';
+import Radio from './Radio/Radio';
 
 import s from './Radios.module.scss';
 
@@ -12,7 +12,7 @@ type RadiosProps = {
   hint?: string;
   question: string;
   error: { message: string } | null;
-  radios: OptionProps[];
+  radios: TForm.QuestionOptions[];
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
