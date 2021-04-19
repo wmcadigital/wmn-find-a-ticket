@@ -8,7 +8,7 @@ import Result from './Result/Result';
 import TrainAutoComplete from './TrainAutoComplete/TrainAutocomplete';
 import s from './AutoComplete.module.scss';
 
-const SearchComponents = () => {
+const AutoComplete = () => {
   const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext);
   const { selectedStations } = autoCompleteState;
 
@@ -81,4 +81,4 @@ const SearchComponents = () => {
   );
 };
 
-export default SearchComponents;
+export default AutoComplete;

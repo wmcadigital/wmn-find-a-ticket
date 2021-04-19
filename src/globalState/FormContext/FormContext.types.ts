@@ -11,6 +11,16 @@ export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2';
 export type Modes = 'bus' | 'tram' | 'train';
 export type TicketTypes = 'nTicket' | 'nBus' | 'tram' | 'single';
 
+export interface IStations {
+  id: string;
+  queryId: number;
+  crsCode: string;
+  stationName: string;
+  railZone: string;
+  parking: boolean;
+  stepFreeAccess: string;
+}
+
 export type TicketInfo = {
   busArea: Nullable<string>;
   busCompany: Nullable<string>;
@@ -18,6 +28,7 @@ export type TicketInfo = {
   firstClass: Nullable<string>;
   modes: Nullable<Modes>[];
   railZones: Nullable<number[]>;
+  stations: Nullable<any>;
   ticketDuration: Nullable<string>;
   ticketType: Nullable<TicketTypes>;
   travelTime: Nullable<string>;

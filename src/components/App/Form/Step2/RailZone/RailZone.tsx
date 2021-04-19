@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import dompurify from 'dompurify';
+// Import context
+import { useFormContext, TForm } from 'globalState';
 // Import components
 import Button from 'components/shared/Button/Button';
 import Message from 'components/shared/Message/Message';
@@ -19,12 +21,31 @@ const RailZone = () => {
   }
 
   const name = 'railZones';
-  const { handleContinue, handleChange, genericError, error } = useHandleChange(name);
+  const { value, handleChange, genericError, error, setError } = useHandleChange(name);
+  const [, formDispatch] = useFormContext();
   const [autoCompleteState] = useContext(AutoCompleteContext);
   const { selectedStations } = autoCompleteState;
   const [zonesValid, setZonesValid] = useState<boolean>(false);
   const [recommendedOptions, setRecommendedOptions] = useState<IZoneOptions[] | []>([]);
   const [additionalOptions, setAdditionalOptions] = useState<IZoneOptions[] | []>([]);
+
+  const handleContinue = () => {
+    if (value && value.length !== 0) {
+      formDispatch({ type: 'EDIT_MODE', payload: null });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: {
+          name: 'stations',
+          value: selectedStations
+            .map((station: TForm.IStations) => station.stationName)
+            .filter((stn: string) => stn),
+        },
+      });
+    } else {
+      setError({ message: 'Please select an answer' });
+    }
+  };
 
   useEffect(() => {
     const options = [

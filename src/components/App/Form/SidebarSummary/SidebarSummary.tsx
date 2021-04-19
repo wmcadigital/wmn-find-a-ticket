@@ -52,6 +52,21 @@ const SidebarSummary = () => {
     window.scrollTo(0, 0);
   };
 
+  const RailZoneSummary = ({ railZones }: { railZones: number[] }) => {
+    return (
+      <>
+        {railZones.length > 1 ? (
+          <p className="wmnds-m-b-md">
+            Zones {Math.min(...railZones)}-{Math.max(...railZones)}
+          </p>
+        ) : (
+          <p className="wmnds-m-b-md">Zone {railZones[0]}</p>
+        )}
+        {arrayToSentence(ticketInfo.stations)}
+      </>
+    );
+  };
+
   return (
     <div className={`${s.sidebarSummary} bg-white wmnds-p-md`}>
       <div className={`${s.mobileHeader} wmnds-hide-desktop wmnds-m-b-md wmnds-grid`}>
@@ -100,11 +115,7 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Rail zones"
-            value={
-              ticketInfo.railZones.length > 1
-                ? `Zones ${Math.min(...ticketInfo.railZones)}-${Math.max(...ticketInfo.railZones)}`
-                : `Zone ${ticketInfo.railZones[0]}`
-            }
+            value={<RailZoneSummary railZones={ticketInfo.railZones} />}
             onChange={() => editStep(2, 'railZones')}
           />
         </>

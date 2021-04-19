@@ -22,29 +22,31 @@ const useAutoCompleteAPI = (queryId) => {
       let payload;
 
       setResults(response || []);
+      // Grab info matching rail data from json file
+      const result =
+        railData.railStationAccess.filter((service) => service.crsCode === selectedService.id)[0] ||
+        null;
 
-      if (selectedService.id && response.length) {
-        // Grab info matching rail data from json file
-        const result = railData.railStationAccess.filter(
-          (service) => service.crsCode === selectedService.id,
-        )[0];
-        if (!result.railZone) {
-          result.railZone = 7; // if there is no zone assign '7' (Out of county)
+      if (result) {
+        if (selectedService.id && response.length) {
+          if (!result.railZone) {
+            result.railZone = 7; // if there is no zone assign '7' (Out of county)
+          }
+          // Set data to add to context state
+          payload = {
+            id: result.crsCode,
+            queryId,
+            ...result,
+          };
         }
-        // Set data to add to context state
-        payload = {
-          id: result.crsCode,
-          queryId,
-          ...result,
-        };
-      }
 
-      // Update selectedStation based on payload set above if item already selected
-      if (selectedService.id) {
-        autoCompleteDispatch({
-          type: 'UPDATE_SELECTED_STATION',
-          payload,
-        });
+        // Update selectedStation based on payload set above if item already selected
+        if (selectedService.id) {
+          autoCompleteDispatch({
+            type: 'UPDATE_SELECTED_STATION',
+            payload,
+          });
+        }
       }
 
       if (!response.length && mounted.current) {
