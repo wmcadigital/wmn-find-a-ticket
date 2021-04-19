@@ -1,18 +1,23 @@
-import React from 'react';
 import dompurify from 'dompurify';
 import Icon from '../Icon/Icon';
 
 const { sanitize } = dompurify;
 
-interface MessageProps {
+type MessageProps = {
   type?: string;
   title?: string;
   message?: string | Node;
   showRetry?: boolean;
   retryCallback?: () => void;
-}
+};
 
-const Message = ({ type, title, message = '', showRetry, retryCallback }: MessageProps) => {
+const Message = ({
+  type = 'success',
+  title = 'Good service',
+  message = 'No incidents reported.',
+  showRetry = false,
+  retryCallback,
+}: MessageProps) => {
   let iconName;
   switch (type) {
     case 'error':
@@ -43,14 +48,6 @@ const Message = ({ type, title, message = '', showRetry, retryCallback }: Messag
       </div>
     </div>
   );
-};
-
-Message.defaultProps = {
-  type: 'success',
-  title: 'Good service',
-  message: 'No incidents reported.',
-  showRetry: false,
-  retryCallback: null,
 };
 
 export default Message;

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { TForm } from 'globalState';
 // Contexts
 import useStepLogic from './Form/customHooks/useStepLogic';
+// Components
 import Button from '../shared/Button/Button';
 import GenericError from '../shared/Errors/GenericError';
-
-// Components
 import QuestionCard from '../shared/QuestionCard/QuestionCard';
 
 function StartPage() {
@@ -12,20 +12,20 @@ function StartPage() {
   const [touched, setTouched] = useState(false); // state set to true when user has made a change
   const [error, setError] = useState(false); // init error state
   // Initial state for selected modes
-  const initialState: { [key: string]: boolean } = {
+  const initialState: { [key in TForm.Modes]: boolean } = {
     bus: false,
     train: false,
     tram: false,
   };
   // Set initial state to match globalState if modes are already selected
-  if (formState.ticketInfo.modes) {
-    formState.ticketInfo.modes.forEach((mode: 'bus' | 'tram' | 'train') => {
-      initialState[mode] = true;
+  if (formState.ticketInfo.modes?.length) {
+    formState.ticketInfo.modes.forEach((mode) => {
+      initialState[mode!] = true; // assert mode type as it can never  be null here
     });
   }
   const [selectedModes, setSelectedModes] = useState(initialState); // init selected modes with initialState
   // FN to toggle selected modes on or off
-  const toggleMode = (mode: 'bus' | 'tram' | 'train') => {
+  const toggleMode = (mode: TForm.Modes) => {
     if (!touched) {
       // Set touched to true as user made a change
       setTouched(true);
@@ -52,7 +52,7 @@ function StartPage() {
       formDispatch({
         type: 'UPDATE_MODE',
         // Spread the object keys with true values to update global state
-        payload: [...Object.keys(selectedModes).filter((m) => selectedModes[m])],
+        payload: [...(Object.keys(selectedModes) as TForm.Modes[]).filter((m) => selectedModes[m])],
       });
       // setTicketType();
       runStepLogic();

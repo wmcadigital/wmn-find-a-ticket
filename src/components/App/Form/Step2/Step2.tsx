@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
-import { FormContext } from '../../../../globalState';
+import { useFormContext } from 'globalState';
 import BusArea from './BusArea/BusArea';
 import RailZone from './RailZone/RailZone';
 import TravelTime from './TravelTime/TravelTime';
 
 const Step2 = () => {
-  const [formState] = useContext(FormContext);
+  const [formState] = useFormContext();
   const { editMode } = formState;
   let sectionToRender;
   // Logic to determine which to section to show

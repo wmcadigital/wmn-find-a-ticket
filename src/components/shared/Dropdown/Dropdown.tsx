@@ -1,27 +1,23 @@
-import React, { useContext } from 'react';
 import dompurify from 'dompurify';
-
 // Import contexts
-import { FormContext } from '../../../globalState';
+import { useFormContext, TForm } from 'globalState';
+import React from 'react';
 
 const { sanitize } = dompurify;
 
-interface OptionProps {
-  text: string;
-  value: string;
-}
-
-interface DropdownProps {
-  name: string;
+type DropdownProps = {
+  name: keyof TForm.TicketInfo;
   hint: string;
-  error?: { message: string } | null;
+  error: { message: string } | null;
   label: string;
-  options: OptionProps[];
-  onChange?: any;
-}
+  options: TForm.QuestionOptions[];
+  onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
+};
 
-const Dropdown = ({ name, hint, label, error, options, onChange }: DropdownProps) => {
-  const [formState] = useContext(FormContext); // Get the state/dispatch of form data from FormContext
+const Dropdown = ({ name, hint, label, error, options, onBlur }: DropdownProps) => {
+  const [formState] = useFormContext(); // Get the state/dispatch of form data from FormContext
+  const defaultSelectValue = formState.ticketInfo[name] as string | number; // cast to acceptable types for a select element
+
   return (
     <div className="wmnds-fe-group wmnds-m-b-md">
       <fieldset className="wmnds-fe-fieldset">
@@ -45,11 +41,11 @@ const Dropdown = ({ name, hint, label, error, options, onChange }: DropdownProps
             className="wmnds-fe-dropdown__select"
             id={name}
             name={name}
-            defaultValue={formState.ticketInfo[name] || ''}
-            onBlur={onChange}
+            defaultValue={defaultSelectValue || ''}
+            onBlur={onBlur}
           >
             <option value="">Choose from list</option>
-            {options.map((option: OptionProps) => (
+            {options.map((option) => (
               <option key={option.text} value={option.value}>
                 {option.text}
               </option>
@@ -59,11 +55,6 @@ const Dropdown = ({ name, hint, label, error, options, onChange }: DropdownProps
       </fieldset>
     </div>
   );
-};
-
-Dropdown.defaultProps = {
-  onChange: null,
-  error: null,
 };
 
 export default Dropdown;

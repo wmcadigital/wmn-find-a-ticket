@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
-import { FormContext } from '../../../globalState';
+import { useFormContext } from 'globalState';
 import s from './QuestionCard.module.scss';
 import Button from '../Button/Button';
 
-interface QuestionCardProps {
+type QuestionCardProps = {
   children: JSX.Element | JSX.Element[];
   handleContinue?: () => void;
   showChangeBtn?: boolean;
-}
+};
+
 const ChangeAnswers = () => {
-  const [, formDispatch] = useContext(FormContext);
+  const [, formDispatch] = useFormContext();
   const handleChange = () => {
     formDispatch({ type: 'TOGGLE_SHOW_ANSWERS', payload: true });
   };
@@ -21,6 +21,7 @@ const ChangeAnswers = () => {
     />
   );
 };
+
 const QuestionCard = ({ children, handleContinue, showChangeBtn }: QuestionCardProps) => {
   return (
     <div className={`${s.card} bg-white wmnds-m-b-lg`}>
@@ -35,11 +36,6 @@ const QuestionCard = ({ children, handleContinue, showChangeBtn }: QuestionCardP
       )}
     </div>
   );
-};
-
-QuestionCard.defaultProps = {
-  handleContinue: null,
-  showChangeBtn: true,
 };
 
 export { ChangeAnswers };

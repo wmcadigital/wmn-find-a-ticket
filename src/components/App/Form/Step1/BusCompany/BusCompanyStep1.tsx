@@ -1,7 +1,6 @@
-import React from 'react';
-import Radios from '../../../../shared/Radios/Radios';
-import Button from '../../../../shared/Button/Button';
-import QuestionCard from '../../../../shared/QuestionCard/QuestionCard';
+import Radios from 'components/shared/Radios/Radios';
+import Button from 'components/shared/Button/Button';
+import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
@@ -10,7 +9,7 @@ const BusCompanyStep1 = () => {
   const { formDispatch, handleChange, value, genericError, error, setError } = useHandleChange(
     name,
   );
-  const { question, hint, options } = questions[name];
+  const { question, hint, options } = questions[name] as typeof questions[typeof name];
 
   const handleContinue = () => {
     if (value) {

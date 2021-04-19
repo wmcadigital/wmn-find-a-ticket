@@ -1,0 +1,75 @@
+import questions from '../../components/App/Form/questions';
+
+// e.g. importing: import * as TForm
+// e.g. use: TForm.QuestionKeys
+
+type Nullable<T> = T | null;
+
+export type Questions = typeof questions;
+export type QuestionKeys = keyof Questions;
+export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2';
+export type Modes = 'bus' | 'tram' | 'train';
+export type TicketTypes = 'nTicket' | 'nBus' | 'tram' | 'single';
+
+export type TicketInfo = {
+  busArea: Nullable<string>;
+  busCompany: Nullable<string>;
+  busNetwork: Nullable<string>;
+  firstClass: Nullable<string>;
+  modes: Nullable<Modes>[];
+  railZones: Nullable<number[]>;
+  ticketDuration: Nullable<string>;
+  ticketType: Nullable<TicketTypes>;
+  travelTime: Nullable<string>;
+  traveller: Nullable<string>;
+};
+
+// Get type from common options properties in the questions objects
+// As they all have text & value properties => { text: string; value: string; }
+export type QuestionOptions = Questions[QuestionKeys]['options'][number] & {
+  html?: string;
+  info?: string;
+};
+
+export type State = {
+  currentStep: number;
+  editMode: Nullable<Pages>;
+  mounted: boolean;
+  showAnswers: boolean;
+  ticketInfo: Partial<TicketInfo>;
+};
+
+/* eslint-disable @typescript-eslint/indent */
+export type StateAction =
+  | {
+      type: 'MOUNT_APP';
+    }
+  | {
+      type: 'UPDATE_STEP';
+      payload: number;
+    }
+  | {
+      type: 'EDIT_MODE';
+      payload: Nullable<Pages>;
+    }
+  | {
+      type: 'UPDATE_MODE';
+      payload: Modes[];
+    }
+  | {
+      type: 'UPDATE_TICKET_TYPE';
+      payload: Nullable<TicketTypes>;
+    }
+  | {
+      type: 'UPDATE_TICKET_INFO';
+      payload: {
+        name: keyof TicketInfo;
+        value: TicketInfo[keyof TicketInfo];
+      };
+    }
+  | {
+      type: 'TOGGLE_SHOW_ANSWERS';
+      payload: boolean;
+    };
+
+export type Context = [State, React.Dispatch<StateAction>];

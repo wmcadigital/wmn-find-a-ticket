@@ -1,20 +1,24 @@
-import React, { useContext, useState } from 'react';
+/* eslint-disable prettier/prettier */
+import { useState } from 'react';
 // Import contexts
-import { FormContext } from '../../../../globalState';
-import GenericError from '../../../shared/Errors/GenericError';
+import { useFormContext, TForm } from 'globalState';
+import GenericError from 'components/shared/Errors/GenericError';
 
 interface IError {
   message: string;
 }
 
-const useHandleChange = (name: string) => {
-  const [formState, formDispatch] = useContext(FormContext); // Get the state/dispatch of form data from FormDataContext
-  const [value, setValue] = useState<string | string[] | null>(formState.ticketInfo[name] || null);
+const useHandleChange = (name: TForm.QuestionKeys) => {
+  const [formState, formDispatch] = useFormContext(); // Get the state/dispatch of form data from FormDataContext
+  const [value, setValue] = useState<string | number[] | null>(formState.ticketInfo[name] || null);
   const [error, setError] = useState<IError | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement> | React.FocusEvent<HTMLSelectElement>,
+  ) => {
     if (name === 'railZones') {
-      setValue(e.target.value.split('+'));
+      const railZones = e.target.value.split('+').map((zone) => parseInt(zone, 10));
+      setValue(railZones);
     } else {
       setValue(e.target.value);
     }
