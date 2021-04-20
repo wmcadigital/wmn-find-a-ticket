@@ -158,8 +158,12 @@ const questions = {
       },
     ],
   },
+  stations: {
+    question: 'Which train stations will you use?',
+    options: [],
+  },
   railZones: {
-    quesion: '',
+    question: 'Select your rail zones',
     options: [
       {
         text: 'Yes',

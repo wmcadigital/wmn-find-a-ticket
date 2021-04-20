@@ -1,4 +1,4 @@
-import { useFormContext } from '../../../globalState';
+import { useFormContext } from 'globalState';
 import s from './QuestionCard.module.scss';
 import Button from '../Button/Button';
 

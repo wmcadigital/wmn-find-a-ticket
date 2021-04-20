@@ -1,6 +1,6 @@
 import { useFormContext } from 'globalState';
 import BusArea from './BusArea/BusArea';
-// import RailZone from './RailZone/RailZone';
+import RailZone from './RailZone/RailZone';
 import TravelTime from './TravelTime/TravelTime';
 
 const Step2 = () => {
@@ -17,8 +17,7 @@ const Step2 = () => {
     (formState.ticketInfo.ticketType === 'nTicket' && !formState.ticketInfo.railZones) ||
     editMode === 'railZones'
   ) {
-    sectionToRender = 'rail zones';
-    // window.location.href = 'https://find-rail-zones.wmnetwork.co.uk';
+    sectionToRender = <RailZone />;
   }
 
   return <>{sectionToRender || <TravelTime />}</>;

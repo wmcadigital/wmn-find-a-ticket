@@ -1,0 +1,126 @@
+import React, { useRef, useContext } from 'react';
+import PropTypes from 'prop-types';
+// Import components
+import Message from 'components/shared/Message/Message';
+import Icon from 'components/shared/Icon/Icon';
+// Import Context
+import { AutoCompleteContext } from '../AutoCompleteContext';
+import TrainAutoCompleteResult from './TrainAutoCompleteResult/TrainAutoCompleteResult';
+import SelectedServiceHeader from '../SelectedServiceHeader/SelectedServiceHeader';
+// CustomHooks
+import useHandleAutoCompleteKeys from '../customHooks/useHandleAutoCompleteKeys';
+import useAutoComplete from '../customHooks/useAutoComplete';
+
+const TrainAutoComplete = ({
+  id,
+  label,
+  queryId,
+}: {
+  id: string;
+  label: string;
+  queryId: number;
+}) => {
+  const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext);
+
+  const resultsList = useRef(null);
+  const inputRef = useRef(null);
+
+  const trainQuery = autoCompleteState.queries[queryId];
+  const selectedService = autoCompleteState.selectedStations[queryId];
+
+  const { loading, errorInfo, results, getAutoCompleteResults } = useAutoComplete(queryId);
+
+  const filteredResults = results.filter(
+    (station) => !autoCompleteState.selectedStations.some((s: any) => s.id === station.crsCode),
+  );
+  const updateQuery = (query: string, qId: number) => {
+    autoCompleteDispatch({
+      type: 'UPDATE_QUERY',
+      queryId: qId,
+      payload: query,
+    });
+  };
+
+  // Import handleKeyDown function from customHook (used by all modes)
+  const { handleKeyDown } = useHandleAutoCompleteKeys(resultsList, inputRef, results);
+
+  return (
+    <div className="wmnds-m-b-sm">
+      {label && (
+        <label className="wmnds-fe-label" htmlFor={id}>
+          {label}
+        </label>
+      )}
+      {selectedService.id ? (
+        <SelectedServiceHeader
+          autoCompleteState={autoCompleteState}
+          autoCompleteDispatch={() =>
+            autoCompleteDispatch({ type: 'RESET_SELECTED_ITEM', payload: { queryId } })
+          }
+          queryId={queryId}
+        />
+      ) : (
+        <>
+          <div className={`wmnds-autocomplete wmnds-grid ${loading ? 'wmnds-is--loading' : ''}`}>
+            <Icon iconName="general-search" className="wmnds-autocomplete__icon" />
+            <div className="wmnds-loader" role="alert" aria-live="assertive">
+              <p className="wmnds-loader__content">Content is loading...</p>
+            </div>
+            <input
+              id={id}
+              type="text"
+              name="trainSearch"
+              placeholder="Search for a station"
+              autoComplete="off"
+              className="wmnds-fe-input wmnds-autocomplete__input wmnds-col-1"
+              value={trainQuery || ''}
+              onChange={(e) => updateQuery(e.target.value, queryId)}
+              aria-label="Search for a station"
+              // debounceTimeout={600}
+              onKeyDown={(e) => handleKeyDown(e)}
+              ref={inputRef}
+            />
+          </div>
+          {/* If there is no data.length(results) and the user hasn't submitted a query and the state isn't loading then the user should be displayed with no results message, else show results */}
+          {!filteredResults.length && trainQuery && !loading && errorInfo ? (
+            <Message
+              type="error"
+              title={errorInfo.title}
+              message={errorInfo.message}
+              showRetry={errorInfo?.isTimeoutError}
+              retryCallback={getAutoCompleteResults}
+            />
+          ) : (
+            // Only show autocomplete results if there is a query
+            trainQuery && (
+              <ul className="wmnds-autocomplete-suggestions" ref={resultsList}>
+                {filteredResults.map((result) => (
+                  <TrainAutoCompleteResult
+                    key={result.crsCode}
+                    result={result}
+                    handleKeyDown={handleKeyDown}
+                    queryId={queryId}
+                  />
+                ))}
+              </ul>
+            )
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+// PropTypes
+TrainAutoComplete.propTypes = {
+  id: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  queryId: PropTypes.number.isRequired,
+};
+
+// Default props
+TrainAutoComplete.defaultProps = {
+  label: null,
+};
+
+export default TrainAutoComplete;

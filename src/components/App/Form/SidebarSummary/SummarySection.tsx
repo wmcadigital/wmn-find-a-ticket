@@ -3,7 +3,7 @@ import s from './SidebarSummary.module.scss';
 
 type SummarySectionProps = {
   title: string;
-  value: string;
+  value: React.ReactNode;
   onChange?: () => void;
 };
 

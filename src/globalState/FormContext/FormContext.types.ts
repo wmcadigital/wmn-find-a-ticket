@@ -11,6 +11,16 @@ export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2';
 export type Modes = 'bus' | 'tram' | 'train';
 export type TicketTypes = 'nTicket' | 'nBus' | 'tram' | 'single';
 
+export interface IStations {
+  id: string;
+  queryId: number;
+  crsCode: string;
+  stationName: string;
+  railZone: string;
+  parking: boolean;
+  stepFreeAccess: string;
+}
+
 export type TicketInfo = {
   busArea: Nullable<string>;
   busCompany: Nullable<string>;
@@ -18,6 +28,7 @@ export type TicketInfo = {
   firstClass: Nullable<string>;
   modes: Nullable<Modes>[];
   railZones: Nullable<number[]>;
+  stations: Nullable<any>;
   ticketDuration: Nullable<string>;
   ticketType: Nullable<TicketTypes>;
   travelTime: Nullable<string>;
@@ -39,35 +50,35 @@ export type State = {
   ticketInfo: Partial<TicketInfo>;
 };
 
-/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/indent */
 export type StateAction =
-    | {
+  | {
       type: 'MOUNT_APP';
     }
-    | {
+  | {
       type: 'UPDATE_STEP';
       payload: number;
     }
-    | {
+  | {
       type: 'EDIT_MODE';
       payload: Nullable<Pages>;
     }
-    | {
+  | {
       type: 'UPDATE_MODE';
       payload: Modes[];
     }
-    | {
+  | {
       type: 'UPDATE_TICKET_TYPE';
       payload: Nullable<TicketTypes>;
     }
-    | {
+  | {
       type: 'UPDATE_TICKET_INFO';
       payload: {
         name: keyof TicketInfo;
         value: TicketInfo[keyof TicketInfo];
-      }
+      };
     }
-    | {
+  | {
       type: 'TOGGLE_SHOW_ANSWERS';
       payload: boolean;
     };

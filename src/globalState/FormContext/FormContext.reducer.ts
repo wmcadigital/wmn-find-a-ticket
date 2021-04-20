@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { setSearchParam, getSearchParam, delSearchParam } from '../helpers/URLSearchParams'; // (used to sync state with URL)
 import questions from '../../components/App/Form/questions';
 import * as TForm from './FormContext.types';
