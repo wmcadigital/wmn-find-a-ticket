@@ -2,6 +2,7 @@ import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/Ques
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import useTicketingAPI from '../../customHooks/useTicketingAPI';
 
 const TicketDuration = () => {
   const name = 'ticketDuration';
@@ -11,6 +12,9 @@ const TicketDuration = () => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
   };
+  const { results } = useTicketingAPI('/ticketing/v2/tickets/search');
+
+  console.log(results);
 
   return (
     <>
