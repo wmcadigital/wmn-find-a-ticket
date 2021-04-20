@@ -60,7 +60,7 @@ const AutoComplete = () => {
       <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
         <div className="wmnds-col-1 wmnds-col-md-1-2">
           <a
-            href={`https://deploy-preview-45--wmn-find-rail-zones.netlify.app/?ticketSearch=true${linkParams}`}
+            href={`https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}`}
             className={`wmnds-btn--link ${s.btnLinkIconLeft}`}
           >
             <Icon className="wmnds-btn__icon" iconName="general-location-pin" />
@@ -69,7 +69,7 @@ const AutoComplete = () => {
         </div>
         <div className="wmnds-col-1 wmnds-col-md-1-2">
           <a
-            href={`https://deploy-preview-45--wmn-find-rail-zones.netlify.app/?ticketSearch=true${linkParams}&mapView=false`}
+            href={`https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}&mapView=false`}
             className={`wmnds-btn--link ${s.btnLinkIconLeft}`}
           >
             <Icon className="wmnds-btn__icon" iconName="general-list" />
