@@ -4,19 +4,25 @@ import { AutoCompleteContext } from '../AutoCompleteContext';
 // Import json data
 import railData from '../../RailData.json';
 
-const useAutoCompleteAPI = (queryId) => {
+interface IError {
+  title: string;
+  message: string;
+  isTimeoutError?: boolean;
+}
+
+const useAutoComplete = (queryId: number) => {
   // State variables
   const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext); // Get the dispatch of autocomplete
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
-  const [errorInfo, setErrorInfo] = useState(); // Placeholder to set error messaging
+  const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const selectedService = autoCompleteState.selectedStations[queryId];
   const query = autoCompleteState.queries[queryId];
   // Reference variables
-  const mounted = useRef();
+  const mounted = useRef<Boolean>();
   // Helper functions
 
-  const handleAutoCompleteApiResponse = useCallback(
+  const handleAutoCompleteResponse = useCallback(
     (response) => {
       setLoading(false); // Set loading state to false after data is received
       let payload;
@@ -73,8 +79,8 @@ const useAutoCompleteAPI = (queryId) => {
     } else {
       response = railData.railStationAccess;
     }
-    handleAutoCompleteApiResponse(response);
-  }, [handleAutoCompleteApiResponse, query]);
+    handleAutoCompleteResponse(response);
+  }, [handleAutoCompleteResponse, query]);
 
   useEffect(() => {
     getAutoCompleteResults();
@@ -87,4 +93,4 @@ const useAutoCompleteAPI = (queryId) => {
   return { loading, errorInfo, results, getAutoCompleteResults };
 };
 
-export default useAutoCompleteAPI;
+export default useAutoComplete;

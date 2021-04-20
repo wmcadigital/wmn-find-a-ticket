@@ -3,8 +3,15 @@ import { AutoCompleteContext } from '../../AutoCompleteContext';
 // Import styles
 import s from './TrainAutoCompleteResult.module.scss';
 
-const TrainAutoCompleteResult = (props) => {
-  const { result, handleKeyDown, queryId } = props || {};
+const TrainAutoCompleteResult = ({
+  result,
+  handleKeyDown,
+  queryId,
+}: {
+  result: any;
+  handleKeyDown: any;
+  queryId: number;
+}) => {
   const [, autoCompleteDispatch] = useContext(AutoCompleteContext);
 
   // Set payload object to pass below
@@ -24,7 +31,7 @@ const TrainAutoCompleteResult = (props) => {
   return (
     <li
       className="wmnds-autocomplete-suggestions__li"
-      tabIndex="0"
+      tabIndex={0}
       // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
       role="button"
       aria-pressed="false"

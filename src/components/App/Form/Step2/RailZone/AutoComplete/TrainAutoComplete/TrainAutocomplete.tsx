@@ -9,9 +9,17 @@ import TrainAutoCompleteResult from './TrainAutoCompleteResult/TrainAutoComplete
 import SelectedServiceHeader from '../SelectedServiceHeader/SelectedServiceHeader';
 // CustomHooks
 import useHandleAutoCompleteKeys from '../customHooks/useHandleAutoCompleteKeys';
-import useAutoCompleteAPI from '../customHooks/useAutoCompleteAPI';
+import useAutoComplete from '../customHooks/useAutoComplete';
 
-const TrainAutoComplete = ({ id, label, queryId }) => {
+const TrainAutoComplete = ({
+  id,
+  label,
+  queryId,
+}: {
+  id: string;
+  label: string;
+  queryId: number;
+}) => {
   const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext);
 
   const resultsList = useRef(null);
@@ -20,12 +28,12 @@ const TrainAutoComplete = ({ id, label, queryId }) => {
   const trainQuery = autoCompleteState.queries[queryId];
   const selectedService = autoCompleteState.selectedStations[queryId];
 
-  const { loading, errorInfo, results, getAutoCompleteResults } = useAutoCompleteAPI(queryId);
+  const { loading, errorInfo, results, getAutoCompleteResults } = useAutoComplete(queryId);
 
   const filteredResults = results.filter(
-    (station) => !autoCompleteState.selectedStations.some((s) => s.id === station.crsCode),
+    (station) => !autoCompleteState.selectedStations.some((s: any) => s.id === station.crsCode),
   );
-  const updateQuery = (query, qId) => {
+  const updateQuery = (query: string, qId: number) => {
     autoCompleteDispatch({
       type: 'UPDATE_QUERY',
       queryId: qId,
