@@ -107,11 +107,11 @@ const questions = {
       },
       {
         text: 'Group or Family',
-        value: 'group',
+        value: 'family',
       },
       {
         text: 'Older person',
-        value: 'senior',
+        value: 'concessionary',
         info:
           'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/older-persons-pass/" target="_blank" rel="nofollow">WMCA older person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
       },
@@ -129,31 +129,31 @@ const questions = {
       {
         html: '<strong>West Midlands</strong> From £64.00*',
         text: 'West Midlands',
-        value: 'westmidlands',
+        value: 'West Midlands',
         group: 'region',
       },
       {
         html: '<strong>Black Country</strong> From £55.50*',
         text: 'Black Country',
-        value: 'blackcountry',
+        value: 'Black Country',
         group: 'region',
       },
       {
         html: '<strong>Coventry</strong> From £53.00*',
         text: 'Coventry',
-        value: 'coventry',
+        value: 'Coventry',
         group: 'local',
       },
       {
         html: '<strong>Sandwell and Dudley</strong> From £40.00*',
         text: 'Sandwell and Dudley',
-        value: 'sandwelldudley',
+        value: 'Sandwell & Dudley',
         group: 'local',
       },
       {
         html: '<strong>Walsall</strong> From £40.00*',
         text: 'Walsall',
-        value: 'walsall',
+        value: 'Walsall',
         group: 'local',
       },
     ],

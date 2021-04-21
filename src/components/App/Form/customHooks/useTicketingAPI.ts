@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useFormContext } from 'globalState';
 import axios from 'axios';
 // Import contexts
 
@@ -11,9 +12,55 @@ interface IError {
 
 const useTicketingAPI = (apiPath: string) => {
   // State variables
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
+  const [formState] = useFormContext();
+  const { ticketInfo } = formState;
+
+  const ticketQuery = useMemo(() => {
+    let query = {
+      allowBus: ticketInfo.modes!.includes('bus'),
+      allowMetro: ticketInfo.modes!.includes('tram'),
+      allowTrain: ticketInfo.modes!.includes('train'),
+      allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
+      networkTicket: ticketInfo.ticketType === 'nTicket',
+      passengerType: ticketInfo.traveller,
+      isAdult: ticketInfo.traveller === 'adult',
+      isChild: ticketInfo.traveller === 'youngPerson',
+      isStudent: ticketInfo.traveller === 'student',
+      isConcessionary: ticketInfo.traveller === 'concessionary',
+      isFamily: ticketInfo.traveller === 'family',
+      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
+      timePeriod2: true,
+      timePeriod3: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
+      timePeriod4: true,
+    };
+
+    // INCLUDES BUS ONLY
+    const busQuery = {
+      busTravelArea: ticketInfo.busArea,
+      operator: ticketInfo.busCompany || 'Network West Midlands',
+    };
+
+    const trainQuery = {
+      firstClass: ticketInfo.firstClass === 'yes',
+      railZoneFrom: (ticketInfo.railZones && Math.min(...ticketInfo.railZones)) || null,
+      railZoneTo: (ticketInfo.railZones && Math.max(...ticketInfo.railZones)) || null,
+    };
+
+    if (ticketInfo.modes?.includes('bus')) {
+      query = { ...query, ...busQuery };
+    }
+
+    if (ticketInfo.modes?.includes('train')) {
+      query = { ...query, ...trainQuery };
+    }
+
+    return query;
+  }, [ticketInfo]);
+
+  console.log(ticketQuery);
 
   // Reference variables
   const mounted = useRef<any>();
@@ -61,19 +108,13 @@ const useTicketingAPI = (apiPath: string) => {
 
   // Take main function out of useEffect, so it can be called elsewhere to retry the search
   const getAutoCompleteResults = useCallback(() => {
-    const query = {
-      allowTrain: 'true',
-      allowBus: 'false',
-      allowMetro: 'false',
-      outOfCounty: 'true',
-    };
     source.current = axios.CancelToken.source();
     mounted.current = true; // Set mounted to true (used later to make sure we don't do events as component is unmounting)
     const { REACT_APP_API_HOST, REACT_APP_API_KEY } = process.env; // Destructure env vars
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     axios
-      .post(REACT_APP_API_HOST + apiPath, query, {
+      .post(REACT_APP_API_HOST + apiPath, ticketQuery, {
         headers: {
           'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
         },
@@ -81,7 +122,7 @@ const useTicketingAPI = (apiPath: string) => {
       })
       .then(handleAutoCompleteApiResponse)
       .catch(handleAutoCompleteApiError);
-  }, [apiPath, handleAutoCompleteApiResponse, startApiTimeout]);
+  }, [apiPath, handleAutoCompleteApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
     getAutoCompleteResults();
