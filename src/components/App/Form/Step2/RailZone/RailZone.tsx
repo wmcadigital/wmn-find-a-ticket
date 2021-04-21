@@ -26,6 +26,7 @@ const RailZone = () => {
   const [autoCompleteState] = useContext(AutoCompleteContext);
   const { selectedStations } = autoCompleteState;
   const [zonesValid, setZonesValid] = useState<boolean>(false);
+  const [outOfCounty, setOutOfCounty] = useState<boolean>(false);
   const [recommendedOptions, setRecommendedOptions] = useState<IZoneOptions[] | []>([]);
   const [additionalOptions, setAdditionalOptions] = useState<IZoneOptions[] | []>([]);
 
@@ -40,6 +41,13 @@ const RailZone = () => {
           value: selectedStations
             .map((station: TForm.IStations) => station.stationName)
             .filter((stn: string) => stn),
+        },
+      });
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: {
+          name: 'outOfCounty',
+          value: outOfCounty,
         },
       });
     } else {
@@ -85,6 +93,10 @@ const RailZone = () => {
     const zones = [...stations.map((stn: any) => stn.railZone)];
     const minZone = Math.min(...zones);
     const maxZone = Math.max(...zones);
+
+    if (maxZone === 7) {
+      setOutOfCounty(true);
+    }
 
     // Set zoneOptions if:
     // - zone selection is valid

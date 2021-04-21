@@ -28,6 +28,7 @@ export type TicketInfo = {
   firstClass: Nullable<string>;
   modes: Nullable<Modes>[];
   railZones: Nullable<number[]>;
+  outOfCounty: Nullable<boolean>;
   stations: Nullable<any>;
   ticketDuration: Nullable<string>;
   ticketType: Nullable<TicketTypes>;
