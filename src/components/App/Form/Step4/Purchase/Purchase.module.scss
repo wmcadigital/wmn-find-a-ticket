@@ -6,11 +6,18 @@
 @import '~assets/wmnds/vars';
 @import '~assets/wmnds/mixins';
 
+.icons {
+  display: inline-block;
+  vertical-align: top;
+}
+
 .modeIcon {
   width: 30px;
   height: 30px;
-  margin-left: $size-xsm;
-  vertical-align: top;
+
+  &:not(:first-child) {
+    margin-left: $size-xsm;
+  }
 
   &.bus {
     fill: get-color(bus);
