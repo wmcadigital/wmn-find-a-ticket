@@ -13,6 +13,10 @@ export const initialState = (() => {
     ticketInfo: {},
   };
 
+  if (window.location.search.length === 0) {
+    sessionStorage.clear();
+  }
+
   const storedInfo: TForm.TicketInfo =
     JSON.parse(sessionStorage.getItem('ticketInfo') as string) || {};
 
