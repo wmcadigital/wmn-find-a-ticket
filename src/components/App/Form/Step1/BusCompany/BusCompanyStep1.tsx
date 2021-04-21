@@ -1,5 +1,4 @@
 import Radios from 'components/shared/Radios/Radios';
-import Button from 'components/shared/Button/Button';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
@@ -35,7 +34,9 @@ const BusCompanyStep1 = () => {
           onChange={handleChange}
         />
         <div className="wmnds-p-b-lg">
-          <Button btnClass="wmnds-btn--link" text="I don't know which bus I need" />
+          <a href="https://journeyplanner.wmnetwork.co.uk/" target="_blank" rel="noreferrer">
+            I don&rsquo;t know which bus I need
+          </a>
         </div>
       </QuestionCard>
     </>
