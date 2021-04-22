@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { useFormContext } from 'globalState';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
@@ -9,30 +7,13 @@ import s from './TicketDuration.module.scss';
 
 const TicketDuration = () => {
   const name = 'ticketDuration';
-  const [formState] = useFormContext();
   const { formDispatch } = useHandleChange(name);
   const { question, hint } = questions[name];
   const handleContinue = (value: string) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
   };
-  const [options, setOptions] = useState<any[]>([]);
   const { results, loading } = useTicketingAPI('/ticketing/v2/tickets/search');
-
-  useEffect(() => {
-    if (results.data) {
-      if (formState.ticketInfo.ticketType === 'nBus') {
-        setOptions(
-          results.data.filter(
-            (result: any) => result.busTravelArea === formState.ticketInfo.busArea,
-          ),
-        );
-      } else {
-        setOptions(results.data);
-      }
-    }
-    console.log(options);
-  }, [results]);
 
   return (
     <>
@@ -49,7 +30,7 @@ const TicketDuration = () => {
           </div>
         ) : (
           <>
-            {options.map((option: { [key: string]: string }) => {
+            {results.map((option: { [key: string]: string }) => {
               return (
                 <div key={option.id} className="wmnds-col-1 wmnds-col-md-1-2">
                   <div className="bg-white wmnds-p-md wmnds-m-b-lg">

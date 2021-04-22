@@ -46,7 +46,10 @@ const useTicketingAPI = (apiPath: string) => {
     const trainQuery = {
       firstClass: ticketInfo.firstClass === 'yes',
       railZoneFrom: (ticketInfo.railZones && Math.min(...ticketInfo.railZones)) || null,
-      railZoneTo: (ticketInfo.railZones && Math.max(...ticketInfo.railZones)) || null,
+      railZoneTo:
+        (!ticketInfo.outOfCounty && ticketInfo.railZones && Math.max(...ticketInfo.railZones)) ||
+        null,
+      outOfCounty: ticketInfo.outOfCounty,
     };
 
     if (ticketInfo.modes?.includes('bus')) {
@@ -59,8 +62,6 @@ const useTicketingAPI = (apiPath: string) => {
 
     return query;
   }, [ticketInfo]);
-
-  console.log(ticketQuery);
 
   // Reference variables
   const mounted = useRef<any>();
@@ -79,17 +80,22 @@ const useTicketingAPI = (apiPath: string) => {
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
-  const handleAutoCompleteApiResponse = useCallback((response) => {
-    setLoading(false); // Set loading state to false after data is received
-    setResults(response);
+  const handleAutoCompleteApiResponse = useCallback(
+    (response) => {
+      setLoading(false); // Set loading state to false after data is received
+      setResults(response.data);
 
-    if (!response && mounted.current) {
-      setErrorInfo({
-        title: 'No results found',
-        message: 'Make sure you are looking for the right service, and try again.',
-      });
-    }
-  }, []);
+      console.log(ticketQuery);
+
+      if (!response && mounted.current) {
+        setErrorInfo({
+          title: 'No results found',
+          message: 'Make sure you are looking for the right service, and try again.',
+        });
+      }
+    },
+    [ticketQuery],
+  );
 
   const handleAutoCompleteApiError = (error: any) => {
     setLoading(false); // Set loading state to false after data is received
@@ -134,7 +140,7 @@ const useTicketingAPI = (apiPath: string) => {
     };
   }, [getAutoCompleteResults]);
 
-  return { loading, errorInfo, results, getAutoCompleteResults };
+  return { loading, errorInfo, results, ticketQuery, getAutoCompleteResults };
 };
 
 export default useTicketingAPI;

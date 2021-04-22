@@ -96,6 +96,8 @@ const RailZone = () => {
 
     if (maxZone === 7) {
       setOutOfCounty(true);
+    } else {
+      setOutOfCounty(false);
     }
 
     // Set zoneOptions if:
