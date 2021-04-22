@@ -7,7 +7,18 @@
 @import '~assets/wmnds/mixins';
 
 .totalPrice {
-  margin-left: $size-xsm;
   font-size: 1em;
   font-weight: 400;
+}
+
+.ticketCard {
+  display: flex;
+  height: 100%;
+  flex-flow: column;
+  justify-content: space-between;
+
+  @media (max-width: $breakpoint-sm - 1) {
+    margin-right: -$size-md;
+    margin-left: -$size-md;
+  }
 }

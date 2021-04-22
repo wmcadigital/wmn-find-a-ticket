@@ -21,7 +21,7 @@ const TicketDuration = () => {
         <h2 className="wmnds-fe-question">{question}</h2>
         <p className="wmnds-m-none">{hint}</p>
       </QuestionCard>
-      <div className="wmnds-grid wmnds-grid--spacing-md-2-lg">
+      <div className="wmnds-grid wmnds-grid--spacing-sm-2-lg">
         {loading ? (
           <div className="wmnds-col-1">
             <div className="wmnds-loader" role="alert" aria-live="assertive">
@@ -32,15 +32,16 @@ const TicketDuration = () => {
           <>
             {results.map((option: { [key: string]: string }) => {
               return (
-                <div key={option.id} className="wmnds-col-1 wmnds-col-md-1-2">
-                  <div className="bg-white wmnds-p-md wmnds-m-b-lg">
+                <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
+                  <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
                     <h4>
                       {option.name}
                       <span className={s.totalPrice}>
+                        {' '}
                         £{parseFloat(option.ticketCurrentAmount).toFixed(2)}
                       </span>
                     </h4>
-                    <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p>
+                    {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
                     <Button
                       btnClass="wmnds-btn--block"
                       text="Select"
