@@ -30,27 +30,35 @@ const TicketDuration = () => {
           </div>
         ) : (
           <>
-            {results.map((option: { [key: string]: string }) => {
-              return (
-                <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
-                  <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
-                    <h4>
-                      {option.name}
-                      <span className={s.totalPrice}>
-                        {' '}
-                        £{parseFloat(option.ticketCurrentAmount).toFixed(2)}
-                      </span>
-                    </h4>
-                    {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
-                    <Button
-                      btnClass="wmnds-btn--block"
-                      text="Select"
-                      onClick={() => handleContinue(option.id)}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+            {results.length > 0 ? (
+              <>
+                {results.map((option: { [key: string]: string }) => {
+                  return (
+                    <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
+                      <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
+                        <h4>
+                          {option.name}
+                          <span className={s.totalPrice}>
+                            {' '}
+                            £{parseFloat(option.ticketCurrentAmount).toFixed(2)}
+                          </span>
+                        </h4>
+                        {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
+                        <Button
+                          btnClass="wmnds-btn--block"
+                          text="Select"
+                          onClick={() => handleContinue(option.id)}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <div className="wmnds-col-1">
+                <h3>No results</h3>
+              </div>
+            )}
           </>
         )}
 
