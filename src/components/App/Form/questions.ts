@@ -127,31 +127,31 @@ const questions = {
     question: 'Select your bus area',
     options: [
       {
-        html: '<strong>West Midlands</strong> From £64.00*',
+        html: '<strong>West Midlands</strong> Whole region, including Birmingham and Solihull',
         text: 'West Midlands',
         value: 'West Midlands',
         group: 'region',
       },
       {
-        html: '<strong>Black Country</strong> From £55.50*',
+        html: '<strong>Black Country</strong> Sandwell and Dudley, Walsall and Wolverhampton',
         text: 'Black Country',
         value: 'Black Country',
         group: 'region',
       },
       {
-        html: '<strong>Coventry</strong> From £53.00*',
+        html: 'Coventry',
         text: 'Coventry',
         value: 'Coventry',
         group: 'local',
       },
       {
-        html: '<strong>Sandwell and Dudley</strong> From £40.00*',
+        html: 'Sandwell and Dudley',
         text: 'Sandwell and Dudley',
         value: 'Sandwell & Dudley',
         group: 'local',
       },
       {
-        html: '<strong>Walsall</strong> From £40.00*',
+        html: 'Walsall',
         text: 'Walsall',
         value: 'Walsall',
         group: 'local',

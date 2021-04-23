@@ -20,17 +20,18 @@ const BusArea = () => {
       <QuestionCard handleContinue={handleContinue}>
         <h2 className="wmnds-fe-question">Which bus area will you travel in?</h2>
         <div className="wmnds-m-b-lg">
-          <p>The West Midlands is split into different bus areas.</p>
           <p>
-            You can choose which areas your ticket covers. For example, if you only travel in the
-            Black Country, you can get a Black Country ticket.
+            The West Midlands is split into different bus areas. You can choose which bus area you
+            want your ticket to cover.{' '}
           </p>
-          <p>To travel in Birmingham and Solihull you need to select the West Midlands bus area.</p>
+          <p>Local areas have smaller boundaries and tickets are cheaper.</p>
+          <p>Birmingham and Solihull do not have local bus areas. </p>
           <p>
             If you’re not sure, you can{' '}
             <a href="https://find-bus-area.wmnetwork.co.uk">
-              find which bus area meets your needs.
+              find out which bus areas particular stops are in
             </a>
+            .
           </p>
         </div>
         <div className="wmnds-fe-group wmnds-m-b-md">
@@ -48,7 +49,7 @@ const BusArea = () => {
                   }}
                 />
               )}
-              <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
+              <div className="wmnds-fe-radios wmnds-m-b-md">
                 <h3 className="wmnds-m-b-md">Region</h3>
                 {/* Loop through radios and display each radio button */}
                 {regionOptions.map((radio) => (
@@ -61,7 +62,7 @@ const BusArea = () => {
                   />
                 ))}
               </div>
-              <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
+              <div className="wmnds-fe-radios wmnds-m-b-md">
                 <h3 className="wmnds-m-b-md">Local</h3>
                 {localOptions.map((radio) => (
                   <Radio
@@ -73,12 +74,6 @@ const BusArea = () => {
                   />
                 ))}
               </div>
-            </div>
-            <div className="wmnds-grid">
-              <p className="wmnds-col-2-3">
-                * Estimate based on ticket duration and travel time. Price shown is for a Monthly
-                Direct Debit Peak ticket.
-              </p>
             </div>
           </fieldset>
         </div>
