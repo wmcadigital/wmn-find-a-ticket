@@ -93,11 +93,9 @@ const useTicketingAPI = (apiPath: string) => {
     (response) => {
       setLoading(false); // Set loading state to false after data is received
 
-      console.log(ticketFilter);
       const filteredResults = response.data.filter((result: any) => {
         // check if each result value matches the equivalent query value
         const valuesMatch = () => {
-          console.log(`%c${result.name}`, 'font-weight: bold');
           let test = true;
           // loop through each query key
           Object.keys(ticketFilter).forEach((key) => {
@@ -106,7 +104,6 @@ const useTicketingAPI = (apiPath: string) => {
               isMatch = true;
             }
             if (isMatch === false) {
-              console.log(`R: '${result[key]}',`, `Q: '${ticketFilter[key]}',`, `name: ${key}`);
               test = false; // fail test if values don't match
             }
           });
@@ -114,7 +111,6 @@ const useTicketingAPI = (apiPath: string) => {
         };
         return valuesMatch();
       });
-      console.log(filteredResults);
       setResults(filteredResults);
 
       if (!filteredResults.length && mounted.current) {
