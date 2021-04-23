@@ -98,7 +98,7 @@ const useStepLogic = () => {
   }, [modes, mounted, setTicketType, runStepLogic, formDispatch]);
 
   // Run step logic when ticketInfo is updated
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (mounted && !editMode) {
       runStepLogic();
     }

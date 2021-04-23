@@ -54,8 +54,9 @@ function StartPage() {
         // Spread the object keys with true values to update global state
         payload: [...(Object.keys(selectedModes) as TForm.Modes[]).filter((m) => selectedModes[m])],
       });
-      // setTicketType();
-      runStepLogic();
+      if (formState.editMode) {
+        runStepLogic();
+      }
     } else {
       setError(true);
     }
