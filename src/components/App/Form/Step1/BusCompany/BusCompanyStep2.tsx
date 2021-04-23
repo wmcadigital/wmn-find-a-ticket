@@ -27,7 +27,7 @@ const BusCompanyStep2 = () => {
         <div className="wmnds-p-b-lg">
           <a
             className="wmnds-link"
-            href={`https://find-bus-company.wmnetwork.co.uk//?ticketSearch=true&modes=${modesUrlString}`}
+            href={`https://deploy-preview-25--wmn-find-bus-operator.netlify.app/?ticketSearch=true&modes=${modesUrlString}`}
           >
             I don&rsquo;t know the bus company I travel with
           </a>
