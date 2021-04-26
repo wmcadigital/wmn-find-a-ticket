@@ -1,6 +1,7 @@
 import { useFormContext } from 'globalState';
 import TicketClass from './TicketClass/TicketClass';
 import TicketDuration from './TicketDuration/TicketDuration';
+import TicketBundle from './TicketBundle/TicketBundle';
 
 const Step3 = () => {
   const [formState] = useFormContext();
@@ -18,6 +19,8 @@ const Step3 = () => {
     ) {
       sectionToRender = <TicketClass />;
     }
+  } else if (!editMode && ticketInfo.ticketDuration === '1 day') {
+    sectionToRender = <TicketBundle />;
   }
   return sectionToRender || <TicketDuration />;
 };

@@ -240,6 +240,25 @@ const questions = {
       },
     ],
   },
+  multiDay: {
+    question: 'How many 1 day tickets do you need?',
+    hint:
+      'Multi-day tickets are bundles of 5, 10 or 15 day tickets. You activate a ticket when you tap in and can use it all day.',
+    options: [
+      {
+        text: '5 days',
+        value: '5',
+      },
+      {
+        text: '10 days',
+        value: '10',
+      },
+      {
+        text: '15 days',
+        value: '15',
+      },
+    ],
+  },
 };
 
 export default questions;

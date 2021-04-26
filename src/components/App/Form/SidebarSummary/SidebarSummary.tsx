@@ -140,7 +140,7 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Ticket duration"
-            value={getOptionText('ticketDuration', ticketInfo.ticketDuration)}
+            value={ticketInfo.ticketDuration}
             onChange={() => editStep(3, 'ticketDuration')}
           />
         </>

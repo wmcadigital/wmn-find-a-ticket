@@ -29,6 +29,7 @@ const useStepLogic = () => {
       railZones,
       firstClass,
       ticketDuration,
+      multiDay,
     } = ticketInfo;
     formDispatch({ type: 'EDIT_MODE', payload: null });
 
@@ -43,7 +44,8 @@ const useStepLogic = () => {
       (travelTime && (ticketType === 'single' || ticketType === 'tram'));
     // Checks to see if step 3 is complete
     const step3Check =
-      (ticketDuration && ticketType !== 'nTicket') ||
+      (ticketDuration && ticketType !== 'nTicket' && ticketDuration !== '1 day') ||
+      (ticketDuration && ticketType !== 'nTicket' && multiDay) ||
       (ticketDuration && firstClass) ||
       (ticketDuration &&
         railZones &&

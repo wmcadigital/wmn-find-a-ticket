@@ -6,8 +6,20 @@ import s from './Purchase.module.scss';
 
 // Purchase Journey (TO DO)
 const Purchase = () => {
-  const [formState] = useFormContext();
+  const [formState, formDispatch] = useFormContext();
   const { ticketInfo } = formState;
+
+  const editStep = () => {
+    formDispatch({
+      type: 'UPDATE_STEP',
+      payload: 3,
+    });
+    formDispatch({
+      type: 'EDIT_MODE',
+      payload: 'ticketDuration',
+    });
+    window.scrollTo(0, 0);
+  };
 
   const iconText = (mode: string) => {
     let icon = mode;
@@ -37,9 +49,11 @@ const Purchase = () => {
               <h3>£64.00 per month</h3>
             </div>
             <div className="wmnds-col-1-3">
-              <a href="/" className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
-                Change your ticket
-              </a>
+              <Button
+                text="Change your ticket"
+                onClick={editStep}
+                btnClass="wmnds-btn wmnds-btn--secondary wmnds-col-1"
+              />
             </div>
           </div>
         </QuestionCard>

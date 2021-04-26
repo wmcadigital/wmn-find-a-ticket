@@ -12,6 +12,7 @@ const TicketDuration = () => {
   const handleContinue = (value: string) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+    formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'multiDay' } });
   };
   const { results, loading } = useTicketingAPI('/ticketing/v2/tickets/search');
 
@@ -47,7 +48,7 @@ const TicketDuration = () => {
                         <Button
                           btnClass="wmnds-btn--block"
                           text="Select"
-                          onClick={() => handleContinue(option.id)}
+                          onClick={() => handleContinue(option.validity.toLowerCase())}
                         />
                       </div>
                     </div>

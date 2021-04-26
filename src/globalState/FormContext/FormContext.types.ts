@@ -27,6 +27,7 @@ export type TicketInfo = {
   busNetwork: Nullable<string>;
   firstClass: Nullable<string>;
   modes: Nullable<Modes>[];
+  multiDay: Nullable<string>;
   railZones: Nullable<number[]>;
   outOfCounty: Nullable<boolean>;
   stations: Nullable<any>;
@@ -77,6 +78,12 @@ export type StateAction =
       payload: {
         name: keyof TicketInfo;
         value: TicketInfo[keyof TicketInfo];
+      };
+    }
+  | {
+      type: 'REMOVE_TICKET_INFO';
+      payload: {
+        name: keyof TicketInfo;
       };
     }
   | {
