@@ -13,7 +13,7 @@ const Step3 = () => {
       (ticketInfo.ticketType === 'nTicket' &&
         !ticketInfo.firstClass &&
         Math.min(...ticketInfo.railZones!) === 1 &&
-        Math.max(...ticketInfo.railZones!) > 4) ||
+        Math.max(...ticketInfo.railZones!) >= 4) ||
       editMode === 'firstClass'
     ) {
       sectionToRender = <TicketClass />;
