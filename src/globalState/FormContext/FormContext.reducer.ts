@@ -13,8 +13,14 @@ export const initialState = (() => {
     ticketInfo: {},
   };
 
+  let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
+
   if (window.location.search.length === 0) {
     sessionStorage.clear();
+  }
+
+  if (getSearchParam('ticketId')) {
+    currentStep = 4;
   }
 
   const storedInfo: TForm.TicketInfo =
@@ -35,7 +41,6 @@ export const initialState = (() => {
     ticketType: storedInfo.ticketType || (getSearchParam('type') as TForm.TicketInfo['ticketType']),
   };
 
-  let { ticketInfo } = state; // create a variable with the right types to be added back to the state obj at the end
   // loop through questions object
   (Object.keys(questions) as TForm.QuestionKeys[]).forEach((key) => {
     // split string into array of integers
@@ -58,7 +63,7 @@ export const initialState = (() => {
     }
   });
 
-  return { ...state, ticketInfo };
+  return { ...state, currentStep, ticketInfo };
 })();
 
 // Returns an array of params to be removed based on ticket type

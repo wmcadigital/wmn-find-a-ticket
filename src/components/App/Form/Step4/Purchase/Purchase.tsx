@@ -1,13 +1,24 @@
+import dompurify from 'dompurify';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import Icon from 'components/shared/Icon/Icon';
 import Button from 'components/shared/Button/Button';
-import { useFormContext } from 'globalState';
+// import { useFormContext } from 'globalState';
+import { getSearchParam } from 'globalState/helpers/URLSearchParams';
 import s from './Purchase.module.scss';
+import useTicketingAPI from '../../customHooks/useTicketingAPI';
+import { TApiTicket } from './Puchase.types';
+
+const { sanitize } = dompurify;
 
 // Purchase Journey (TO DO)
 const Purchase = () => {
-  const [formState] = useFormContext();
-  const { ticketInfo } = formState;
+  // const [formState] = useFormContext();
+  // const { ticketInfo } = formState;
+
+  const { results } = useTicketingAPI(`/ticketing/v2/tickets/${getSearchParam('ticketId')}`);
+  const ticket: TApiTicket = results.data;
+  // eslint-disable-next-line no-console
+  console.log(ticket);
 
   const iconText = (mode: string) => {
     let icon = mode;
@@ -18,22 +29,37 @@ const Purchase = () => {
     }
     return icon;
   };
+
+  const getModeIcons = (ticketData: any): string[] => {
+    const icons = [];
+    if (ticketData?.allowBus) icons.push('bus');
+    if (ticketData?.allowTrain) icons.push('train');
+    if (ticketData?.allowMetro) icons.push('metro');
+    return icons;
+  };
+
   return (
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
       <div className="wmnds-col-1-1 wmnds-col-md-2-3">
         <QuestionCard>
           <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
             <div className="wmnds-col-2-3">
-              <h2 className={s.heading}>Monthly Direct Debit nBus West Midlands</h2>
-              <div className={s.icons}>
-                {ticketInfo.modes?.map((mode: any) => (
-                  <Icon
-                    key={`icon-${mode}`}
-                    iconName={`modes-isolated-${iconText(mode)}`}
-                    className={`${s.modeIcon} ${s[mode]}`}
-                  />
-                ))}
-              </div>
+              {ticket && Object.entries(ticket).length && (
+                <>
+                  <h2 className={s.heading}>{ticket.name}</h2>
+                  <div className={s.icons}>
+                    {getModeIcons(ticket).map((mode: any) => (
+                      <Icon
+                        key={`icon-${mode}`}
+                        iconName={`modes-isolated-${iconText(mode)}`}
+                        className={`${s.modeIcon} ${s[mode]}`}
+                      />
+                    ))}
+                  </div>
+                  <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.description) }} />
+                  <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.summary) }} />
+                </>
+              )}
               <h3>£64.00 per month</h3>
             </div>
             <div className="wmnds-col-1-3">
