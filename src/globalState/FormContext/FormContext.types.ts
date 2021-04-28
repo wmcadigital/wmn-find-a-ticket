@@ -7,7 +7,7 @@ type Nullable<T> = T | null;
 
 export type Questions = typeof questions;
 export type QuestionKeys = keyof Questions;
-export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2';
+export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2' | 'isMultiDay';
 export type Modes = 'bus' | 'tram' | 'train';
 export type TicketTypes = 'nTicket' | 'nBus' | 'tram' | 'single';
 
@@ -27,6 +27,7 @@ export type TicketInfo = {
   busNetwork: Nullable<string>;
   firstClass: Nullable<string>;
   modes: Nullable<Modes>[];
+  isMultiDay: Nullable<string>;
   multiDay: Nullable<string>;
   railZones: Nullable<number[]>;
   outOfCounty: Nullable<boolean>;

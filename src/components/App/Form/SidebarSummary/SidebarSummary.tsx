@@ -145,6 +145,17 @@ const SidebarSummary = () => {
           />
         </>
       )}
+      {ticketInfo.isMultiDay && (
+        <>
+          <SummarySection
+            title="Multi-day tickets"
+            value={ticketInfo.isMultiDay}
+            onChange={() =>
+              formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'isMultiDay' } })
+            }
+          />
+        </>
+      )}
     </div>
   );
 };

@@ -1,23 +1,23 @@
-import { useState } from 'react';
 import dompurify from 'dompurify';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
+import { useFormContext } from 'globalState';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 
 const TicketBundle = () => {
   const name = 'multiDay';
+  const [formState, formDispatch] = useFormContext();
   const { handleChange, handleContinue, genericError, error, value } = useHandleChange(name);
   const { question, hint, options } = questions[name];
-  const [step2, setStep2] = useState(false);
   const { sanitize } = dompurify;
 
   const onContinue = () => {
     if (value !== 'yes') {
       handleContinue();
     } else {
-      setStep2(true);
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name: 'isMultiDay', value: 'Yes' } });
     }
   };
 
@@ -25,7 +25,7 @@ const TicketBundle = () => {
     <>
       {genericError}
       <QuestionCard handleContinue={onContinue}>
-        {step2 ? (
+        {formState.ticketInfo.isMultiDay ? (
           <Radios
             name={name}
             question={question}
