@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-onchange */
 import dompurify from 'dompurify';
 // Import contexts
 import { useFormContext, TForm } from 'globalState';
@@ -11,10 +12,11 @@ type DropdownProps = {
   error: { message: string } | null;
   label: string;
   options: TForm.QuestionOptions[];
+  onChange?: (e: React.FocusEvent<HTMLSelectElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
 };
 
-const Dropdown = ({ name, hint, label, error, options, onBlur }: DropdownProps) => {
+const Dropdown = ({ name, hint, label, error, options, onChange, onBlur }: DropdownProps) => {
   const [formState] = useFormContext(); // Get the state/dispatch of form data from FormContext
   const defaultSelectValue = formState.ticketInfo[name] as string | number; // cast to acceptable types for a select element
 
@@ -42,6 +44,7 @@ const Dropdown = ({ name, hint, label, error, options, onBlur }: DropdownProps) 
             id={name}
             name={name}
             defaultValue={defaultSelectValue || ''}
+            onChange={onChange}
             onBlur={onBlur}
           >
             <option value="">Choose from list</option>
