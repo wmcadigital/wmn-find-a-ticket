@@ -1,5 +1,7 @@
 import { TForm, useFormContext } from 'globalState';
 import Dropdown from 'components/shared/Dropdown/Dropdown';
+import Button from 'components/shared/Button/Button';
+import Icon from 'components/shared/Icon/Icon';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
@@ -21,7 +23,7 @@ const BusCompanyStep2 = () => {
   return (
     <>
       {genericError}
-      <QuestionCard handleContinue={handleContinue}>
+      <QuestionCard>
         <Dropdown
           label={question}
           hint={hint}
@@ -30,6 +32,7 @@ const BusCompanyStep2 = () => {
           options={options}
           onChange={handleChange}
         />
+        {/* If there is a value selected and the value has busInfo */}
         {value && busInfo ? (
           <div className="wmnds-inset-text wmnds-m-t-md wmnds-m-b-lg">
             {busInfo.nBus && (
@@ -60,6 +63,27 @@ const BusCompanyStep2 = () => {
           >
             I don&rsquo;t know the bus company I travel with
           </a>
+        </div>
+        <div className="wmnds-grid wmnds-grid--spacing-2-md">
+          <div className="wmnds-col-1-2">
+            <Button
+              text={busInfo ? 'Continue with a nBus ticket' : 'Continue'}
+              onClick={handleContinue}
+              iconRight="general-chevron-right"
+              btnClass="wmnds-col-1"
+            />
+          </div>
+          {busInfo.buyOnWebsite && (
+            <div className="wmnds-col-1-2">
+              <a href={busInfo.buyOnWebsite} className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
+                Visit the {value} website
+                <Icon
+                  iconName="general-chevron-right"
+                  className="wmnds-btn__icon wmnds-btn__icon--right"
+                />
+              </a>
+            </div>
+          )}
         </div>
       </QuestionCard>
     </>
