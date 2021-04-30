@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 export interface Ticket {
   id: number;
   name: string;
@@ -84,19 +83,35 @@ export interface RelatedTicketsEntity {
 }
 
 const getUniqueBusAreas = (tickets: Ticket[]) => {
-  const unique = tickets
-    .map((result: any): [string] => {
+  const uniqueBusAreas = tickets
+    .map((result) => {
       return result.busTravelArea;
     })
     .filter((v, i, a) => a.indexOf(v) === i);
 
-  return unique;
+  return uniqueBusAreas;
+};
+
+const filterAreas = (areas: string[], size = 'regional') => {
+  const regionalAreas = ['West Midlands'];
+  const getSpecificAreas = areas.filter((r) => regionalAreas.includes(r));
+  if (size === 'regional') return getSpecificAreas;
+
+  return areas.filter((r) => !regionalAreas.includes(r));
 };
 
 const useGetValidBusAreas = (tickets: Ticket[]) => {
   const uniqueBusAreas = getUniqueBusAreas(tickets);
 
-  return uniqueBusAreas;
+  const regional = filterAreas(uniqueBusAreas);
+  const local = filterAreas(uniqueBusAreas, 'local');
+
+  const busAreas = {
+    regional,
+    local,
+  };
+
+  return busAreas;
 };
 
 export default useGetValidBusAreas;
