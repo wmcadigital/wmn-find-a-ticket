@@ -82,25 +82,75 @@ export interface RelatedTicketsEntity {
   type: string;
 }
 
+interface UniqueBusAreas {
+  value: string;
+  name?: string;
+  operator?: string;
+}
+
 const getUniqueBusAreas = (tickets: Ticket[]) => {
+  const arr: UniqueBusAreas[] = [];
+
   const uniqueBusAreas = tickets
     .map((result) => {
-      return result.busTravelArea;
+      return { value: result.busTravelArea, operator: result.operator };
     })
-    .filter((v, i, a) => a.indexOf(v) === i);
+    .filter((item) => {
+      const i = arr.findIndex((x) => x.value === item.value);
+      if (i === -1) {
+        arr.push(item);
+        return item;
+      }
+      return null;
+    })
+    .map((area) => {
+      let name = area.value;
+      if (area.value === 'Entire Operator Area')
+        name = area.value.replace('Entire Operator', area.operator);
+      return { name, value: area.value };
+    });
 
   return uniqueBusAreas;
 };
 
-const filterAreas = (areas: string[], size = 'regional') => {
-  const regionalAreas = ['West Midlands'];
-  const getSpecificAreas = areas.filter((r) => regionalAreas.includes(r));
-  if (size === 'regional') return getSpecificAreas;
+const getSubText = (area: string) => {
+  if (area === 'West Midlands') return 'Whole region, including Birmingham and Solihull';
+  if (area === 'Black Country') return 'Whole region, including Birmingham and Solihull';
+  return '';
+};
 
-  return areas.filter((r) => !regionalAreas.includes(r));
+interface Areas {
+  name: string;
+  value: string;
+  subText?: string;
+}
+
+const filterAreas = (areas: Areas[], size = 'regional') => {
+  const regionalAreas = ['West Midlands', 'Black Country', 'Entire Operator Area'];
+
+  if (size === 'regional') {
+    const getSpecificAreas = areas
+      .filter(({ value }) => regionalAreas.includes(value))
+      .map((area) => {
+        return {
+          area,
+          subText: getSubText(area.value),
+        };
+      });
+
+    return getSpecificAreas;
+  }
+
+  return areas.filter(({ value }) => !regionalAreas.includes(value));
 };
 
 const useGetValidBusAreas = (tickets: Ticket[]) => {
+  const noAreasFound = {
+    regional: [],
+    local: [],
+  };
+  if (!tickets.length) return noAreasFound;
+
   const uniqueBusAreas = getUniqueBusAreas(tickets);
 
   const regional = filterAreas(uniqueBusAreas);
