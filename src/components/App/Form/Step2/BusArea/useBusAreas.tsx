@@ -101,7 +101,7 @@ const getBusAreaDescription = (busTravelArea: string, operator: string) => {
 };
 
 // Sets remaining areas to object structured like: {name, busTravelArea, description}
-const setNewAreaObject = ({ busTravelArea, operator }: Ticket): ValidArea => {
+const formatAreaObject = ({ busTravelArea, operator }: Ticket): ValidArea => {
   let name = busTravelArea; // By default, set the name to display the same as busTravelArea
 
   // If busTravelArea is 'entire operator area'
@@ -135,7 +135,7 @@ const getUniqueBusAreas = (tickets: Ticket[]) => {
     return null; // Otherwise the item has already been pushed in as unique, so skip it/return null
   };
 
-  const uniqueBusAreas = tickets.filter(removeDuplicateBusAreas).map(setNewAreaObject);
+  const uniqueBusAreas = tickets.filter(removeDuplicateBusAreas).map(formatAreaObject);
   return uniqueBusAreas;
 };
 
