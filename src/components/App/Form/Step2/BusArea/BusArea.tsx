@@ -3,7 +3,7 @@ import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
-import useGetValidBusAreas from './useBusAreas';
+import useGetValidBusAreas from './useGetValidBusAreas';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
 
 const { sanitize } = dompurify;
