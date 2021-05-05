@@ -3,6 +3,8 @@ import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import useGetValidBusAreas from './useGetValidBusAreas';
+import useTicketingAPI from '../../customHooks/useTicketingAPI';
 
 const { sanitize } = dompurify;
 
@@ -13,6 +15,11 @@ const BusArea = () => {
   // Filter out options into groups
   const regionOptions = [...options.filter((option) => option.group === 'region')];
   const localOptions = [...options.filter((option) => option.group === 'local')];
+
+  const { results } = useTicketingAPI('/ticketing/v2/tickets/search');
+  const validBusAreas = useGetValidBusAreas(results);
+
+  console.log({ validBusAreas });
 
   return (
     <>
