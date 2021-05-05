@@ -51,6 +51,7 @@ export type State = {
   mounted: boolean;
   showAnswers: boolean;
   ticketInfo: Partial<TicketInfo>;
+  product: Nullable<any>;
 };
 
 /* eslint-disable @typescript-eslint/indent */

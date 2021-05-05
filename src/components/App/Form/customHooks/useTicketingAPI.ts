@@ -21,17 +21,17 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
     return {
-      allowBus: ticketInfo.modes!.includes('bus'),
-      allowMetro: ticketInfo.modes!.includes('tram'),
-      allowTrain: ticketInfo.modes!.includes('train'),
+      allowBus: ticketInfo.modes?.includes('bus'),
+      allowMetro: ticketInfo.modes?.includes('tram'),
+      allowTrain: ticketInfo.modes?.includes('train'),
     };
   }, [ticketInfo]);
 
   const ticketFilter: any = useMemo(() => {
     let query = {
-      allowBus: ticketInfo.modes!.includes('bus'),
-      allowMetro: ticketInfo.modes!.includes('tram'),
-      allowTrain: ticketInfo.modes!.includes('train'),
+      allowBus: ticketInfo.modes?.includes('bus'),
+      allowMetro: ticketInfo.modes?.includes('tram'),
+      allowTrain: ticketInfo.modes?.includes('train'),
       allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
       // passengerType: ticketInfo.traveller,
       isAdult: ticketInfo.traveller === 'adult',
@@ -93,38 +93,43 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
     (response) => {
       setLoading(false); // Set loading state to false after data is received
 
-      console.log(ticketFilter);
-      const filteredResults = response.data.filter((result: any) => {
-        // check if each result value matches the equivalent query value
-        const valuesMatch = () => {
-          console.log(`%c${result.name}`, 'font-weight: bold');
-          let test = true;
-          // loop through each query key
-          Object.keys(ticketFilter).forEach((key) => {
-            let isMatch = result[key] === ticketFilter[key];
-            if (ticketFilter[key] === null || ticketFilter[key] === undefined) {
-              isMatch = true;
-            }
-            if (isMatch === false) {
-              console.log(`R: '${result[key]}',`, `Q: '${ticketFilter[key]}',`, `name: ${key}`);
-              test = false; // fail test if values don't match
-            }
-          });
-          return test;
-        };
-        return valuesMatch();
-      });
-      console.log(filteredResults);
-      setResults(filteredResults);
+      let filteredResults;
 
-      if (!filteredResults.length && mounted.current) {
+      // console.log(filteredResults);
+      if (product) {
+        setResults(response.data);
+      } else {
+        filteredResults = response.data.filter((result: any) => {
+          // check if each result value matches the equivalent query value
+          const valuesMatch = () => {
+            // console.log(`%c${result.name}`, 'font-weight: bold');
+            let test = true;
+            // loop through each query key
+            Object.keys(ticketFilter).forEach((key) => {
+              let isMatch = result[key] === ticketFilter[key];
+              if (ticketFilter[key] === null || ticketFilter[key] === undefined) {
+                isMatch = true;
+              }
+              if (isMatch === false) {
+                // console.log(`R: '${result[key]}',`, `Q: '${ticketFilter[key]}',`, `name: ${key}`);
+                test = false; // fail test if values don't match
+              }
+            });
+            return test;
+          };
+          return valuesMatch();
+        });
+        setResults(filteredResults);
+      }
+
+      if (!filteredResults && mounted.current) {
         setErrorInfo({
           title: 'No results found',
           message: 'Make sure you are looking for the right service, and try again.',
         });
       }
     },
-    [ticketFilter],
+    [product, ticketFilter],
   );
 
   const handleTicketingApiError = (error: any) => {
@@ -167,7 +172,7 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
         .then(handleTicketingApiResponse)
         .catch(handleTicketingApiError);
     }
-  }, [apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
+  }, [product, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
     getAPIResults();

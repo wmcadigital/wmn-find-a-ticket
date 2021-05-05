@@ -11,6 +11,7 @@ export const initialState = (() => {
     mounted: false,
     showAnswers: false,
     ticketInfo: {},
+    product: null,
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
