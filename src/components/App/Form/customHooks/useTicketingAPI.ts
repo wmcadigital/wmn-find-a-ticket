@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+// Import contexts
 import { useFormContext } from 'globalState';
 import axios from 'axios';
 import { Ticket } from './Tickets.types';
-// Import contexts
 
 interface IError {
   title: string;
@@ -13,7 +13,7 @@ interface IError {
 
 const useTicketingAPI = (apiPath: string, product?: boolean) => {
   // State variables
-  const [results, setResults] = useState<Ticket | {}>();
+  const [results, setResults] = useState<Ticket[] | null>(null);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState] = useFormContext();
@@ -74,7 +74,7 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
   // }, [ticketInfo]);
 
   // Reference variables
-  const mounted = useRef<any>();
+  const mounted = useRef<boolean>();
   const source = useRef<any>();
   const apiTimeout = useRef<any>();
   // Helper functions
@@ -117,7 +117,6 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
     //       return valuesMatch();
     //     });
     //     console.log(filteredResults);
-    setResults(response.data);
 
     //     if (!filteredResults.length && mounted.current) {
     //       setErrorInfo({
@@ -125,6 +124,7 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
     //         message: 'Make sure you are looking for the right service, and try again.',
     //       });
     //     }
+    setResults(response.data);
   }, []);
 
   const handleTicketingApiError = (error: any) => {
@@ -135,7 +135,7 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
       message: 'Apologies, we are having technical difficulties.',
       isTimeoutError: axios.isCancel(error),
     });
-    setResults({}); // Reset the results so that the dropdown disappears
+    setResults(null); // Reset the results so that the dropdown disappears
     if (!axios.isCancel(error)) {
       // eslint-disable-next-line no-console
       console.log({ error });
