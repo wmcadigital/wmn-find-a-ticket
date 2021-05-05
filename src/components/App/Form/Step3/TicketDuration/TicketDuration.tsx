@@ -9,11 +9,15 @@ const TicketDuration = () => {
   const name = 'ticketDuration';
   const { formDispatch } = useHandleChange(name);
   const { question, hint } = questions[name];
-  const handleContinue = (value: string) => {
+  const handleContinue = (value: any) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
-    formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+    formDispatch({
+      type: 'UPDATE_TICKET_INFO',
+      payload: { name, value: value.validity.toLowerCase() },
+    });
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'isMultiDay' } });
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'multiDay' } });
+    formDispatch({ type: 'ADD_PRODUCT', payload: value });
   };
   const { results, loading } = useTicketingAPI('/ticketing/v2/tickets/search');
 
@@ -49,7 +53,7 @@ const TicketDuration = () => {
                         <Button
                           btnClass="wmnds-btn--block"
                           text="Select"
-                          onClick={() => handleContinue(option.validity.toLowerCase())}
+                          onClick={() => handleContinue(option)}
                         />
                       </div>
                     </div>

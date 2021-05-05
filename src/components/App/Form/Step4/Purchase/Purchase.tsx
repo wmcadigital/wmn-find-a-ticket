@@ -19,7 +19,7 @@ const Purchase = () => {
     `/ticketing/v2/tickets/${getSearchParam('ticketId')}`,
     true,
   );
-  const ticket: TApiTicket = results;
+  const ticket: TApiTicket = formState.product || results;
 
   const editStep = () => {
     formDispatch({

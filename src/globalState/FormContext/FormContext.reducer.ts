@@ -133,6 +133,12 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
       };
 
+    case 'ADD_PRODUCT':
+      return {
+        ...state,
+        product: action.payload,
+      };
+
     case 'REMOVE_TICKET_INFO':
       delSearchParam(action.payload.name);
       return {

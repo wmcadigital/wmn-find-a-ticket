@@ -89,6 +89,10 @@ export type StateAction =
       };
     }
   | {
+      type: 'ADD_PRODUCT';
+      payload: any;
+    }
+  | {
       type: 'TOGGLE_SHOW_ANSWERS';
       payload: boolean;
     };
