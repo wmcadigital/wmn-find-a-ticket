@@ -14,9 +14,9 @@ const Form = () => {
   const { getAPIResults, results, loading } = useTicketingAPI();
 
   useEffect(() => {
-    if (!results && !formState.apiResults) {
+    if (!results.length && !formState.apiResults.length) {
       getAPIResults();
-    } else if (!formState.apiResults) {
+    } else if (!formState.apiResults.length) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
     }
   }, [getAPIResults, results, formState, formDispatch]);

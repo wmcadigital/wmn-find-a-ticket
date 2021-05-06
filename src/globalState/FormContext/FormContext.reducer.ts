@@ -142,6 +142,12 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
         apiResults: action.payload,
       };
 
+    case 'UPDATE_TICKET_ID':
+      return {
+        ...state,
+        ticketId: action.payload,
+      };
+
     case 'REMOVE_TICKET_INFO':
       delSearchParam(action.payload.name);
       return {

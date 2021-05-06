@@ -54,7 +54,6 @@ const useTicketFilter = () => {
   const filteredResults = apiResults.filter((result: any) => {
     // check if each result value matches the equivalent query value
     const valuesMatch = () => {
-      // console.log(`%c${result.name}`, 'font-weight: bold');
       let test = true;
       // loop through each query key
       Object.keys(ticketFilter).forEach((key) => {
@@ -63,8 +62,6 @@ const useTicketFilter = () => {
           isMatch = true;
         }
         if (isMatch === false) {
-          console.log(isMatch);
-          // console.log(`R: '${result[key]}',`, `Q: '${ticketFilter[key]}',`, `name: ${key}`);
           test = false; // fail test if values don't match
         }
       });
@@ -73,8 +70,6 @@ const useTicketFilter = () => {
 
     return valuesMatch();
   });
-
-  console.log(filteredResults);
 
   return { filteredResults };
 };

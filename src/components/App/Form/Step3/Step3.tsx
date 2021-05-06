@@ -19,7 +19,11 @@ const Step3 = () => {
     ) {
       sectionToRender = <TicketClass />;
     }
-  } else if (!editMode && ticketInfo.ticketDuration === '1 day') {
+  } else if (
+    !editMode &&
+    ticketInfo.modes!.includes('bus') &&
+    ticketInfo.ticketDuration === '1 day'
+  ) {
     sectionToRender = <TicketBundle />;
   }
   return sectionToRender || <TicketDuration />;

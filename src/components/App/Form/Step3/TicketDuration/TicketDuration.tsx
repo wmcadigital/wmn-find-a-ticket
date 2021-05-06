@@ -11,12 +11,18 @@ const TicketDuration = () => {
   const [, formDispatch] = useFormContext();
   const { filteredResults } = useTicketFilter();
   const { question, hint } = questions[name];
-  const handleContinue = (value: any) => {
+  const handleContinue = (value: Ticket) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({
       type: 'UPDATE_TICKET_INFO',
       payload: { name, value: value.validity.toLowerCase() },
     });
+    if (value.validity.toLowerCase() !== '1 day') {
+      formDispatch({
+        type: 'UPDATE_TICKET_ID',
+        payload: `${value.id}`,
+      });
+    }
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'isMultiDay' } });
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'multiDay' } });
   };

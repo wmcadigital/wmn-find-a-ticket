@@ -94,6 +94,10 @@ export type StateAction =
       payload: Ticket[];
     }
   | {
+      type: 'UPDATE_TICKET_ID';
+      payload: string;
+    }
+  | {
       type: 'TOGGLE_SHOW_ANSWERS';
       payload: boolean;
     };
