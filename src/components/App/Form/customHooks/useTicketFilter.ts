@@ -2,32 +2,29 @@ import { useMemo } from 'react';
 import { useFormContext } from 'globalState';
 // import { Ticket } from './Tickets.types';
 
-const useTicketFilter = () => {
+const useTicketFilter = (isBusAreaFilter?: boolean) => {
   const [formState] = useFormContext();
   const { ticketInfo, apiResults } = formState;
 
   const ticketFilter: any = useMemo(() => {
-    let query = {
+    let query = {};
+
+    const initialQuery = {
       allowBus: ticketInfo.modes!.includes('bus'),
       allowMetro: ticketInfo.modes!.includes('tram'),
       allowTrain: ticketInfo.modes!.includes('train'),
-      allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
       // passengerType: ticketInfo.traveller,
       isAdult: ticketInfo.traveller === 'adult',
       isChild: ticketInfo.traveller === 'youngPerson',
       isStudent: ticketInfo.traveller === 'student',
       isConcessionary: ticketInfo.traveller === 'concessionary',
       isFamily: ticketInfo.traveller === 'family',
-      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-      timePeriod2: ticketInfo.travelTime !== 'senior',
-      timePeriod3: ticketInfo.travelTime !== 'senior',
-      timePeriod4: ticketInfo.travelTime !== 'senior',
     };
 
     // INCLUDES BUS ONLY
     const busQuery = {
       busTravelArea: ticketInfo.busArea,
-      operator: ticketInfo.busCompany || 'Network West Midlands',
+      operator: ticketInfo.busCompany || null,
     };
 
     const trainQuery = {
@@ -40,6 +37,16 @@ const useTicketFilter = () => {
       outOfCounty: ticketInfo.outOfCounty,
     };
 
+    const travelTimeQuery = {
+      allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
+      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
+      timePeriod2: ticketInfo.travelTime !== 'senior',
+      timePeriod3: ticketInfo.travelTime !== 'senior',
+      timePeriod4: ticketInfo.travelTime !== 'senior',
+    };
+
+    query = { ...initialQuery };
+
     if (ticketInfo.modes?.includes('bus')) {
       query = { ...query, ...busQuery };
     }
@@ -48,8 +55,14 @@ const useTicketFilter = () => {
       query = { ...query, ...trainQuery };
     }
 
-    return query;
-  }, [ticketInfo]);
+    if (ticketInfo.travelTime) {
+      query = { ...query, ...travelTimeQuery };
+    }
+
+    console.log(query);
+
+    return isBusAreaFilter ? { ...initialQuery, operator: ticketInfo.busCompany || null } : query;
+  }, [ticketInfo, isBusAreaFilter]);
 
   const filteredResults = apiResults.filter((result: any) => {
     // check if each result value matches the equivalent query value
@@ -70,6 +83,8 @@ const useTicketFilter = () => {
 
     return valuesMatch();
   });
+
+  console.log(filteredResults);
 
   return { filteredResults };
 };

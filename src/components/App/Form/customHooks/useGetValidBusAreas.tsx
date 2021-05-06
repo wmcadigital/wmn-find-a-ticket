@@ -55,20 +55,6 @@ const getUniqueBusAreas = (tickets: Ticket[]) => {
   return uniqueBusAreas;
 };
 
-// Does all the heavy lifting of getting unique bus areas and returning them back in a nicely formatted object ({name, busTravelArea, description})
-const getUniqueBusOperators = (tickets: Ticket[]) => {
-  const arrayOfUniqueBusOperators: string[] = []; // We use this array to keep track of all unique bus areas
-
-  const allBusOperators = tickets.map((ticket) => ticket.operator);
-  allBusOperators.forEach((operator) => {
-    if (!arrayOfUniqueBusOperators.includes(operator)) {
-      arrayOfUniqueBusOperators.push(operator);
-    }
-  });
-
-  return arrayOfUniqueBusOperators;
-};
-
 // Sorts areas into regional or local
 const sortAreas = (areas: ValidArea[]) => {
   const regionalAreas = ['west midlands', 'black country', 'entire operator area']; // What is defined as a regional area. Ensure we write as lowercase as that's what we compare against below.
@@ -99,7 +85,6 @@ const useGetValidBusAreas = (tickets: Ticket[] | null) => {
   // Otherwise...
   const uniqueBusAreas = getUniqueBusAreas(tickets); // Get unique bus areas and create an object from them ({name, busTravelArea, description})
   const validBusAreas = sortAreas(uniqueBusAreas); // Then sort the unique bus areas objects into local/regionals
-  console.log(getUniqueBusOperators(tickets));
   return validBusAreas;
 };
 

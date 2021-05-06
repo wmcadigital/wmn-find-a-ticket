@@ -1,9 +1,9 @@
 import dompurify from 'dompurify';
-import { useFormContext } from 'globalState';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import useTicketFilter from '../../customHooks/useTicketFilter';
 import useGetValidBusAreas from '../../customHooks/useGetValidBusAreas';
 
 const { sanitize } = dompurify;
@@ -12,9 +12,9 @@ const BusArea = () => {
   const name = 'busArea';
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question } = questions[name];
-  const [formState] = useFormContext();
+  const { filteredResults } = useTicketFilter(true);
 
-  const validBusAreas = useGetValidBusAreas(formState.apiResults);
+  const validBusAreas = useGetValidBusAreas(filteredResults);
   const { local, regional } = validBusAreas;
 
   return (

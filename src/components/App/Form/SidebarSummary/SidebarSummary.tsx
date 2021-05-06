@@ -53,7 +53,6 @@ const SidebarSummary = () => {
   };
 
   const RailZoneSummary = ({ railZones }: { railZones: number[] }) => {
-    console.log(ticketInfo.stations);
     return (
       <>
         {railZones.length > 1 ? (
@@ -105,7 +104,7 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Bus area"
-            value={getOptionText('busArea', ticketInfo.busArea)}
+            value={ticketInfo.busArea}
             onChange={() => editStep(2, 'busArea')}
           />
         </>
