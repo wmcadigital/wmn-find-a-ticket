@@ -5,6 +5,7 @@ import Icon from 'components/shared/Icon/Icon';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import useGetValidOperators from '../../customHooks/useGetValidOperators';
 
 const BusCompanyStep2 = () => {
   const name = 'busCompany';
@@ -13,6 +14,11 @@ const BusCompanyStep2 = () => {
   const { question, hint, options } = questions[name] as typeof questions[typeof name];
 
   const modesUrlString = (formState.ticketInfo as TForm.TicketInfo).modes.join('+');
+
+  const validBusOperators = useGetValidOperators(formState.apiResults);
+
+  const operatorOptions = validBusOperators.map((option) => ({ text: option, value: option }));
+  const otherOptions = options.filter((option) => !validBusOperators.includes(option.text));
 
   const busInfo = {
     nBus: true,
@@ -29,7 +35,7 @@ const BusCompanyStep2 = () => {
           hint={hint}
           name={name}
           error={error}
-          options={options}
+          options={[...operatorOptions, ...otherOptions]}
           onChange={handleChange}
         />
         {/* If there is a value selected and the value has busInfo */}
@@ -64,17 +70,19 @@ const BusCompanyStep2 = () => {
             I don&rsquo;t know the bus company I travel with
           </a>
         </div>
-        <div className="wmnds-grid wmnds-grid--spacing-2-md">
-          <div className="wmnds-col-1-2">
-            <Button
-              text={busInfo ? 'Continue with a nBus ticket' : 'Continue'}
-              onClick={handleContinue}
-              iconRight="general-chevron-right"
-              btnClass="wmnds-col-1"
-            />
+        <div>
+          <div className="wmnds-m-b-md">
+            <div className="wmnds-col-3-5">
+              <Button
+                text={value && busInfo ? 'Continue with a nBus ticket' : 'Continue'}
+                onClick={handleContinue}
+                iconRight="general-chevron-right"
+                btnClass={value && busInfo ? 'wmnds-col-1' : ''}
+              />
+            </div>
           </div>
-          {busInfo.buyOnWebsite && (
-            <div className="wmnds-col-1-2">
+          {value && busInfo.buyOnWebsite && (
+            <div className="wmnds-col-3-5">
               <a href={busInfo.buyOnWebsite} className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
                 Visit the {value} website
                 <Icon

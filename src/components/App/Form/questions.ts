@@ -13,79 +13,79 @@ const questions = {
     options: [
       {
         text: 'A & M Group',
-        value: 'AMG',
+        value: 'A & M Group',
       },
       {
         text: 'Arriva Fox County',
-        value: 'AFC',
+        value: 'Arriva Fox County',
       },
       {
         text: 'Arriva Midlands',
-        value: 'AMN',
+        value: 'Arriva Midlands',
       },
       {
         text: 'Chaserider',
-        value: 'CRD',
+        value: 'Chaserider',
       },
       {
         text: 'D & G Bus',
-        value: 'DGC',
+        value: 'D & G Bus',
       },
       {
         text: 'Diamond Bus',
-        value: 'DIA',
+        value: 'Diamond Bus',
       },
       {
         text: 'First Bus Potteries',
-        value: 'PMT',
+        value: 'First Bus Potteries',
       },
       {
         text: "Johnson's Excelbus",
-        value: 'JOH',
+        value: "Johnson's Excelbus",
       },
       {
         text: 'LandFlight',
-        value: 'SIL',
+        value: 'LandFlight',
       },
       {
         text: "Let's Go!",
-        value: 'SIL',
+        value: "Let's Go!",
       },
       {
         text: 'Lilbourne Community Minibus',
-        value: 'LCM',
+        value: 'Lilbourne Community Minibus',
       },
       {
         text: 'Midland Classic',
-        value: 'MDC',
+        value: 'Midland Classic',
       },
       {
         text: 'National Express Coventry',
-        value: 'TCV',
+        value: 'National Express Coventry',
       },
       {
         text: 'National Express West Midlands',
-        value: 'NXB',
+        value: 'National Express West Midlands',
       },
       {
         text: 'NN Cresswell',
-        value: 'CWL',
+        value: 'NN Cresswell',
       },
       {
         text: 'Roberts Travel',
-        value: 'RTS',
+        value: 'Roberts Travel',
       },
       {
         text: 'Stagecoach Midlands',
-        value: 'SMR',
+        value: 'Stagecoach Midlands',
       },
       {
         text: 'Trent Barton',
-        value: 'TRN',
+        value: 'Trent Barton',
       },
       {
         text: 'Wyre Forest Dial a Ride',
-        value: 'WFD',
+        value: 'Wyre Forest Dial a Ride',
       },
     ],
   },

@@ -84,9 +84,7 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Bus company"
-            value={
-              ticketInfo.busCompany ? getOptionText('busCompany', ticketInfo.busCompany) : 'nBus'
-            }
+            value={ticketInfo.busCompany ? ticketInfo.busCompany : 'nBus'}
             onChange={() => editStep(1, 'busCompany')}
           />
         </>

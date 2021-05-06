@@ -52,21 +52,23 @@ const BusArea = () => {
                   }}
                 />
               )}
+              {regional.length > 0 && (
+                <div className="wmnds-fe-radios wmnds-m-b-md">
+                  <h3 className="wmnds-m-b-md">Region</h3>
+                  {/* Loop through radios and display each radio button */}
+                  {regional.map((radio) => (
+                    <Radio
+                      key={radio.name}
+                      name={name}
+                      text={`<strong>${radio.name}</strong> ${radio.description || ''}`}
+                      value={radio.name}
+                      onChange={handleChange}
+                    />
+                  ))}
+                </div>
+              )}
               <div className="wmnds-fe-radios wmnds-m-b-md">
-                <h3 className="wmnds-m-b-md">Region</h3>
-                {/* Loop through radios and display each radio button */}
-                {regional.map((radio) => (
-                  <Radio
-                    key={radio.name}
-                    name={name}
-                    text={`<strong>${radio.name}</strong> ${radio.description || ''}`}
-                    value={radio.name}
-                    onChange={handleChange}
-                  />
-                ))}
-              </div>
-              <div className="wmnds-fe-radios wmnds-m-b-md">
-                <h3 className="wmnds-m-b-md">Local</h3>
+                {regional.length > 0 && <h3 className="wmnds-m-b-md">Local</h3>}
                 {local.map((radio) => (
                   <Radio
                     key={radio.name}

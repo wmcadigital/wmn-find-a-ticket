@@ -23,7 +23,8 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
 
     // INCLUDES BUS ONLY
     const busQuery = {
-      busTravelArea: ticketInfo.busArea,
+      busTravelArea:
+        ticketInfo.busArea === 'Diamond Bus Area' ? 'Entire Operator Area' : ticketInfo.busArea,
       operator: ticketInfo.busCompany || null,
     };
 
