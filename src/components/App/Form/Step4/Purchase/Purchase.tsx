@@ -2,6 +2,7 @@ import dompurify from 'dompurify';
 import { useFormContext } from 'globalState';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import Icon from 'components/shared/Icon/Icon';
+import Loader from 'components/shared/Loader/Loader';
 import Button from 'components/shared/Button/Button';
 // import { useFormContext } from 'globalState';
 import { getSearchParam } from 'globalState/helpers/URLSearchParams';
@@ -51,11 +52,7 @@ const Purchase = () => {
   return (
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
       {loading ? (
-        <div className="wmnds-col-1">
-          <div className="wmnds-loader" role="alert" aria-live="assertive">
-            <p className="wmnds-loader__content">Content is loading...</p>
-          </div>
-        </div>
+        <Loader />
       ) : (
         <>
           <div className="wmnds-col-1-1 wmnds-col-md-2-3">

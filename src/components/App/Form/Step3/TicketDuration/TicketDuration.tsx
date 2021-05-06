@@ -1,5 +1,6 @@
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
+import Loader from 'components/shared/Loader/Loader';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
@@ -30,11 +31,7 @@ const TicketDuration = () => {
       </QuestionCard>
       <div className="wmnds-grid wmnds-grid--spacing-sm-2-lg">
         {loading ? (
-          <div className="wmnds-col-1">
-            <div className="wmnds-loader" role="alert" aria-live="assertive">
-              <p className="wmnds-loader__content">Content is loading...</p>
-            </div>
-          </div>
+          <Loader />
         ) : (
           <>
             {results!.length > 0 ? (
