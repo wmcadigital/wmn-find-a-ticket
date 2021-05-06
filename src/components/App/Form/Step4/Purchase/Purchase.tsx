@@ -101,9 +101,12 @@ const Purchase = () => {
           </div>
         </>
       ) : (
-        <QuestionCard>
-          <div>No ticket found</div>
-        </QuestionCard>
+        <div className="wmnds-col-1-1 wmnds-col-md-2-3">
+          <QuestionCard>
+            <h2>No ticket found</h2>
+            <a href="/">Start a new search</a>
+          </QuestionCard>
+        </div>
       )}
     </div>
   );
