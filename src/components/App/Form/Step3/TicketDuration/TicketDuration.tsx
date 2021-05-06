@@ -2,13 +2,14 @@ import { useFormContext } from 'globalState';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
+import useTicketFilter from '../../customHooks/useTicketFilter';
 import { Ticket } from '../../customHooks/Tickets.types';
 import s from './TicketDuration.module.scss';
 
 const TicketDuration = () => {
   const name = 'ticketDuration';
-  const [formState, formDispatch] = useFormContext();
-  const { apiResults } = formState;
+  const [, formDispatch] = useFormContext();
+  const { filteredResults } = useTicketFilter();
   const { question, hint } = questions[name];
   const handleContinue = (value: any) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
@@ -28,9 +29,9 @@ const TicketDuration = () => {
       </QuestionCard>
       <div className="wmnds-grid wmnds-grid--spacing-sm-2-lg">
         <>
-          {apiResults && apiResults!.length > 0 ? (
+          {filteredResults && filteredResults!.length > 0 ? (
             <>
-              {apiResults!.map((option: Ticket) => {
+              {filteredResults!.map((option: Ticket) => {
                 return (
                   <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
                     <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>

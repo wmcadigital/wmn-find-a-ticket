@@ -13,7 +13,7 @@ interface IError {
 
 const useTicketingAPI = (product?: boolean) => {
   // State variables
-  const [results, setResults] = useState<Ticket[] | null>(null);
+  const [results, setResults] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState] = useFormContext();
@@ -59,7 +59,7 @@ const useTicketingAPI = (product?: boolean) => {
       message: 'Apologies, we are having technical difficulties.',
       isTimeoutError: axios.isCancel(error),
     });
-    setResults(null); // Reset the results so that the dropdown disappears
+    setResults([]); // Reset the results so that the dropdown disappears
     if (!axios.isCancel(error)) {
       // eslint-disable-next-line no-console
       console.log({ error });

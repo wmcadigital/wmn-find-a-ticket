@@ -52,7 +52,7 @@ export type State = {
   showAnswers: boolean;
   ticketInfo: Partial<TicketInfo>;
   ticketId: Nullable<string>;
-  apiResults: Nullable<Ticket[]>;
+  apiResults: Ticket[];
 };
 
 /* eslint-disable @typescript-eslint/indent */
@@ -91,7 +91,7 @@ export type StateAction =
     }
   | {
       type: 'ADD_API_RESULTS';
-      payload: Ticket[] | null;
+      payload: Ticket[];
     }
   | {
       type: 'TOGGLE_SHOW_ANSWERS';

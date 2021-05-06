@@ -12,7 +12,7 @@ export const initialState = (() => {
     showAnswers: false,
     ticketInfo: {},
     ticketId: null,
-    apiResults: null,
+    apiResults: [],
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
@@ -66,10 +66,6 @@ export const initialState = (() => {
       ticketInfo = { ...ticketInfo, [key]: getSearchParam(key) };
     }
   });
-
-  console.log(state.ticketInfo);
-  console.log(ticketInfo);
-  console.log({ ...state, currentStep, ticketInfo });
 
   return { ...state, currentStep, ticketInfo };
 })();
