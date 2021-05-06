@@ -52,6 +52,7 @@ export type State = {
   showAnswers: boolean;
   ticketInfo: Partial<TicketInfo>;
   product: Nullable<any>;
+  ticketId: Nullable<string>;
 };
 
 /* eslint-disable @typescript-eslint/indent */

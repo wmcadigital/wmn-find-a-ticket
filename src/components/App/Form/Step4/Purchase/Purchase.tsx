@@ -7,7 +7,7 @@ import Button from 'components/shared/Button/Button';
 import { getSearchParam } from 'globalState/helpers/URLSearchParams';
 import s from './Purchase.module.scss';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
-import { TApiTicket } from './Purchase.types';
+import { Ticket } from '../../customHooks/Tickets.types';
 
 const { sanitize } = dompurify;
 
@@ -15,11 +15,8 @@ const { sanitize } = dompurify;
 const Purchase = () => {
   const [formState, formDispatch] = useFormContext();
 
-  const { results, loading } = useTicketingAPI(
-    `/ticketing/v2/tickets/${getSearchParam('ticketId')}`,
-    true,
-  );
-  const ticket: TApiTicket = formState.product || results;
+  const { loading } = useTicketingAPI(`/ticketing/v2/tickets/${getSearchParam('ticketId')}`, true);
+  const ticket: Ticket = formState.product;
 
   const editStep = () => {
     formDispatch({
@@ -43,7 +40,7 @@ const Purchase = () => {
     return icon;
   };
 
-  const getModeIcons = (ticketData: any): string[] => {
+  const getModeIcons = (ticketData: Ticket): string[] => {
     const icons = [];
     if (ticketData?.allowBus) icons.push('bus');
     if (ticketData?.allowTrain) icons.push('train');
@@ -86,7 +83,7 @@ const Purchase = () => {
                   </h3>
                 </div>
                 <div className="wmnds-col-1-3">
-                  {formState.product ? (
+                  {formState.ticketId ? (
                     <Button
                       text="Change your ticket"
                       onClick={editStep}

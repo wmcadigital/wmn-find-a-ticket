@@ -11,6 +11,7 @@ export const initialState = (() => {
     mounted: false,
     showAnswers: false,
     ticketInfo: {},
+    ticketId: null,
     product: null,
   };
 
@@ -21,6 +22,8 @@ export const initialState = (() => {
   }
 
   if (getSearchParam('ticketId')) {
+    sessionStorage.clear();
+    state.ticketId = getSearchParam('ticketId');
     currentStep = 4;
   }
 

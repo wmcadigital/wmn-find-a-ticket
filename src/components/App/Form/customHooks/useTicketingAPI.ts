@@ -74,7 +74,7 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
   // }, [ticketInfo]);
 
   // Reference variables
-  const mounted = useRef<boolean>();
+  const mounted = useRef<any>();
   const source = useRef<any>();
   const apiTimeout = useRef<any>();
   // Helper functions
@@ -91,39 +91,7 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
   const handleTicketingApiResponse = useCallback((response) => {
-    //     console.log({ ticketFilter });
-    //     setLoading(false); // Set loading state to false after data is received
-
-    //     const filteredResults = response.data.filter((result: any) => {
-    //       // check if each result value matches the equivalent query value
-    //       const valuesMatch = () => {
-    //         // console.log(`%c${result.name}`, 'font-weight: bold');
-    //         let test = true;
-    //         // loop through each query key
-    //         Object.keys(ticketFilter).forEach((key) => {
-    //           let isMatch = result[key] === ticketFilter[key];
-    //           if (ticketFilter[key] === null || (ticketFilter[key] === undefined && test)) {
-    //             isMatch = true;
-    //           }
-    //           if (isMatch === false) {
-    //             console.log(isMatch);
-    //             // console.log(`R: '${result[key]}',`, `Q: '${ticketFilter[key]}',`, `name: ${key}`);
-    //             test = false; // fail test if values don't match
-    //           }
-    //         });
-    //         return test;
-    //       };
-
-    //       return valuesMatch();
-    //     });
-    //     console.log(filteredResults);
-
-    //     if (!filteredResults.length && mounted.current) {
-    //       setErrorInfo({
-    //         title: 'No results found',
-    //         message: 'Make sure you are looking for the right service, and try again.',
-    //       });
-    //     }
+    setLoading(false);
     setResults(response.data);
   }, []);
 

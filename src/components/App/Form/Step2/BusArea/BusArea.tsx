@@ -3,7 +3,7 @@ import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
-import useGetValidBusAreas from './useGetValidBusAreas';
+import useGetValidBusAreas from '../../customHooks/useGetValidBusAreas';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
 
 const { sanitize } = dompurify;
@@ -11,13 +11,11 @@ const { sanitize } = dompurify;
 const BusArea = () => {
   const name = 'busArea';
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
-  const { question, options } = questions[name];
-  // Filter out options into groups
-  const regionOptions = [...options.filter((option) => option.group === 'region')];
-  const localOptions = [...options.filter((option) => option.group === 'local')];
+  const { question } = questions[name];
 
   const { results } = useTicketingAPI('/ticketing/v2/tickets/search');
   const validBusAreas = useGetValidBusAreas(results);
+  const { local, regional } = validBusAreas;
 
   console.log({ validBusAreas });
 
@@ -59,24 +57,24 @@ const BusArea = () => {
               <div className="wmnds-fe-radios wmnds-m-b-md">
                 <h3 className="wmnds-m-b-md">Region</h3>
                 {/* Loop through radios and display each radio button */}
-                {regionOptions.map((radio) => (
+                {regional.map((radio) => (
                   <Radio
-                    key={radio.text}
+                    key={radio.name}
                     name={name}
-                    text={radio.html}
-                    value={radio.value}
+                    text={`<strong>${radio.name}</strong> ${radio.description || ''}`}
+                    value={radio.name}
                     onChange={handleChange}
                   />
                 ))}
               </div>
               <div className="wmnds-fe-radios wmnds-m-b-md">
                 <h3 className="wmnds-m-b-md">Local</h3>
-                {localOptions.map((radio) => (
+                {local.map((radio) => (
                   <Radio
-                    key={radio.text}
+                    key={radio.name}
                     name={name}
-                    text={radio.html}
-                    value={radio.value}
+                    text={radio.name}
+                    value={radio.name}
                     onChange={handleChange}
                   />
                 ))}

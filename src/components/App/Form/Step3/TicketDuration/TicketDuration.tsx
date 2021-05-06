@@ -3,6 +3,7 @@ import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
+import { Ticket } from '../../customHooks/Tickets.types';
 import s from './TicketDuration.module.scss';
 
 const TicketDuration = () => {
@@ -36,9 +37,9 @@ const TicketDuration = () => {
           </div>
         ) : (
           <>
-            {results.length > 0 ? (
+            {results!.length > 0 ? (
               <>
-                {results.map((option: { [key: string]: string }) => {
+                {results!.map((option: Ticket) => {
                   return (
                     <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
                       <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
@@ -46,7 +47,7 @@ const TicketDuration = () => {
                           {option.name}
                           <span className={s.totalPrice}>
                             {' '}
-                            £{parseFloat(option.ticketCurrentAmount).toFixed(2)}
+                            £{option.ticketCurrentAmount.toFixed(2)}
                           </span>
                         </h4>
                         {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
