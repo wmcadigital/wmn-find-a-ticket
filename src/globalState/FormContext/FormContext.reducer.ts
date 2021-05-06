@@ -12,7 +12,7 @@ export const initialState = (() => {
     showAnswers: false,
     ticketInfo: {},
     ticketId: null,
-    product: null,
+    apiResults: null,
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
@@ -136,10 +136,10 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
       };
 
-    case 'ADD_PRODUCT':
+    case 'ADD_API_RESULTS':
       return {
         ...state,
-        product: action.payload,
+        apiResults: action.payload,
       };
 
     case 'REMOVE_TICKET_INFO':

@@ -4,7 +4,7 @@ import { useFormContext, TForm } from 'globalState';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useFormContext(); // Get the state/dispatch of form data from FormDataContext
-  const { ticketInfo, mounted, editMode } = formState;
+  const { ticketInfo, mounted, editMode, ticketId } = formState;
   const { modes, ticketType } = ticketInfo;
 
   // Function for setting the step of the form
@@ -44,10 +44,11 @@ const useStepLogic = () => {
       (travelTime && (ticketType === 'single' || ticketType === 'tram'));
     // Checks to see if step 3 is complete
     const step3Check =
-      (ticketDuration && ticketType !== 'nTicket' && ticketDuration !== '1 day') ||
-      (ticketDuration && ticketType !== 'nTicket' && multiDay) ||
-      (ticketDuration && firstClass) ||
-      (ticketDuration &&
+      (ticketId && ticketDuration && ticketType !== 'nTicket' && ticketDuration !== '1 day') ||
+      (ticketId && ticketDuration && ticketType !== 'nTicket' && multiDay) ||
+      (ticketId && ticketDuration && firstClass) ||
+      (ticketId &&
+        ticketDuration &&
         railZones &&
         (Math.min(...ticketInfo.railZones!) !== 1 || Math.max(...ticketInfo.railZones!) < 4));
 

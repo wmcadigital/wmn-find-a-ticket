@@ -13,7 +13,7 @@ const BusArea = () => {
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question } = questions[name];
 
-  const { results } = useTicketingAPI('/ticketing/v2/tickets/search');
+  const { results } = useTicketingAPI();
   const validBusAreas = useGetValidBusAreas(results);
   const { local, regional } = validBusAreas;
 

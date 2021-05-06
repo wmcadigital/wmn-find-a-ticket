@@ -19,9 +19,8 @@ const TicketDuration = () => {
     });
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'isMultiDay' } });
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'multiDay' } });
-    formDispatch({ type: 'ADD_PRODUCT', payload: value });
   };
-  const { results, loading } = useTicketingAPI('/ticketing/v2/tickets/search');
+  const { results, loading } = useTicketingAPI();
 
   return (
     <>

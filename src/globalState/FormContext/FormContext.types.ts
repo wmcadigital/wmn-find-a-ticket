@@ -1,5 +1,5 @@
-import questions from '../../components/App/Form/questions';
-
+import questions from 'components/App/Form/questions';
+import { Ticket } from 'components/App/Form/customHooks/Tickets.types';
 // e.g. importing: import * as TForm
 // e.g. use: TForm.QuestionKeys
 
@@ -51,8 +51,8 @@ export type State = {
   mounted: boolean;
   showAnswers: boolean;
   ticketInfo: Partial<TicketInfo>;
-  product: Nullable<any>;
   ticketId: Nullable<string>;
+  apiResults: Nullable<Ticket[]>;
 };
 
 /* eslint-disable @typescript-eslint/indent */
@@ -90,8 +90,8 @@ export type StateAction =
       };
     }
   | {
-      type: 'ADD_PRODUCT';
-      payload: any;
+      type: 'ADD_API_RESULTS';
+      payload: Ticket[] | null;
     }
   | {
       type: 'TOGGLE_SHOW_ANSWERS';

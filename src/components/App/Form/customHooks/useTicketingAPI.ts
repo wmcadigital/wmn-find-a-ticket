@@ -11,13 +11,14 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTicketingAPI = (apiPath: string, product?: boolean) => {
+const useTicketingAPI = (product?: boolean) => {
   // State variables
   const [results, setResults] = useState<Ticket[] | null>(null);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState] = useFormContext();
   const { ticketInfo } = formState;
+  const apiPath = '/ticketing/v2/tickets/search';
 
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
@@ -27,51 +28,6 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
       allowTrain: ticketInfo.modes?.includes('train'),
     };
   }, [ticketInfo]);
-
-  // const ticketFilter: any = useMemo(() => {
-  //   let query = {
-  //     allowBus: ticketInfo.modes!.includes('bus'),
-  //     allowMetro: ticketInfo.modes!.includes('tram'),
-  //     allowTrain: ticketInfo.modes!.includes('train'),
-  //     allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-  //     // passengerType: ticketInfo.traveller,
-  //     isAdult: ticketInfo.traveller === 'adult',
-  //     isChild: ticketInfo.traveller === 'youngPerson',
-  //     isStudent: ticketInfo.traveller === 'student',
-  //     isConcessionary: ticketInfo.traveller === 'concessionary',
-  //     isFamily: ticketInfo.traveller === 'family',
-  //     timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-  //     timePeriod2: ticketInfo.travelTime !== 'senior',
-  //     timePeriod3: ticketInfo.travelTime !== 'senior',
-  //     timePeriod4: ticketInfo.travelTime !== 'senior',
-  //   };
-
-  //   // INCLUDES BUS ONLY
-  //   const busQuery = {
-  //     busTravelArea: ticketInfo.busArea,
-  //     operator: ticketInfo.busCompany || 'Network West Midlands',
-  //   };
-
-  //   const trainQuery = {
-  //     firstClass: ticketInfo.firstClass === 'yes',
-  //     networkTicket: ticketInfo.ticketType === 'nTicket',
-  //     railZoneFrom: (ticketInfo.railZones && Math.min(...ticketInfo.railZones)) || null,
-  //     railZoneTo:
-  //       (!ticketInfo.outOfCounty && ticketInfo.railZones && Math.max(...ticketInfo.railZones)) ||
-  //       null,
-  //     outOfCounty: ticketInfo.outOfCounty,
-  //   };
-
-  //   if (ticketInfo.modes?.includes('bus')) {
-  //     query = { ...query, ...busQuery };
-  //   }
-
-  //   if (ticketInfo.modes?.includes('train')) {
-  //     query = { ...query, ...trainQuery };
-  //   }
-
-  //   return query;
-  // }, [ticketInfo]);
 
   // Reference variables
   const mounted = useRef<any>();
@@ -138,14 +94,13 @@ const useTicketingAPI = (apiPath: string, product?: boolean) => {
   }, [product, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
-    getAPIResults();
     // Unmount / cleanup
     return () => {
       mounted.current = false; // Set mounted back to false on unmount
       cancelRequest(); // cancel the request
       clearApiTimeout(); // clear timeout
     };
-  }, [getAPIResults]);
+  }, []);
 
   return { loading, errorInfo, results, ticketQuery, getAPIResults };
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TForm } from 'globalState';
-// Contexts
+// Custom hooks
 import useStepLogic from './Form/customHooks/useStepLogic';
 // Components
 import Button from '../shared/Button/Button';

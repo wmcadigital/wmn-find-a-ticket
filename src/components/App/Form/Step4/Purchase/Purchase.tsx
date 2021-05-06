@@ -2,12 +2,8 @@ import dompurify from 'dompurify';
 import { useFormContext } from 'globalState';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import Icon from 'components/shared/Icon/Icon';
-import Loader from 'components/shared/Loader/Loader';
 import Button from 'components/shared/Button/Button';
-// import { useFormContext } from 'globalState';
-import { getSearchParam } from 'globalState/helpers/URLSearchParams';
 import s from './Purchase.module.scss';
-import useTicketingAPI from '../../customHooks/useTicketingAPI';
 import { Ticket } from '../../customHooks/Tickets.types';
 
 const { sanitize } = dompurify;
@@ -16,8 +12,8 @@ const { sanitize } = dompurify;
 const Purchase = () => {
   const [formState, formDispatch] = useFormContext();
 
-  const { loading } = useTicketingAPI(`/ticketing/v2/tickets/${getSearchParam('ticketId')}`, true);
-  const ticket: Ticket = formState.product;
+  const ticket: Ticket | null =
+    formState.apiResults?.find((t) => formState.ticketId === `${t.id}`) || null;
 
   const editStep = () => {
     formDispatch({
@@ -51,9 +47,7 @@ const Purchase = () => {
 
   return (
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
-      {loading ? (
-        <Loader />
-      ) : (
+      {ticket ? (
         <>
           <div className="wmnds-col-1-1 wmnds-col-md-2-3">
             <QuestionCard>
@@ -106,6 +100,10 @@ const Purchase = () => {
             </div>
           </div>
         </>
+      ) : (
+        <QuestionCard>
+          <div>No ticket found</div>
+        </QuestionCard>
       )}
     </div>
   );
