@@ -40,6 +40,7 @@ const useHandleChange = (name: TForm.QuestionKeys) => {
 
   return {
     value,
+    setValue,
     handleChange,
     handleContinue,
     genericError,

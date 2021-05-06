@@ -10,12 +10,24 @@ import useGetValidOperators from '../../customHooks/useGetValidOperators';
 const BusCompanyStep2 = () => {
   const name = 'busCompany';
   const [formState] = useFormContext();
-  const { handleChange, handleContinue, value, genericError, error } = useHandleChange(name);
+  const { handleChange, formDispatch, value, genericError, error, setError } = useHandleChange(
+    name,
+  );
   const { question, hint, options } = questions[name] as typeof questions[typeof name];
 
   const modesUrlString = (formState.ticketInfo as TForm.TicketInfo).modes.join('+');
 
   const validBusOperators = useGetValidOperators(formState.apiResults);
+
+  const handleContinue = () => {
+    if (value && value.length !== 0) {
+      const payload = validBusOperators.includes(`${value}`) ? value : 'nBus';
+      formDispatch({ type: 'EDIT_MODE', payload: null });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value: payload } });
+    } else {
+      setError({ message: 'Please select an answer' });
+    }
+  };
 
   const operatorOptions = validBusOperators.map((option) => ({ text: option, value: option }));
   const otherOptions = options.filter((option) => !validBusOperators.includes(option.text));
