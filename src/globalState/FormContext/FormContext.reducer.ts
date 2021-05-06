@@ -39,8 +39,8 @@ export const initialState = (() => {
   }
 
   // Set intial state
-  state.ticketInfo = {
-    // Cast the corrext types for modes and type as getSearchParam returns string | null
+  ticketInfo = {
+    // Cast the correct types for modes and type as getSearchParam returns string | null
     modes: storedInfo.modes || (getSearchParam('modes')?.split(' ') as TForm.TicketInfo['modes']),
     ticketType: storedInfo.ticketType || (getSearchParam('type') as TForm.TicketInfo['ticketType']),
   };
@@ -66,6 +66,10 @@ export const initialState = (() => {
       ticketInfo = { ...ticketInfo, [key]: getSearchParam(key) };
     }
   });
+
+  console.log(state.ticketInfo);
+  console.log(ticketInfo);
+  console.log({ ...state, currentStep, ticketInfo });
 
   return { ...state, currentStep, ticketInfo };
 })();

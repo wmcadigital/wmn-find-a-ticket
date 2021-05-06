@@ -28,7 +28,7 @@ const TicketDuration = () => {
       </QuestionCard>
       <div className="wmnds-grid wmnds-grid--spacing-sm-2-lg">
         <>
-          {apiResults!.length > 0 ? (
+          {apiResults && apiResults!.length > 0 ? (
             <>
               {apiResults!.map((option: Ticket) => {
                 return (

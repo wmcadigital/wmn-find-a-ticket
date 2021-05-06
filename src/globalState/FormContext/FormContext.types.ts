@@ -31,7 +31,7 @@ export type TicketInfo = {
   multiDay: Nullable<string>;
   railZones: Nullable<number[]>;
   outOfCounty: Nullable<boolean>;
-  stations: Nullable<any>;
+  stations: Nullable<string>;
   ticketDuration: Nullable<string>;
   ticketType: Nullable<TicketTypes>;
   travelTime: Nullable<string>;

@@ -40,7 +40,8 @@ const RailZone = () => {
           name: 'stations',
           value: selectedStations
             .map((station: TForm.IStations) => station.stationName)
-            .filter((stn: string) => stn),
+            .filter((stn: string) => stn)
+            .join(','),
         },
       });
       formDispatch({

@@ -53,6 +53,7 @@ const SidebarSummary = () => {
   };
 
   const RailZoneSummary = ({ railZones }: { railZones: number[] }) => {
+    console.log(ticketInfo.stations);
     return (
       <>
         {railZones.length > 1 ? (
@@ -62,7 +63,7 @@ const SidebarSummary = () => {
         ) : (
           <p className="wmnds-m-b-md">Zone {railZones[0]}</p>
         )}
-        {arrayToSentence(ticketInfo.stations)}
+        {ticketInfo.stations && arrayToSentence(ticketInfo.stations?.split(','))}
       </>
     );
   };
