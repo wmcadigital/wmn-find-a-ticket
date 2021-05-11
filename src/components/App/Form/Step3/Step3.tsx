@@ -2,11 +2,14 @@ import { useFormContext } from 'globalState';
 import TicketClass from './TicketClass/TicketClass';
 import TicketDuration from './TicketDuration/TicketDuration';
 import TicketBundle from './TicketBundle/TicketBundle';
+import useTicketFilter from '../customHooks/useTicketFilter';
 
 const Step3 = () => {
   const [formState] = useFormContext();
+  const { filteredResults } = useTicketFilter();
   const { ticketInfo, editMode } = formState;
   let sectionToRender;
+  const hasBundleTickets = filteredResults.some((result) => result.type === 'Carnet');
 
   if (ticketInfo.railZones) {
     // Logic to determine which to section to show
@@ -22,11 +25,19 @@ const Step3 = () => {
   } else if (
     !editMode &&
     ticketInfo.modes!.includes('bus') &&
+    hasBundleTickets &&
     ticketInfo.ticketDuration === '1 day'
   ) {
-    sectionToRender = <TicketBundle />;
+    sectionToRender = <TicketBundle results={filteredResults} />;
   }
-  return sectionToRender || <TicketDuration />;
+  return (
+    sectionToRender || (
+      <TicketDuration
+        results={filteredResults.filter((result) => result.type !== 'Carnet')}
+        hasBundleTickets={hasBundleTickets}
+      />
+    )
+  );
 };
 
 export default Step3;

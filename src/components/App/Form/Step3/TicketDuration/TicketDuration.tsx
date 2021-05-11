@@ -2,14 +2,20 @@ import { useFormContext } from 'globalState';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
-import useTicketFilter from '../../customHooks/useTicketFilter';
+
 import { Ticket } from '../../customHooks/Tickets.types';
 import s from './TicketDuration.module.scss';
 
-const TicketDuration = () => {
+const TicketDuration = ({
+  results,
+  hasBundleTickets,
+}: {
+  hasBundleTickets: boolean;
+  results: Ticket[];
+}) => {
   const name = 'ticketDuration';
   const [, formDispatch] = useFormContext();
-  const { filteredResults } = useTicketFilter();
+
   const { question, hint } = questions[name];
   const handleContinue = (value: Ticket) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
@@ -17,7 +23,7 @@ const TicketDuration = () => {
       type: 'UPDATE_TICKET_INFO',
       payload: { name, value: value.validity.toLowerCase() },
     });
-    if (value.validity.toLowerCase() !== '1 day') {
+    if (value.validity.toLowerCase() !== '1 day' || !hasBundleTickets) {
       formDispatch({
         type: 'UPDATE_TICKET_ID',
         payload: `${value.id}`,
@@ -35,9 +41,9 @@ const TicketDuration = () => {
       </QuestionCard>
       <div className="wmnds-grid wmnds-grid--spacing-sm-2-lg">
         <>
-          {filteredResults && filteredResults!.length > 0 ? (
+          {results && results!.length > 0 ? (
             <>
-              {filteredResults!.map((option: Ticket) => {
+              {results!.map((option: Ticket) => {
                 return (
                   <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
                     <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>

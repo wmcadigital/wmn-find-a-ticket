@@ -39,12 +39,12 @@ const useStepLogic = () => {
       (ticketType && traveller && ticketType !== 'single');
     // Checks to see if step 2 is complete
     const step2Check =
-      (travelTime && busArea && ticketType === 'nBus') ||
+      (travelTime && busArea && (ticketType === 'nBus' || ticketType === 'single')) ||
       (travelTime && railZones && ticketType === 'nTicket') ||
-      (travelTime && (ticketType === 'single' || ticketType === 'tram'));
+      (travelTime && ticketType === 'tram');
     // Checks to see if step 3 is complete
     const step3Check =
-      (ticketId && ticketDuration && ticketType !== 'nTicket' && ticketDuration !== '1 day') ||
+      (ticketId && ticketDuration && ticketType !== 'nTicket') ||
       (ticketId && ticketDuration && ticketType !== 'nTicket' && multiDay) ||
       (ticketId && ticketDuration && firstClass) ||
       (ticketId &&

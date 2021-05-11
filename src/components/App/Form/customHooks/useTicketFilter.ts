@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { useMemo } from 'react';
 import { useFormContext } from 'globalState';
 // import { Ticket } from './Tickets.types';
@@ -25,7 +26,7 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
     const busQuery = {
       busTravelArea:
         ticketInfo.busArea === 'Diamond Bus Area' ? 'Entire Operator Area' : ticketInfo.busArea,
-      operator: ticketInfo.busCompany || null,
+      operator: ticketInfo.busCompany === 'nBus' ? 'Network West Midlands' : ticketInfo.busCompany,
     };
 
     const trainQuery = {
@@ -60,9 +61,13 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
       query = { ...query, ...travelTimeQuery };
     }
 
-    console.log(query);
-
-    return isBusAreaFilter ? { ...initialQuery, operator: ticketInfo.busCompany || null } : query;
+    return isBusAreaFilter
+      ? {
+          ...initialQuery,
+          operator:
+            ticketInfo.busCompany === 'nBus' ? 'Network West Midlands' : ticketInfo.busCompany,
+        }
+      : query;
   }, [ticketInfo, isBusAreaFilter]);
 
   const filteredResults = apiResults.filter((result: any) => {
@@ -84,8 +89,6 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
 
     return valuesMatch();
   });
-
-  console.log(filteredResults);
 
   return { filteredResults };
 };

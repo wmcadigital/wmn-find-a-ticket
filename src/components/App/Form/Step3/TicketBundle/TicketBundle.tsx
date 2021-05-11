@@ -4,22 +4,46 @@ import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import { useFormContext } from 'globalState';
 import questions from '../../questions';
+import { Ticket } from '../../customHooks/Tickets.types';
 import useHandleChange from '../../customHooks/useHandleChange';
 
-const TicketBundle = () => {
+const TicketBundle = ({ results }: { results: Ticket[] }) => {
   const name = 'multiDay';
   const [formState, formDispatch] = useFormContext();
-  const { handleChange, handleContinue, genericError, error, value } = useHandleChange(name);
-  const { question, hint, options } = questions[name];
+  const { handleChange, genericError, error, setError, value } = useHandleChange(name);
+  const { question, hint } = questions[name];
   const { sanitize } = dompurify;
 
-  const onContinue = () => {
-    if (value !== 'yes') {
-      handleContinue();
+  console.log(results);
+
+  const handleContinue = () => {
+    if (value && value.length !== 0) {
+      formDispatch({ type: 'EDIT_MODE', payload: null });
+      formDispatch({
+        type: 'UPDATE_TICKET_ID',
+        payload: `${value}`,
+      });
     } else {
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name: 'isMultiDay', value: 'Yes' } });
+      setError({ message: 'Please select an answer' });
     }
   };
+
+  const onContinue = () => {
+    if (value === 'yes') {
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name: 'isMultiDay', value: 'Yes' } });
+    } else {
+      handleContinue();
+    }
+  };
+
+  const multiDayOptions = results
+    .filter((result) => result.type === 'Carnet')
+    .map((option) => ({ text: `${option.name.replace(/^\D+/g, '')} days`, value: `${option.id}` }))
+    .sort((a, b) =>
+      parseInt(a.text.replace(/^\D+/g, ''), 10) > parseInt(b.text.replace(/^\D+/g, ''), 10)
+        ? 1
+        : -1,
+    );
 
   return (
     <>
@@ -31,7 +55,7 @@ const TicketBundle = () => {
             question={question}
             hint={hint}
             error={error}
-            radios={options}
+            radios={multiDayOptions}
             onChange={handleChange}
           />
         ) : (
