@@ -53,6 +53,7 @@ export type State = {
   ticketInfo: Partial<TicketInfo>;
   ticketId: Nullable<string>;
   apiResults: Ticket[];
+  operators: any[];
 };
 
 /* eslint-disable @typescript-eslint/indent */
@@ -92,6 +93,10 @@ export type StateAction =
   | {
       type: 'ADD_API_RESULTS';
       payload: Ticket[];
+    }
+  | {
+      type: 'ADD_OPERATORS';
+      payload: any[];
     }
   | {
       type: 'UPDATE_TICKET_ID';

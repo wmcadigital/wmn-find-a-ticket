@@ -11,14 +11,13 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTicketingAPI = (product?: boolean) => {
+const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?: boolean) => {
   // State variables
   const [results, setResults] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState] = useFormContext();
   const { ticketInfo } = formState;
-  const apiPath = '/ticketing/v2/tickets/search';
 
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
@@ -80,7 +79,7 @@ const useTicketingAPI = (product?: boolean) => {
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
     };
 
-    if (product) {
+    if (get) {
       axios
         .get(REACT_APP_API_HOST + apiPath, options)
         .then(handleTicketingApiResponse)
@@ -91,7 +90,7 @@ const useTicketingAPI = (product?: boolean) => {
         .then(handleTicketingApiResponse)
         .catch(handleTicketingApiError);
     }
-  }, [product, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
+  }, [get, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
     // Unmount / cleanup
