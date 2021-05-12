@@ -28,8 +28,22 @@ const BusCompanyStep2 = () => {
       getAPIResults();
     }
     if (results.length && !formState.operators.length) {
-      const payload = results.filter((operator) => operator.type === 'Bus Operator');
+      // Filter out non bus operator results
+      let payload = results.filter((operator) => operator.type === 'Bus Operator');
+      // Sort results alphabetically
       payload.sort((a, b) => (a.name > b.name ? 1 : -1));
+      // Map missing websites to results
+      payload = payload.map((operator) => {
+        let obj = operator;
+        if (operator.name === 'Select Bus Services') {
+          obj = { ...operator, website: 'https://www.selectbusservices.com/' };
+        }
+        if (operator.name === 'Coventry Minibuses') {
+          obj = { ...operator, website: 'http://covminibuses.co.uk/vehicles/' };
+        }
+        return obj;
+      });
+      // Add results to form context state
       formDispatch({ type: 'ADD_OPERATORS', payload });
     }
   }, [getAPIResults, results, formState.operators, formDispatch]);

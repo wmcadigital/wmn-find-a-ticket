@@ -3,7 +3,6 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 // Import contexts
 import { useFormContext } from 'globalState';
 import axios from 'axios';
-import { Ticket } from './Tickets.types';
 
 interface IError {
   title: string;
@@ -13,7 +12,7 @@ interface IError {
 
 const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?: boolean) => {
   // State variables
-  const [results, setResults] = useState<Ticket[]>([]);
+  const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState] = useFormContext();
