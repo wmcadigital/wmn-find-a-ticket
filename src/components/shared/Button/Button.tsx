@@ -1,4 +1,5 @@
 // Import packages
+import s from './Button.module.scss';
 import Icon from '../Icon/Icon';
 
 type ButtonProps = {
@@ -32,8 +33,8 @@ const Button = ({
       type={type}
       title={title}
       className={`wmnds-btn ${btnClass} ${isActive ? 'wmnds-is--active' : ''} ${
-        disabled ? 'wmnds-btn--disabled' : ''
-      }`}
+        iconRight ? s.iconRight : ''
+      } ${disabled ? 'wmnds-btn--disabled' : ''}`}
       onClick={onClick}
       disabled={disabled}
     >

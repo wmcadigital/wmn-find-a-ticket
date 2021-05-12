@@ -140,7 +140,7 @@ const BusCompanyStep2 = () => {
               {selectedOperator ? (
                 <>
                   {isNBusOperator && (
-                    <div className="wmnds-col-3-5">
+                    <div className="wmnds-col-3-5 wmnds-m-b-md">
                       <Button
                         text={`Continue with a ${
                           isSupportedOperator ? selectedOperator.name : 'nBus'
@@ -152,7 +152,7 @@ const BusCompanyStep2 = () => {
                     </div>
                   )}
                   {isSupportedOperator ? (
-                    <div className="wmnds-col-3-5 wmnds-m-t-md">
+                    <div className="wmnds-col-3-5">
                       <Button
                         text="Continue with a nBus ticket"
                         onClick={() => handleContinue(true)}
@@ -161,37 +161,19 @@ const BusCompanyStep2 = () => {
                       />
                     </div>
                   ) : (
-                    <>
-                      {/* If the operator is not in bBus scheme and has no website */}
-                      {!isNBusOperator && !selectedOperator.website ? (
-                        <div className="wmnds-col-3-5">
-                          <a
-                            href={`tel:${selectedOperator.telephone}`}
-                            className="wmnds-btn wmnds-btn--secondary wmnds-col-1"
-                          >
-                            Call {selectedOperator.name}
-                            <Icon
-                              iconName="general-chevron-right"
-                              className="wmnds-btn__icon wmnds-btn__icon--right"
-                            />
-                          </a>
-                        </div>
-                      ) : (
-                        <div className="wmnds-col-3-5 wmnds-m-t-md">
-                          {/* else show visit website button */}
-                          <a
-                            href={selectedOperator.website}
-                            className="wmnds-btn wmnds-btn--secondary wmnds-col-1"
-                          >
-                            Visit the {selectedOperator.name} website
-                            <Icon
-                              iconName="general-chevron-right"
-                              className="wmnds-btn__icon wmnds-btn__icon--right"
-                            />
-                          </a>
-                        </div>
-                      )}
-                    </>
+                    <div className="wmnds-col-3-5">
+                      {/* else show visit website button */}
+                      <a
+                        href={selectedOperator.website}
+                        className="wmnds-btn wmnds-btn--secondary wmnds-col-1"
+                      >
+                        Visit the {selectedOperator.name} website
+                        <Icon
+                          iconName="general-chevron-right"
+                          className="wmnds-btn__icon wmnds-btn__icon--right"
+                        />
+                      </a>
+                    </div>
                   )}
                 </>
               ) : (
