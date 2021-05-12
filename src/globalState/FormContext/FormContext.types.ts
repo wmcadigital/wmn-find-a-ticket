@@ -100,7 +100,7 @@ export type StateAction =
     }
   | {
       type: 'UPDATE_TICKET_ID';
-      payload: string;
+      payload: string | null;
     }
   | {
       type: 'TOGGLE_SHOW_ANSWERS';

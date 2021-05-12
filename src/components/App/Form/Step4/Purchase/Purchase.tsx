@@ -24,6 +24,14 @@ const Purchase = () => {
       type: 'EDIT_MODE',
       payload: 'ticketDuration',
     });
+    formDispatch({
+      type: 'REMOVE_TICKET_INFO',
+      payload: { name: 'ticketDuration' },
+    });
+    formDispatch({
+      type: 'UPDATE_TICKET_ID',
+      payload: null,
+    });
     window.scrollTo(0, 0);
   };
 

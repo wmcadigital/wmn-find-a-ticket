@@ -14,7 +14,6 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
       allowBus: ticketInfo.modes!.includes('bus'),
       allowMetro: ticketInfo.modes!.includes('tram'),
       allowTrain: ticketInfo.modes!.includes('train'),
-      // passengerType: ticketInfo.traveller,
       isAdult: ticketInfo.traveller === 'adult',
       isChild: ticketInfo.traveller === 'youngPerson',
       isStudent: ticketInfo.traveller === 'student',
@@ -22,11 +21,17 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
       isFamily: ticketInfo.traveller === 'family',
     };
 
+    // If bus company is null or 'nBus' default to 'Network West Midlands' as filter
+    const operator =
+      ticketInfo.busCompany && ticketInfo.busCompany !== 'nBus'
+        ? ticketInfo.busCompany
+        : 'Network West Midlands';
+
     // INCLUDES BUS ONLY
     const busQuery = {
       busTravelArea:
         ticketInfo.busArea === 'Diamond Bus Area' ? 'Entire Operator Area' : ticketInfo.busArea,
-      operator: ticketInfo.busCompany === 'nBus' ? 'Network West Midlands' : ticketInfo.busCompany,
+      operator,
     };
 
     const trainQuery = {
@@ -64,8 +69,7 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
     return isBusAreaFilter
       ? {
           ...initialQuery,
-          operator:
-            ticketInfo.busCompany === 'nBus' ? 'Network West Midlands' : ticketInfo.busCompany,
+          operator,
         }
       : query;
   }, [ticketInfo, isBusAreaFilter]);
