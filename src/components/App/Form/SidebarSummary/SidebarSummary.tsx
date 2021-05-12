@@ -48,6 +48,10 @@ const SidebarSummary = () => {
       type: 'EDIT_MODE',
       payload: page,
     });
+    formDispatch({
+      type: 'REMOVE_TICKET_INFO',
+      payload: { name: 'ticketDuration' },
+    });
     handleClose();
     window.scrollTo(0, 0);
   };
