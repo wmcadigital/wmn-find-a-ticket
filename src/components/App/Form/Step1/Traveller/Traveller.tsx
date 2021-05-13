@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { useFormContext } from 'globalState';
 import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
@@ -6,6 +7,7 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const Traveller = () => {
   const name = 'traveller';
+  const [formState] = useFormContext();
   const { handleChange, value, formDispatch, genericError, error, setError } =
     useHandleChange(name);
   const { question, options } = questions[name];
@@ -18,6 +20,11 @@ const Traveller = () => {
         formDispatch({
           type: 'UPDATE_TICKET_INFO',
           payload: { name: 'travelTime', value: 'concessionary' },
+        });
+      } else if (formState.ticketInfo.travelTime) {
+        formDispatch({
+          type: 'REMOVE_TICKET_INFO',
+          payload: { name: 'travelTime' },
         });
       }
     } else {

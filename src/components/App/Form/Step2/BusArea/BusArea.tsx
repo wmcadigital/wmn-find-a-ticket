@@ -3,6 +3,7 @@ import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import useTicketQueries from '../../customHooks/useTicketQueries';
 import useTicketFilter from '../../customHooks/useTicketFilter';
 import useGetValidBusAreas from '../../customHooks/useGetValidBusAreas';
 
@@ -12,9 +13,23 @@ const BusArea = () => {
   const name = 'busArea';
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question } = questions[name];
-  const { filteredResults } = useTicketFilter(true);
+  const { modesQuery, operatorQuery, travellerQuery } = useTicketQueries();
+  const { filterResults } = useTicketFilter();
+  const travellerBusResults = filterResults({ ...modesQuery, ...operatorQuery, ...travellerQuery });
+  const adultBusResults = filterResults({ ...modesQuery, ...operatorQuery });
 
-  const validBusAreas = useGetValidBusAreas(filteredResults);
+  const validBusAreas = useGetValidBusAreas(travellerBusResults);
+  const validAdultBusAreas = useGetValidBusAreas(adultBusResults);
+  const getExcludedBusAreas = () => {
+    const travellerBusAreas = [...validBusAreas.regional, ...validBusAreas.local].map(
+      (area) => area.name,
+    );
+    const adultBusAreas = [...validAdultBusAreas.regional, ...validAdultBusAreas.local].map(
+      (area) => area.name,
+    );
+    return adultBusAreas.filter((area) => !travellerBusAreas.includes(area));
+  };
+
   const { local, regional } = validBusAreas;
 
   return (
@@ -79,6 +94,22 @@ const BusArea = () => {
                       onChange={handleChange}
                     />
                   ))}
+                </div>
+              )}
+              {getExcludedBusAreas().length > 0 && (
+                <div className="wmnds-inset-text wmnds-m-b-md">
+                  <p className="wmnds-m-none">
+                    If you only want to travel in the{' '}
+                    {getExcludedBusAreas().map((area, i) => (
+                      <>
+                        {i + 1 !== 1 && (
+                          <>{i + 1 === getExcludedBusAreas().length ? ' or ' : ', '}</>
+                        )}
+                        <strong>{area}</strong>
+                      </>
+                    ))}{' '}
+                    <strong>bus areas</strong> then you&rsquo;ll need to buy an adult ticket
+                  </p>
                 </div>
               )}
             </div>

@@ -22,7 +22,7 @@ const formatAreaObject = ({ busTravelArea, operator }: Ticket): ValidArea => {
 
   // If busTravelArea is 'entire operator area'
   if (name.toLowerCase() === 'entire operator area')
-    name = name.replace(/entire operator/gi, operator); // gi replaces all instaces regardless of lowercase/uppercase chars
+    name = name.replace(/entire operator/gi, operator); // gi replaces all instances regardless of lowercase/uppercase chars
 
   // Return formatted object
   return {
