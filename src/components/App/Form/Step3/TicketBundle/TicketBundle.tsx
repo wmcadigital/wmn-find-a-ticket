@@ -14,8 +14,6 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
   const { question, hint } = questions[name];
   const { sanitize } = dompurify;
 
-  console.log(results);
-
   const handleContinue = () => {
     if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });

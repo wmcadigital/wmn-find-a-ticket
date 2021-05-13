@@ -10,7 +10,6 @@ const Step3 = () => {
   const { ticketInfo, editMode } = formState;
   let sectionToRender;
   const hasBundleTickets = filteredResults.some((result) => result.type === 'Carnet');
-  console.log(filteredResults);
 
   if (ticketInfo.railZones) {
     // Logic to determine which to section to show

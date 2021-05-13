@@ -185,7 +185,7 @@ const questions = {
       {
         html: '<strong>Disabled or Older Person’s pass holder</strong> I need to travel before 9.30am ',
         text: 'Disabled or Older Person’s pass holder',
-        value: 'senior',
+        value: 'concessionary',
         info: 'As a disabled or older person’s pass holder, you get free travel after 9.30am on weekdays and all weekend. You only need a ticket if you need to regularly travel before 9.30am.',
       },
     ],

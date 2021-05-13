@@ -45,11 +45,12 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
     };
 
     const travelTimeQuery = {
-      allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-      timePeriod2: ticketInfo.travelTime !== 'senior',
-      timePeriod3: ticketInfo.travelTime !== 'senior',
-      timePeriod4: ticketInfo.travelTime !== 'senior',
+      allowPeakTravel:
+        ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'concessionary',
+      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'concessionary',
+      timePeriod2: ticketInfo.travelTime !== 'concessionary',
+      timePeriod3: ticketInfo.travelTime !== 'concessionary',
+      timePeriod4: ticketInfo.travelTime !== 'concessionary',
     };
 
     query = { ...initialQuery };
@@ -73,6 +74,8 @@ const useTicketFilter = (isBusAreaFilter?: boolean) => {
         }
       : query;
   }, [ticketInfo, isBusAreaFilter]);
+
+  console.log(ticketFilter);
 
   const filteredResults = apiResults.filter((result: any) => {
     // check if each result value matches the equivalent query value

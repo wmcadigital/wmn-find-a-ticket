@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
@@ -5,8 +6,24 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const Traveller = () => {
   const name = 'traveller';
-  const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
+  const { handleChange, value, formDispatch, genericError, error, setError } =
+    useHandleChange(name);
   const { question, options } = questions[name];
+
+  const handleContinue = () => {
+    if (value && value.length !== 0) {
+      formDispatch({ type: 'EDIT_MODE', payload: null });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+      if (value === 'concessionary' || value === 'disabled') {
+        formDispatch({
+          type: 'UPDATE_TICKET_INFO',
+          payload: { name: 'travelTime', value: 'concessionary' },
+        });
+      }
+    } else {
+      setError({ message: 'Please select an answer' });
+    }
+  };
 
   return (
     <>
