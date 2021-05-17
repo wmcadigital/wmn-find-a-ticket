@@ -120,7 +120,7 @@ const SidebarSummary = () => {
           />
         </>
       )}
-      {ticketInfo.travelTime && (
+      {ticketInfo.travelTime && ticketInfo.travelTime !== 'any' && (
         <>
           <SummarySection
             title="Travel time"

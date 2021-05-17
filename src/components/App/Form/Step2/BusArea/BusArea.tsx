@@ -1,4 +1,5 @@
 import dompurify from 'dompurify';
+import { useFormContext } from 'globalState';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
@@ -11,7 +12,8 @@ const { sanitize } = dompurify;
 
 const BusArea = () => {
   const name = 'busArea';
-  const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
+  const [formState, formDispatch] = useFormContext();
+  const { handleChange, genericError, value, error, setError } = useHandleChange(name);
   const { question } = questions[name];
   const { modesQuery, operatorQuery, travellerQuery } = useTicketQueries();
   const { filterResults } = useTicketFilter();
@@ -31,6 +33,31 @@ const BusArea = () => {
   };
 
   const { local, regional } = validBusAreas;
+
+  const handleContinue = () => {
+    if (value && value.length !== 0) {
+      formDispatch({ type: 'EDIT_MODE', payload: null });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+      if (
+        formState.ticketInfo.ticketType === 'nBus' ||
+        formState.ticketInfo.busCompany === 'National Express West Midlands'
+      ) {
+        if (value !== 'West Midlands' && value !== 'Coventry') {
+          formDispatch({
+            type: 'UPDATE_TICKET_INFO',
+            payload: { name: 'travelTime', value: 'any' },
+          });
+        } else if (formState.ticketInfo.travelTime) {
+          formDispatch({
+            type: 'REMOVE_TICKET_INFO',
+            payload: { name: 'travelTime' },
+          });
+        }
+      }
+    } else {
+      setError({ message: 'Please select an answer' });
+    }
+  };
 
   return (
     <>

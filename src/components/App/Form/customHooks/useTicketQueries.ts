@@ -51,8 +51,13 @@ const useTicketFilter = () => {
 
     const travelTimeQuery = {
       allowPeakTravel:
-        ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'concessionary',
-      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'concessionary',
+        ticketInfo.travelTime === 'peak' ||
+        ticketInfo.travelTime === 'concessionary' ||
+        ticketInfo.travelTime === 'any',
+      timePeriod1:
+        ticketInfo.travelTime === 'peak' ||
+        ticketInfo.travelTime === 'concessionary' ||
+        ticketInfo.travelTime === 'any',
       timePeriod2: ticketInfo.travelTime !== 'concessionary',
       timePeriod3: ticketInfo.travelTime !== 'concessionary',
       timePeriod4: ticketInfo.travelTime !== 'concessionary',
