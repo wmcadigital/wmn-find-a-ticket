@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Loader from 'components/shared/Loader/Loader';
 import useStepLogic from './customHooks/useStepLogic';
 import useTicketingAPI from './customHooks/useTicketingAPI';
-import usePreviousValue from './customHooks/usePreviousValue';
+// import usePreviousValue from './customHooks/usePreviousValue';
 import SidebarSummary from './SidebarSummary/SidebarSummary';
 import Step1 from './Step1/Step1';
 import Step2 from './Step2/Step2';
@@ -10,21 +10,20 @@ import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
 import s from './Form.module.scss';
 
-const Form = () => {
+const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState, formDispatch } = useStepLogic();
   const { getAPIResults, results, loading } = useTicketingAPI();
   const { apiResults, ticketInfo } = formState;
-  const prevMode = usePreviousValue(ticketInfo.modes);
-  const prevResults = usePreviousValue(apiResults);
-
   useEffect(() => {
-    if ((!results.length && !apiResults.length) || prevMode !== ticketInfo.modes) {
+    // Run API search if there are no results or if modes have changed
+    if (!apiResults.length || prevMode !== ticketInfo.modes) {
       getAPIResults();
     }
-    if (!apiResults.length || prevResults !== apiResults) {
+    // Update apiResults in formContext if there are no results or if results have updated
+    if (!apiResults.length || (results.length && results !== apiResults)) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
     }
-  }, [getAPIResults, results, apiResults, formDispatch, prevMode, prevResults, ticketInfo.modes]);
+  }, [getAPIResults, results, apiResults, formDispatch, prevMode, ticketInfo.modes]);
 
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>

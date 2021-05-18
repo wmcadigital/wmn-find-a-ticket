@@ -91,6 +91,10 @@ export type StateAction =
       };
     }
   | {
+      type: 'RESET_TICKET_INFO';
+      payload?: { [key: string]: any };
+    }
+  | {
       type: 'ADD_API_RESULTS';
       payload: Ticket[];
     }

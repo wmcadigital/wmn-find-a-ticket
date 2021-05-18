@@ -49,11 +49,24 @@ function StartPage() {
     e.preventDefault();
     if (Object.values(selectedModes).some((m) => m) && !error) {
       // If no errors, proceed to update state
-      formDispatch({
-        type: 'UPDATE_MODE',
-        // Spread the object keys with true values to update global state
-        payload: [...(Object.keys(selectedModes) as TForm.Modes[]).filter((m) => selectedModes[m])],
-      });
+      const arraysEqual = (a: any, b: any) =>
+        a.length === b.length && a.every((v: any, i: any) => v === b[i]);
+      const payload = [
+        ...(Object.keys(selectedModes) as TForm.Modes[]).filter((m) => selectedModes[m]),
+      ];
+      if (!arraysEqual(payload, formState.ticketInfo.modes || [])) {
+        // Reset ticket info and update
+        formDispatch({
+          type: 'RESET_TICKET_INFO',
+          // Keep previous traveller & modes info
+          payload: { modes: formState.ticketInfo.modes, traveller: formState.ticketInfo.traveller },
+        });
+        formDispatch({
+          type: 'UPDATE_MODE',
+          // Spread the object keys with true values to update global state
+          payload,
+        });
+      }
       if (formState.editMode) {
         runStepLogic();
       }

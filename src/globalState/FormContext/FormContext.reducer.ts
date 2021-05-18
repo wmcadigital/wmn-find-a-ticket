@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { setSearchParam, getSearchParam, delSearchParam } from '../helpers/URLSearchParams'; // (used to sync state with URL)
+import {
+  setSearchParam,
+  getSearchParam,
+  delSearchParam,
+  getAllSearchParams,
+} from '../helpers/URLSearchParams'; // (used to sync state with URL)
 import questions from '../../components/App/Form/questions';
 import * as TForm from './FormContext.types';
 
@@ -160,6 +165,16 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
       return {
         ...state,
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: null },
+      };
+
+    case 'RESET_TICKET_INFO':
+      getAllSearchParams().forEach((param) => {
+        delSearchParam(param.name);
+      });
+      // return initial ticketInfo state with payload (info to retain)
+      return {
+        ...state,
+        ticketInfo: { ...initialState.ticketInfo, ...action.payload },
       };
 
     case 'TOGGLE_SHOW_ANSWERS':
