@@ -57,7 +57,7 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
       message: 'Apologies, we are having technical difficulties.',
       isTimeoutError: axios.isCancel(error),
     });
-    setResults([]); // Reset the results so that the dropdown disappears
+    setResults([]); // Reset the results
     if (!axios.isCancel(error)) {
       // eslint-disable-next-line no-console
       console.log({ error });

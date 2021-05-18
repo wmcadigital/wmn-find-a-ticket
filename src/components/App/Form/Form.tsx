@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Loader from 'components/shared/Loader/Loader';
 import useStepLogic from './customHooks/useStepLogic';
 import useTicketingAPI from './customHooks/useTicketingAPI';
+import usePreviousValue from './customHooks/usePreviousValue';
 import SidebarSummary from './SidebarSummary/SidebarSummary';
 import Step1 from './Step1/Step1';
 import Step2 from './Step2/Step2';
@@ -12,14 +13,18 @@ import s from './Form.module.scss';
 const Form = () => {
   const { formState, formDispatch } = useStepLogic();
   const { getAPIResults, results, loading } = useTicketingAPI();
+  const { apiResults, ticketInfo } = formState;
+  const prevMode = usePreviousValue(ticketInfo.modes);
+  const prevResults = usePreviousValue(apiResults);
 
   useEffect(() => {
-    if (!results.length && !formState.apiResults.length) {
+    if ((!results.length && !apiResults.length) || prevMode !== ticketInfo.modes) {
       getAPIResults();
-    } else if (!formState.apiResults.length) {
+    }
+    if (!apiResults.length || prevResults !== apiResults) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
     }
-  }, [getAPIResults, results, formState, formDispatch]);
+  }, [getAPIResults, results, apiResults, formDispatch, prevMode, prevResults, ticketInfo.modes]);
 
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
