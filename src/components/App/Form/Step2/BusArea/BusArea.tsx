@@ -128,12 +128,12 @@ const BusArea = () => {
                   <p className="wmnds-m-none">
                     If you only want to travel in the{' '}
                     {getExcludedBusAreas().map((area, i) => (
-                      <>
+                      <span key={area.replace(/[^a-z0-9_\s-]/, '')}>
                         {i + 1 !== 1 && (
                           <>{i + 1 === getExcludedBusAreas().length ? ' or ' : ', '}</>
                         )}
                         <strong>{area}</strong>
-                      </>
+                      </span>
                     ))}{' '}
                     <strong>bus areas</strong> then you&rsquo;ll need to buy an adult ticket
                   </p>
