@@ -4,6 +4,7 @@ import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
+import usePreviousValue from '../../customHooks/usePreviousValue';
 
 const Traveller = () => {
   const name = 'traveller';
@@ -11,9 +12,13 @@ const Traveller = () => {
   const { handleChange, value, formDispatch, genericError, error, setError } =
     useHandleChange(name);
   const { question, options } = questions[name];
+  const prevTraveller = usePreviousValue(formState.ticketInfo.traveller);
 
   const handleContinue = () => {
     if (value && value.length !== 0) {
+      if (formState.editMode && prevTraveller !== value) {
+        formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'busArea' } });
+      }
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
       if (value === 'concessionary' || value === 'disabled') {

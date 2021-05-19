@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import Loader from 'components/shared/Loader/Loader';
 import useStepLogic from './customHooks/useStepLogic';
 import useTicketingAPI from './customHooks/useTicketingAPI';
-// import usePreviousValue from './customHooks/usePreviousValue';
 import SidebarSummary from './SidebarSummary/SidebarSummary';
 import Step1 from './Step1/Step1';
 import Step2 from './Step2/Step2';
@@ -14,6 +13,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState, formDispatch } = useStepLogic();
   const { getAPIResults, results, loading } = useTicketingAPI();
   const { apiResults, ticketInfo } = formState;
+
   useEffect(() => {
     // Run API search if there are no results or if modes have changed
     if (!apiResults.length || prevMode !== ticketInfo.modes) {
