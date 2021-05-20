@@ -1,6 +1,8 @@
 import { useFormContext } from 'globalState';
+// import dompurify from 'dompurify';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
+import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
 import questions from '../../questions';
 
 import { Ticket } from '../../customHooks/Tickets.types';
@@ -48,7 +50,7 @@ const TicketDuration = ({
                   <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
                     <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
                       <h4>
-                        {option.name}
+                        <ReplaceTextWithIcon htmlElement={option.name} />
                         <span className={s.totalPrice}>
                           {' '}
                           £{option.ticketCurrentAmount.toFixed(2)}

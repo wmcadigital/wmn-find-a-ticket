@@ -1,5 +1,6 @@
 import { useFormContext, TForm } from 'globalState';
 import Icon from 'components/shared/Icon/Icon';
+import NIcon from 'components/shared/Icon/NIcon';
 import questions from '../questions';
 import SummarySection from './SummarySection';
 import s from './SidebarSummary.module.scss';
@@ -88,7 +89,7 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Bus company"
-            value={ticketInfo.busCompany ? ticketInfo.busCompany : 'nBus'}
+            value={ticketInfo.busCompany ? ticketInfo.busCompany : <NIcon str="Bus" />}
             onChange={() => editStep(1, 'busCompany')}
           />
         </>

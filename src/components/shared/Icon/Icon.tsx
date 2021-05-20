@@ -7,12 +7,14 @@ type IconProps = {
   iconName: string;
   className?: string;
   title?: string;
+  desc?: string;
 };
 
-const Icon = ({ className, iconName, title }: IconProps) => {
+const Icon = ({ className, iconName, title, desc }: IconProps) => {
   return (
     <svg className={className}>
       {title && <title>{title}</title>}
+      {desc && <title>{desc}</title>}
       <use xlinkHref={`#wmnds-${iconName}`} href={`#wmnds-${iconName}`} />
     </svg>
   );

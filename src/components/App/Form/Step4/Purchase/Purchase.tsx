@@ -2,6 +2,7 @@ import dompurify from 'dompurify';
 import { useFormContext } from 'globalState';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import Icon from 'components/shared/Icon/Icon';
+import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
 import Button from 'components/shared/Button/Button';
 import s from './Purchase.module.scss';
 import { Ticket } from '../../customHooks/Tickets.types';
@@ -63,7 +64,9 @@ const Purchase = () => {
                 <div className="wmnds-col-2-3">
                   {ticket && Object.entries(ticket).length > 0 && (
                     <>
-                      <h2 className={s.heading}>{ticket.name}</h2>
+                      <h2 className={s.heading}>
+                        <ReplaceTextWithIcon htmlElement={ticket.name} />
+                      </h2>
                       <div className={s.icons}>
                         {getModeIcons(ticket).map((mode: any) => (
                           <Icon
@@ -73,7 +76,12 @@ const Purchase = () => {
                           />
                         ))}
                       </div>
-                      <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.description) }} />
+                      <ReplaceTextWithIcon htmlElement={ticket.description} />
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: sanitize(ticket.description),
+                        }}
+                      />
                       <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.summary) }} />
                     </>
                   )}

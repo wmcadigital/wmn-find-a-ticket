@@ -4,6 +4,7 @@ import Loader from 'components/shared/Loader/Loader';
 import Dropdown from 'components/shared/Dropdown/Dropdown';
 import Button from 'components/shared/Button/Button';
 import Icon from 'components/shared/Icon/Icon';
+import NIcon from 'components/shared/Icon/NIcon';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
@@ -99,20 +100,26 @@ const BusCompanyStep2 = () => {
                 {isSupportedOperator ? (
                   <>
                     <p>You can buy {selectedOperator.name} tickets on our website. </p>
-                    <p>{selectedOperator.name} are also part of the nBus ticket scheme.</p>
+                    <p>
+                      {selectedOperator.name} are also part of the <NIcon str="Bus" /> ticket
+                      scheme.
+                    </p>
                     <p className="wmnds-m-none">
                       You can catch {selectedOperator.name} buses, as well as buses from all other
-                      companies in the West Midlands Network with a nBus ticket.
+                      companies in the West Midlands Network with a <NIcon str="Bus" /> ticket.
                     </p>
                   </>
                 ) : (
                   <>
                     {selectedOperator.acceptnBus && (
                       <>
-                        <p>{selectedOperator.name} are part of the nBus ticket scheme.</p>
+                        <p>
+                          {selectedOperator.name} are part of the <NIcon str="Bus" /> ticket scheme.
+                        </p>
                         <p>
                           You can catch {selectedOperator.name} buses, as well as buses from all
-                          other companies in the West Midlands Network with an nBus ticket.
+                          other companies in the West Midlands Network with an <NIcon str="Bus" />{' '}
+                          ticket.
                         </p>
                       </>
                     )}
