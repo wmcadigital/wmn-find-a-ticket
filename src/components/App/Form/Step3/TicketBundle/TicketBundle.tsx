@@ -13,6 +13,11 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
   const { handleChange, genericError, error, setError, value } = useHandleChange(name);
   const { question, hint } = questions[name];
   const { sanitize } = dompurify;
+  const dayTicket = results.find(
+    (result) => result.validity === '1 Day' && result.type === 'Ticket',
+  );
+
+  console.log(dayTicket);
 
   const handleContinue = () => {
     if (value && value.length !== 0) {
@@ -84,7 +89,7 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
                 <Radio
                   name="multiDay"
                   text="<strong>No</strong> I will only need a 1 day ticket"
-                  value="no"
+                  value={`${dayTicket!.id}`}
                   onChange={handleChange}
                 />
                 <p>
