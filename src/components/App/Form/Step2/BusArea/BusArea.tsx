@@ -59,6 +59,21 @@ const BusArea = () => {
     }
   };
 
+  const busCompanyWebsite = () => {
+    switch (formState.ticketInfo.busCompany) {
+      case 'National Express West Midlands':
+        return 'https://nxbus.co.uk/west-midlands/help-information/our-operating-area';
+      case 'Diamond Bus':
+        return 'https://www.diamondbuses.com/about-us/network-maps/';
+      case 'Stagecoach':
+        return 'https://www.stagecoachbus.com/maps';
+      case 'Johnsons of Henley':
+        return 'https://www.johnsonscoaches.co.uk/bus-route-maps/';
+      default:
+        return '#';
+    }
+  };
+
   return (
     <>
       {genericError}
@@ -69,15 +84,27 @@ const BusArea = () => {
             The West Midlands is split into different bus areas. You can choose which bus area you
             want your ticket to cover.{' '}
           </p>
-          <p>Local areas have smaller boundaries and tickets are cheaper.</p>
-          <p>Birmingham and Solihull do not have local bus areas. </p>
-          <p>
-            If you’re not sure, you can{' '}
-            <a href="https://find-bus-area.wmnetwork.co.uk">
-              find out which bus areas particular stops are in
-            </a>
-            .
-          </p>
+          {formState.ticketInfo.busCompany === 'nBus' ? (
+            <>
+              <p>Local areas have smaller boundaries and tickets are cheaper.</p>
+              <p>Birmingham and Solihull do not have local bus areas. </p>
+              <p>
+                If you’re not sure, you can{' '}
+                <a href="https://find-bus-area.wmnetwork.co.uk">
+                  find out which bus areas particular stops are in
+                </a>
+                .
+              </p>
+            </>
+          ) : (
+            <p>
+              If you’re not sure, you can{' '}
+              <a href={busCompanyWebsite()} target="_blank" rel="noreferrer">
+                view the bus areas on the {formState.ticketInfo.busCompany} website
+              </a>
+              .
+            </p>
+          )}
         </div>
         <div className="wmnds-fe-group wmnds-m-b-md">
           <fieldset className="wmnds-fe-fieldset">
