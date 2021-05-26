@@ -3,11 +3,11 @@ import { useMemo } from 'react';
 import { useFormContext } from 'globalState';
 // import { Ticket } from './Tickets.types';
 
-const useTicketFilter = () => {
+const useTicketQueries = () => {
   const [formState] = useFormContext();
   const { ticketInfo } = formState;
 
-  const ticketFilter: any = useMemo(() => {
+  const ticketQuery: any = useMemo(() => {
     let fullQuery = {};
 
     const modesQuery = {
@@ -39,14 +39,15 @@ const useTicketFilter = () => {
         ticketInfo.busArea === 'Diamond Bus Area' ? 'Entire Operator Area' : ticketInfo.busArea,
     };
 
-    const trainQuery = {
-      firstClass: ticketInfo.firstClass === 'yes',
-      networkTicket: ticketInfo.ticketType === 'nTicket',
+    const railZonesQuery = {
       railZoneFrom: (ticketInfo.railZones && Math.min(...ticketInfo.railZones)) || null,
-      railZoneTo:
-        (!ticketInfo.outOfCounty && ticketInfo.railZones && Math.max(...ticketInfo.railZones)) ||
-        null,
-      outOfCounty: ticketInfo.outOfCounty,
+      railZoneTo: (ticketInfo.railZones && Math.max(...ticketInfo.railZones)) || null,
+    };
+
+    const trainQuery = {
+      networkTicket: ticketInfo.ticketType === 'nTicket',
+      outOfCounty: ticketInfo.outOfCounty || null,
+      firstClass: ticketInfo.firstClass === 'yes',
     };
 
     const travelTimeQuery = {
@@ -70,7 +71,7 @@ const useTicketFilter = () => {
     }
 
     if (ticketInfo.modes?.includes('train')) {
-      fullQuery = { ...fullQuery, ...trainQuery };
+      fullQuery = { ...fullQuery, ...railZonesQuery, ...trainQuery };
     }
 
     if (ticketInfo.travelTime) {
@@ -83,12 +84,13 @@ const useTicketFilter = () => {
       travellerQuery,
       operatorQuery,
       busTravelQuery,
+      railZonesQuery,
       trainQuery,
       travelTimeQuery,
     };
   }, [ticketInfo]);
 
-  return ticketFilter;
+  return ticketQuery;
 };
 
-export default useTicketFilter;
+export default useTicketQueries;

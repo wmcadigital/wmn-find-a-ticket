@@ -4,7 +4,7 @@ import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import { useFormContext } from 'globalState';
 import questions from '../../questions';
-import { Ticket } from '../../customHooks/Tickets.types';
+import { Ticket } from '../../types/Tickets.types';
 import useHandleChange from '../../customHooks/useHandleChange';
 
 const TicketBundle = ({ results }: { results: Ticket[] }) => {

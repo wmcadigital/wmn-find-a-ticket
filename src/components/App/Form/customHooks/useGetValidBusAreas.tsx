@@ -1,4 +1,4 @@
-import { Ticket } from './Tickets.types';
+import { Ticket } from '../types/Tickets.types';
 
 // START OF HELPER FUNC
 interface ValidArea {

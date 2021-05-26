@@ -36,6 +36,9 @@ export interface Ticket {
   buyOnSwift: boolean;
   documents?: (DocumentsEntity | null)[] | null;
   features?: FeaturesEntity[] | null;
+  hasAddon: boolean;
+  railZoneFrom?: number;
+  railZoneTo?: number;
   orderSequence: number;
   timePeriod1: boolean;
   timePeriod2: boolean;

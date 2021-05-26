@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import dompurify from 'dompurify';
 // Import context
 import { useFormContext, TForm } from 'globalState';
@@ -8,6 +8,9 @@ import Message from 'components/shared/Message/Message';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 
+import getUniqueOptions from '../../helpers/getUniqueOptions';
+import useTicketQueries from '../../customHooks/useTicketQueries';
+import useTicketFilter from '../../customHooks/useTicketFilter';
 import useHandleChange from '../../customHooks/useHandleChange';
 import AutoComplete from './AutoComplete/AutoComplete';
 import { AutoCompleteProvider, AutoCompleteContext } from './AutoComplete/AutoCompleteContext';
@@ -15,20 +18,101 @@ import { AutoCompleteProvider, AutoCompleteContext } from './AutoComplete/AutoCo
 const { sanitize } = dompurify;
 
 const RailZone = () => {
-  interface IZoneOptions {
-    text: string;
-    value: string;
-  }
-
   const name = 'railZones';
   const { value, handleChange, genericError, error, setError } = useHandleChange(name);
   const [, formDispatch] = useFormContext();
+  const { filterResults } = useTicketFilter();
   const [autoCompleteState] = useContext(AutoCompleteContext);
   const { selectedStations } = autoCompleteState;
   const [zonesValid, setZonesValid] = useState<boolean>(false);
+  const [selectionValid, setSelectionValid] = useState<boolean>(false);
   const [outOfCounty, setOutOfCounty] = useState<boolean>(false);
-  const [recommendedOptions, setRecommendedOptions] = useState<IZoneOptions[] | []>([]);
-  const [additionalOptions, setAdditionalOptions] = useState<IZoneOptions[] | []>([]);
+
+  const { travellerQuery, trainQuery } = useTicketQueries();
+  const uniqueOptions = getUniqueOptions(filterResults({ ...travellerQuery, ...trainQuery }), [
+    'railZoneFrom',
+    'railZoneTo',
+  ]);
+
+  useEffect(() => {
+    const stations = selectedStations.filter((item: any) => item.id !== null);
+    const zones = [...stations.map((stn: any) => stn.railZone)];
+    const maxZone = Math.max(...zones);
+
+    if (maxZone === 7) {
+      setOutOfCounty(true);
+    } else {
+      setOutOfCounty(false);
+    }
+  }, [outOfCounty, selectedStations]);
+
+  const options = useMemo(
+    () =>
+      uniqueOptions.map((option) => {
+        const zoneOptions = option.split('+');
+        return {
+          text: `Zone ${zoneOptions[0]}${
+            zoneOptions[0] !== zoneOptions[1] ? ` to ${zoneOptions[1]}` : ''
+          }`,
+          value: option,
+        };
+      }),
+    [uniqueOptions],
+  );
+
+  useEffect(() => {
+    // Zone selection is valid if:
+    // - at least one zones 1-5 station is selected
+    // - no more than one out of county station is selected
+    setZonesValid(
+      (selectedStations.some((stn: any) => stn.railZone < 7) &&
+        selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1) ||
+        !selectedStations.some((stn: any) => stn.id),
+    );
+    setSelectionValid(zonesValid && selectedStations.filter((stn: any) => stn.id).length > 1);
+  }, [zonesValid, selectedStations]);
+
+  // Update out of county context value on station change
+  useEffect(() => {
+    formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'firstClass' } });
+    formDispatch({
+      type: 'UPDATE_TICKET_INFO',
+      payload: {
+        name: 'outOfCounty',
+        value: outOfCounty,
+      },
+    });
+  }, [outOfCounty, formDispatch]);
+
+  const getOptions = () => {
+    const stations = selectedStations.filter((item: any) => item.id !== null);
+    const zones = [...stations.map((stn: any) => stn.railZone)];
+    const minZone = Math.min(...zones);
+    const maxZone = Math.max(...zones);
+
+    const allValidOptions = options.filter(
+      (o) =>
+        o.value.split('+')[0] <= `${minZone}` &&
+        o.value.split('+')[1] >= `${maxZone > 5 ? 5 : maxZone}`,
+    );
+    const recommendedOptions = allValidOptions.filter(
+      (o) =>
+        (o.value.split('+')[0] === '1' &&
+          o.value.split('+')[1] === `${maxZone > 5 ? 5 : maxZone}`) ||
+        o.value.split('+')[0] === '2',
+    );
+    const additionalOptions = allValidOptions.filter(
+      (o) =>
+        o.value.split('+')[0] === '1' && o.value.split('+')[1] > `${maxZone > 5 ? 5 : maxZone}`,
+    );
+
+    return {
+      recommendedOptions: outOfCounty ? options : recommendedOptions || [],
+      additionalOptions: outOfCounty ? [] : additionalOptions || [],
+    };
+  };
+
+  const { recommendedOptions, additionalOptions } = getOptions();
 
   const handleContinue = () => {
     if (value && value.length !== 0) {
@@ -44,90 +128,10 @@ const RailZone = () => {
             .join(','),
         },
       });
-      formDispatch({
-        type: 'UPDATE_TICKET_INFO',
-        payload: {
-          name: 'outOfCounty',
-          value: outOfCounty,
-        },
-      });
     } else {
       setError({ message: 'Please select an answer' });
     }
   };
-
-  useEffect(() => {
-    const options = [
-      {
-        text: 'Zone 1 to 2',
-        value: '1+2',
-      },
-      {
-        text: 'Zone 1 to 3',
-        value: '1+3',
-      },
-      {
-        text: 'Zone 1 to 4',
-        value: '1+4',
-      },
-      {
-        text: 'Zone 1 to 5',
-        value: '1+5',
-      },
-      {
-        text: 'Zone 2 to 5',
-        value: '2+5',
-      },
-    ];
-
-    // Zone selection is valid if:
-    // - at least one zones 1-5 station is selected
-    // - no more than one out of county station is selected
-    setZonesValid(
-      (selectedStations.some((stn: any) => stn.railZone < 7) &&
-        selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1) ||
-        !selectedStations.some((stn: any) => stn.id),
-    );
-
-    // Get valid selected stations
-    const stations = selectedStations.filter((item: any) => item.id !== null);
-    const zones = [...stations.map((stn: any) => stn.railZone)];
-    const minZone = Math.min(...zones);
-    const maxZone = Math.max(...zones);
-
-    if (maxZone === 7) {
-      setOutOfCounty(true);
-    } else {
-      setOutOfCounty(false);
-    }
-
-    // Set zoneOptions if:
-    // - zone selection is valid
-    // - more than one station is selected
-    if (zonesValid && selectedStations.filter((stn: any) => stn.id).length > 1) {
-      const allValidOptions = options.filter(
-        (o) =>
-          o.value.split('+')[0] <= `${minZone}` &&
-          o.value.split('+')[1] >= `${maxZone > 5 ? 5 : maxZone}`,
-      );
-      setRecommendedOptions(
-        allValidOptions.filter(
-          (o) =>
-            (o.value.split('+')[0] === '1' &&
-              o.value.split('+')[1] === `${maxZone > 5 ? 5 : maxZone}`) ||
-            o.value.split('+')[0] === '2',
-        ),
-      );
-      setAdditionalOptions(
-        allValidOptions.filter(
-          (o) =>
-            o.value.split('+')[0] === '1' && o.value.split('+')[1] > `${maxZone > 5 ? 5 : maxZone}`,
-        ),
-      );
-    } else {
-      setRecommendedOptions([]);
-    }
-  }, [zonesValid, selectedStations]);
 
   return (
     <>
@@ -149,7 +153,7 @@ const RailZone = () => {
           />
         )}
 
-        {recommendedOptions.length > 0 ? (
+        {selectionValid ? (
           <>
             <div className="wmnds-fe-group wmnds-m-t-lg wmnds-m-b-md">
               <fieldset className="wmnds-fe-fieldset">

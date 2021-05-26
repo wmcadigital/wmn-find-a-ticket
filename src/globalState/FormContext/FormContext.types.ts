@@ -1,5 +1,5 @@
 import questions from 'components/App/Form/questions';
-import { Ticket } from 'components/App/Form/customHooks/Tickets.types';
+import { Ticket } from 'components/App/Form/types/Tickets.types';
 // e.g. importing: import * as TForm
 // e.g. use: TForm.QuestionKeys
 

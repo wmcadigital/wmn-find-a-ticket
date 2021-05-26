@@ -5,7 +5,7 @@ import Icon from 'components/shared/Icon/Icon';
 import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
 import Button from 'components/shared/Button/Button';
 import s from './Purchase.module.scss';
-import { Ticket } from '../../customHooks/Tickets.types';
+import { Ticket } from '../../types/Tickets.types';
 
 const { sanitize } = dompurify;
 

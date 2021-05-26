@@ -9,8 +9,8 @@ import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
-import useGetValidOperators from '../../customHooks/useGetValidOperators';
-import { Operator } from '../../customHooks/Operator.types';
+import getUniqueOptions from '../../helpers/getUniqueOptions';
+import { Operator } from '../../types/Operator.types';
 
 const BusCompanyStep2 = () => {
   const name = 'busCompany';
@@ -22,7 +22,7 @@ const BusCompanyStep2 = () => {
 
   const modesUrlString = (formState.ticketInfo as TForm.TicketInfo).modes.join('+');
 
-  const validBusOperators = useGetValidOperators(formState.apiResults);
+  const validBusOperators = getUniqueOptions(formState.apiResults, ['operator']);
 
   useEffect(() => {
     if (!results.length && !formState.operators.length) {

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
 import { useFormContext } from 'globalState';
-// import { Ticket } from './Tickets.types';
 
 const useTicketFilter = () => {
   const [formState] = useFormContext();

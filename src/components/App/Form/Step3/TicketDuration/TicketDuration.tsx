@@ -5,7 +5,7 @@ import Button from 'components/shared/Button/Button';
 import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
 import questions from '../../questions';
 
-import { Ticket } from '../../customHooks/Tickets.types';
+import { Ticket } from '../../types/Tickets.types';
 import s from './TicketDuration.module.scss';
 
 const TicketDuration = ({
