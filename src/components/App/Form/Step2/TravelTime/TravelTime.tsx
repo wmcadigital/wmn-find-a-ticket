@@ -50,7 +50,7 @@ const TravelTime = () => {
   if (optionsToShow.length === 1) {
     formDispatch({
       type: 'UPDATE_TICKET_INFO',
-      payload: { name, value: optionsToShow[0].value },
+      payload: { name, value: optionsToShow[0].value, autoAnswered: true },
     });
   }
 

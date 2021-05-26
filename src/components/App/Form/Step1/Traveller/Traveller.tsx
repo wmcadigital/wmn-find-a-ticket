@@ -20,11 +20,11 @@ const Traveller = () => {
         formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'busArea' } });
       }
       formDispatch({ type: 'EDIT_MODE', payload: null });
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
       if (value === 'concessionary' || value === 'disabled') {
         formDispatch({
           type: 'UPDATE_TICKET_INFO',
-          payload: { name: 'travelTime', value: 'concessionary' },
+          payload: { name: 'travelTime', value: 'concessionary', autoAnswered: true },
         });
       } else if (formState.ticketInfo.travelTime) {
         formDispatch({

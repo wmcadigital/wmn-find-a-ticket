@@ -61,7 +61,10 @@ const BusCompanyStep2 = () => {
     if (selectedOperator) {
       const payload = nBus ? 'nBus' : selectedOperator.name;
       formDispatch({ type: 'EDIT_MODE', payload: null });
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value: payload } });
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: { name, value: payload, autoAnswered: false },
+      });
     } else {
       setError({ message: 'Please select an answer' });
     }

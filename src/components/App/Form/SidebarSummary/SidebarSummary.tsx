@@ -100,6 +100,7 @@ const SidebarSummary = () => {
             title="Traveller"
             value={getOptionText('traveller', ticketInfo.traveller)}
             onChange={() => editStep(1, 'traveller')}
+            disabled={!!formState.autoAnswered.traveller}
           />
         </>
       )}
@@ -109,6 +110,7 @@ const SidebarSummary = () => {
             title="Bus area"
             value={ticketInfo.busArea}
             onChange={() => editStep(2, 'busArea')}
+            disabled={!!formState.autoAnswered.busArea}
           />
         </>
       )}
@@ -118,6 +120,7 @@ const SidebarSummary = () => {
             title="Rail zones"
             value={<RailZoneSummary railZones={ticketInfo.railZones} />}
             onChange={() => editStep(2, 'railZones')}
+            disabled={!!formState.autoAnswered.railZones}
           />
         </>
       )}
@@ -127,6 +130,7 @@ const SidebarSummary = () => {
             title="Travel time"
             value={getOptionText('travelTime', ticketInfo.travelTime)}
             onChange={() => editStep(2, 'travelTime')}
+            disabled={!!formState.autoAnswered.travelTime}
           />
         </>
       )}
@@ -136,6 +140,7 @@ const SidebarSummary = () => {
             title="First class"
             value={getOptionText('firstClass', ticketInfo.firstClass)}
             onChange={() => editStep(3, 'firstClass')}
+            disabled={!!formState.autoAnswered.firstClass}
           />
         </>
       )}
@@ -145,6 +150,7 @@ const SidebarSummary = () => {
             title="Ticket duration"
             value={ticketInfo.ticketDuration}
             onChange={() => editStep(3, 'ticketDuration')}
+            disabled={!!formState.autoAnswered.ticketDuration}
           />
         </>
       )}
@@ -156,6 +162,7 @@ const SidebarSummary = () => {
             onChange={() =>
               formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'isMultiDay' } })
             }
+            disabled={!!formState.autoAnswered.isMultiDay}
           />
         </>
       )}

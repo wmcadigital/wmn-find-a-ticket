@@ -30,7 +30,7 @@ const useHandleChange = (name: TForm.QuestionKeys) => {
   const handleContinue = () => {
     if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
     } else {
       setError({ message: 'Please select an answer' });
     }

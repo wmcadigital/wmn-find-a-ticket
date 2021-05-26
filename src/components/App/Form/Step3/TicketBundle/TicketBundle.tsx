@@ -33,7 +33,10 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
 
   const onContinue = () => {
     if (value === 'yes') {
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name: 'isMultiDay', value: 'Yes' } });
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: { name: 'isMultiDay', value: 'Yes', autoAnswered: false },
+      });
     } else {
       handleContinue();
     }

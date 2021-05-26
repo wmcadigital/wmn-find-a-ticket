@@ -19,6 +19,7 @@ export const initialState = (() => {
     ticketId: null,
     apiResults: [],
     operators: [],
+    autoAnswered: {},
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
@@ -140,6 +141,7 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
       return {
         ...state,
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
+        autoAnswered: { ...state.autoAnswered, [action.payload.name]: action.payload.autoAnswered },
       };
 
     case 'ADD_API_RESULTS':
@@ -165,6 +167,7 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
       return {
         ...state,
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: null },
+        autoAnswered: { ...state.autoAnswered, [action.payload.name]: false },
       };
 
     case 'RESET_TICKET_INFO':

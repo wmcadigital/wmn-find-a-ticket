@@ -54,6 +54,7 @@ export type State = {
   ticketId: Nullable<string>;
   apiResults: Ticket[];
   operators: any[];
+  autoAnswered: Partial<TicketInfo>;
 };
 
 /* eslint-disable @typescript-eslint/indent */
@@ -82,6 +83,7 @@ export type StateAction =
       payload: {
         name: keyof TicketInfo;
         value: TicketInfo[keyof TicketInfo];
+        autoAnswered: boolean;
       };
     }
   | {

@@ -80,6 +80,7 @@ const RailZone = () => {
       payload: {
         name: 'outOfCounty',
         value: outOfCounty,
+        autoAnswered: true,
       },
     });
   }, [outOfCounty, formDispatch]);
@@ -117,7 +118,7 @@ const RailZone = () => {
   const handleContinue = () => {
     if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
       formDispatch({
         type: 'UPDATE_TICKET_INFO',
         payload: {
@@ -126,6 +127,7 @@ const RailZone = () => {
             .map((station: TForm.IStations) => station.stationName)
             .filter((stn: string) => stn)
             .join(','),
+          autoAnswered: false,
         },
       });
     } else {

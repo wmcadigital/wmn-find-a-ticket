@@ -23,7 +23,7 @@ const TicketDuration = ({
     formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({
       type: 'UPDATE_TICKET_INFO',
-      payload: { name, value: value.validity.toLowerCase() },
+      payload: { name, value: value.validity.toLowerCase(), autoAnswered: false },
     });
     if (value.validity.toLowerCase() !== '1 day' || !hasBundleTickets) {
       formDispatch({
