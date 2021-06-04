@@ -33,6 +33,16 @@ const BusCompanyStep2 = () => {
       let payload = results.filter((operator) => operator.type === 'Bus Operator');
       // Sort results alphabetically
       payload.sort((a, b) => (a.name > b.name ? 1 : -1));
+      // Sort National Express results to top
+      payload.sort((a, b) => {
+        let returnVal = 0;
+        if (a.name.includes('National Express')) {
+          returnVal = -1;
+        } else if (b.name.includes('National Express')) {
+          returnVal = 1;
+        }
+        return returnVal;
+      });
       // Map missing websites to results
       payload = payload.map((operator) => {
         let obj = operator;
