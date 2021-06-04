@@ -10,20 +10,21 @@ import Step4 from './Step4/Step4';
 import s from './Form.module.scss';
 
 const Form = ({ prevMode }: { prevMode: string[] }) => {
-  const { formState, formDispatch } = useStepLogic();
+  const { formState } = useStepLogic();
   const { getAPIResults, results, loading } = useTicketingAPI();
-  const { apiResults, ticketInfo } = formState;
+  const { ticketInfo } = formState;
 
   useEffect(() => {
-    // Run API search if there are no results or if modes have changed
-    if (!apiResults.length || prevMode !== ticketInfo.modes) {
-      getAPIResults();
+    // Run API search if:
+    // - Train mode is not selected
+    // - There are no results
+    // - If modes have changed
+    if (!loading) {
+      if (!results.length || prevMode !== ticketInfo.modes) {
+        getAPIResults();
+      }
     }
-    // Update apiResults in formContext if there are no results or if results have updated
-    if (!apiResults.length || (results.length && results !== apiResults)) {
-      formDispatch({ type: 'ADD_API_RESULTS', payload: results });
-    }
-  }, [getAPIResults, results, apiResults, formDispatch, prevMode, ticketInfo.modes]);
+  }, [getAPIResults, loading, results, prevMode, ticketInfo.modes]);
 
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>

@@ -15,15 +15,19 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
-  const [formState] = useFormContext();
+  const [formState, formDispatch] = useFormContext();
   const { ticketInfo } = formState;
 
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
+    // Include stations if stations have been added and an out of county station is selected
+    const stations =
+      ticketInfo.outOfCounty && ticketInfo.stations ? ticketInfo.stations.split(',') : null;
     return {
       allowBus: ticketInfo.modes?.includes('bus'),
       allowMetro: ticketInfo.modes?.includes('tram'),
       allowTrain: ticketInfo.modes?.includes('train'),
+      ...(stations && { stationNames: stations }),
     };
   }, [ticketInfo]);
 
@@ -36,6 +40,11 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
     if (source.current) source.current.cancel('Api request timeout');
   };
 
+  // on Results
+  useEffect(() => {
+    formDispatch({ type: 'ADD_API_RESULTS', payload: results });
+  }, [formDispatch, results]);
+
   const startApiTimeout = useCallback(() => {
     apiTimeout.current = setTimeout(() => {
       cancelRequest();
@@ -45,8 +54,8 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
   const handleTicketingApiResponse = useCallback((response) => {
-    setLoading(false);
     setResults(response.data);
+    setLoading(false);
   }, []);
 
   const handleTicketingApiError = (error: any) => {
@@ -81,12 +90,12 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
     if (get) {
       axios
         .get(REACT_APP_API_HOST + apiPath, options)
-        .then(handleTicketingApiResponse)
+        .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     } else {
       axios
         .post(REACT_APP_API_HOST + apiPath, ticketQuery, options)
-        .then(handleTicketingApiResponse)
+        .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     }
   }, [get, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);

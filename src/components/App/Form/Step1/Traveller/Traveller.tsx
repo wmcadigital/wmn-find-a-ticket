@@ -18,6 +18,7 @@ const Traveller = () => {
     if (value && value.length !== 0) {
       if (formState.editMode && prevTraveller !== value) {
         formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'busArea' } });
+        formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'railZones' } });
       }
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
