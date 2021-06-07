@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'globalState';
 // import dompurify from 'dompurify';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
@@ -16,9 +17,20 @@ const TicketDuration = ({
   results: Ticket[];
 }) => {
   const name = 'ticketDuration';
-  const [, formDispatch] = useFormContext();
-
+  const [formState, formDispatch] = useFormContext();
   const { question, hint } = questions[name];
+  const { ticketType, firstClass } = formState.ticketInfo;
+
+  // Automatically set first class to 'no' if it hasn't been set yet and includes train.
+  useEffect(() => {
+    if (ticketType === 'nTicket' && !firstClass) {
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: { name: 'firstClass', value: 'no', autoAnswered: true },
+      });
+    }
+  }, [firstClass, ticketType, formDispatch]);
+
   const handleContinue = (value: Ticket) => {
     formDispatch({ type: 'EDIT_MODE', payload: null });
     formDispatch({
