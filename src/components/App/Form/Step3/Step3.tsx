@@ -14,14 +14,14 @@ const Step3 = () => {
   const { ticketInfo, editMode } = formState;
   let sectionToRender;
   const hasBundleTickets = filteredResults.some((result) => result.type === 'Carnet');
+  const hasFirstClassOptions =
+    filteredResults.some((result) => result.firstClass) &&
+    filteredResults.some((result) => !result.firstClass);
 
   if (ticketInfo.railZones) {
     // Logic to determine which to section to show
     if (
-      (ticketInfo.ticketType === 'nTicket' &&
-        !ticketInfo.firstClass &&
-        Math.min(...ticketInfo.railZones!) === 1 &&
-        Math.max(...ticketInfo.railZones!) >= 4) ||
+      (ticketInfo.ticketType === 'nTicket' && !ticketInfo.firstClass && hasFirstClassOptions) ||
       editMode === 'firstClass'
     ) {
       sectionToRender = <TicketClass />;
