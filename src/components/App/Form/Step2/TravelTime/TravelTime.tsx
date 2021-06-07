@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'globalState';
 import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
@@ -47,12 +48,14 @@ const TravelTime = () => {
   });
 
   // If there is only one option available, set value to that option and skip step
-  if (optionsToShow.length === 1) {
-    formDispatch({
-      type: 'UPDATE_TICKET_INFO',
-      payload: { name, value: optionsToShow[0].value, autoAnswered: true },
-    });
-  }
+  useEffect(() => {
+    if (optionsToShow && optionsToShow.length === 1) {
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: { name, value: optionsToShow[0].value, autoAnswered: true },
+      });
+    }
+  }, [optionsToShow, formDispatch]);
 
   return (
     <>
