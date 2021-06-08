@@ -11,7 +11,7 @@ const useTicketQueries = () => {
     let fullQuery = {};
 
     const modesQuery = {
-      allowBus: ticketInfo.modes!.includes('bus'),
+      ...(ticketInfo.modes!.includes('bus') && { allowBus: ticketInfo.modes!.includes('bus') }),
       allowMetro: ticketInfo.modes!.includes('tram'),
       allowTrain: ticketInfo.modes!.includes('train'),
     };

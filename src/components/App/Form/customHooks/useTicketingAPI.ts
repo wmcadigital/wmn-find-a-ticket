@@ -12,7 +12,7 @@ interface IError {
 
 const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?: boolean) => {
   // State variables
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<any[] | null>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState, formDispatch] = useFormContext();
@@ -24,12 +24,14 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
     const stations =
       ticketInfo.outOfCounty && ticketInfo.stations ? ticketInfo.stations.split(',') : null;
     return {
-      allowBus: ticketInfo.modes?.includes('bus'),
       allowMetro: ticketInfo.modes?.includes('tram'),
       allowTrain: ticketInfo.modes?.includes('train'),
+      allowBus: ticketInfo.modes?.includes('bus'),
       ...(stations && { stationNames: stations }),
     };
   }, [ticketInfo]);
+
+  console.log(ticketQuery);
 
   // Reference variables
   const mounted = useRef<any>();
@@ -42,7 +44,9 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
 
   // on Results
   useEffect(() => {
-    formDispatch({ type: 'ADD_API_RESULTS', payload: results });
+    if (results) {
+      formDispatch({ type: 'ADD_API_RESULTS', payload: results });
+    }
   }, [formDispatch, results]);
 
   const startApiTimeout = useCallback(() => {
@@ -54,7 +58,11 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
   const handleTicketingApiResponse = useCallback((response) => {
-    setResults(response.data);
+    if (response.data.length) {
+      setResults(response.data);
+    } else {
+      setResults(null);
+    }
     setLoading(false);
   }, []);
 

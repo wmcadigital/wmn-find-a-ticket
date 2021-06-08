@@ -18,7 +18,7 @@ const TravelTime = () => {
   // eslint-disable-next-line prettier/prettier
   const { travellerQuery, operatorQuery, busTravelQuery, railZonesQuery, trainQuery } =
     useTicketQueries();
-  let ticketQuery;
+  let ticketQuery = { ...travellerQuery };
   if (ticketInfo.modes?.includes('bus')) {
     ticketQuery = { ...travellerQuery, ...busTravelQuery, ...operatorQuery };
   }

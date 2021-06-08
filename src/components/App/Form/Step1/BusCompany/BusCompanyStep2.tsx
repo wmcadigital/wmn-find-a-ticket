@@ -25,10 +25,10 @@ const BusCompanyStep2 = () => {
   const validBusOperators = getUniqueOptions(formState.apiResults, ['operator']);
 
   useEffect(() => {
-    if (!results.length && !formState.operators.length) {
+    if (results && !results.length && !formState.operators.length) {
       getAPIResults();
     }
-    if (results.length && !formState.operators.length) {
+    if (results && results.length && !formState.operators.length) {
       // Filter out non bus operator results
       let payload = results.filter((operator) => operator.type === 'Bus Operator');
       // Sort results alphabetically

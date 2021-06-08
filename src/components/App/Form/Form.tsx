@@ -20,7 +20,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
     // - There are no results
     // - If modes have changed
     if (!loading) {
-      if (!results.length || prevMode !== ticketInfo.modes) {
+      if ((results && !results.length) || prevMode !== ticketInfo.modes) {
         getAPIResults();
       }
     }
