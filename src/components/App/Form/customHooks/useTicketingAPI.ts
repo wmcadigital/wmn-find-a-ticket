@@ -31,8 +31,6 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
     };
   }, [ticketInfo]);
 
-  console.log(ticketQuery);
-
   // Reference variables
   const mounted = useRef<any>();
   const source = useRef<any>();
