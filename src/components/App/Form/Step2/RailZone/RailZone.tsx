@@ -100,25 +100,14 @@ const RailZone = () => {
     });
 
     // Update out of county context value on station change
-    if (maxZone === 7) {
-      formDispatch({
-        type: 'UPDATE_TICKET_INFO',
-        payload: {
-          name: 'outOfCounty',
-          value: true,
-          autoAnswered: false,
-        },
-      });
-    } else {
-      formDispatch({
-        type: 'UPDATE_TICKET_INFO',
-        payload: {
-          name: 'outOfCounty',
-          value: false,
-          autoAnswered: false,
-        },
-      });
-    }
+    formDispatch({
+      type: 'UPDATE_TICKET_INFO',
+      payload: {
+        name: 'outOfCounty',
+        value: maxZone === 7,
+        autoAnswered: false,
+      },
+    });
   }, [selectedStations, formDispatch]);
 
   useEffect(() => {

@@ -46,7 +46,6 @@ const useTicketQueries = () => {
 
     const trainQuery = {
       networkTicket: ticketInfo.ticketType === 'nTicket',
-      outOfCounty: ticketInfo.outOfCounty || null,
       firstClass: ticketInfo.firstClass ? ticketInfo.firstClass === 'yes' : null,
     };
 

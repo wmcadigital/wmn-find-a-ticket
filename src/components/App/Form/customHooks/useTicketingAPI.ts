@@ -10,7 +10,10 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?: boolean) => {
+const useTicketingAPI = (
+  apiPath: string = '/ticketing/v2/tickets/search',
+  apiOptions: { get?: boolean } = {},
+) => {
   // State variables
   const [results, setResults] = useState<any[] | null>([]);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
@@ -26,7 +29,8 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
     return {
       allowMetro: ticketInfo.modes?.includes('tram'),
       allowTrain: ticketInfo.modes?.includes('train'),
-      allowBus: ticketInfo.modes?.includes('bus'),
+      // Include bus mode query only if tram isn't selected
+      ...(!ticketInfo.modes?.includes('tram') && { allowBus: ticketInfo.modes?.includes('bus') }),
       ...(stations && { stationNames: stations }),
     };
   }, [ticketInfo]);
@@ -93,7 +97,7 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
     };
 
-    if (get) {
+    if (apiOptions.get) {
       axios
         .get(REACT_APP_API_HOST + apiPath, options)
         .then((res) => mounted.current && handleTicketingApiResponse(res))
@@ -104,7 +108,7 @@ const useTicketingAPI = (apiPath: string = '/ticketing/v2/tickets/search', get?:
         .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     }
-  }, [get, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
+  }, [apiOptions.get, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
     // Unmount / cleanup

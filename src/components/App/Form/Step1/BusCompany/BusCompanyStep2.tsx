@@ -16,7 +16,9 @@ const BusCompanyStep2 = () => {
   const name = 'busCompany';
   const [formState, formDispatch] = useFormContext();
   const { handleChange, value, genericError, error, setError } = useHandleChange(name);
-  const { getAPIResults, results, loading } = useTicketingAPI('/ticketing/v2/operators', true);
+  const { getAPIResults, results, loading } = useTicketingAPI('/ticketing/v2/operators', {
+    get: true,
+  });
   const { question, hint } = questions[name] as typeof questions[typeof name];
   const [selectedOperator, setSelectedOperator] = useState<Operator | null>(null);
 
