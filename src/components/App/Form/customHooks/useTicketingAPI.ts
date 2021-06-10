@@ -46,7 +46,7 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (results) {
+    if (results && results.length) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
     }
   }, [formDispatch, results]);
@@ -65,6 +65,7 @@ const useTicketingAPI = (
     } else {
       setResults(null);
     }
+    clearApiTimeout();
     setLoading(false);
   }, []);
 

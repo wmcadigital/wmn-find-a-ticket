@@ -17,7 +17,6 @@ import useTicketingAPI from '../../customHooks/useTicketingAPI';
 import useTicketQueries from '../../customHooks/useTicketQueries';
 import useTicketFilter from '../../customHooks/useTicketFilter';
 import useHandleChange from '../../customHooks/useHandleChange';
-import usePreviousValue from '../../customHooks/usePreviousValue';
 import AutoComplete from './AutoComplete/AutoComplete';
 import { AutoCompleteProvider, AutoCompleteContext } from './AutoComplete/AutoCompleteContext';
 
@@ -33,20 +32,22 @@ const RailZone = () => {
   const [autoCompleteState] = useContext(AutoCompleteContext);
   const { selectedStations } = autoCompleteState;
   const [defaultToAdult, setDefaultToAdult] = useState<boolean>(false);
+  const [mustUpdate, setMustUpdate] = useState<boolean>(false);
   const [zonesValid, setZonesValid] = useState<boolean>(false);
   const [selectionValid, setSelectionValid] = useState<boolean>(false);
-  const previousStations = usePreviousValue(ticketInfo.stations);
-
+  // Destructure queries for filter
   const { travellerQuery, trainQuery } = useTicketQueries();
+  // Returns the unique options from the API results
   const uniqueOptions = getUniqueOptions(filterResults({ ...travellerQuery, ...trainQuery }), [
     'railZoneFrom',
     'railZoneTo',
   ]);
+  // Returns the unique options with traveller as adult from the API results
   const adultTravellerOptions = getUniqueOptions(filterResults({ isAdult: true, ...trainQuery }), [
     'railZoneFrom',
     'railZoneTo',
   ]);
-
+  // If there are no options set default to adult so we can check if adult tickets have options
   useEffect(() => {
     if (uniqueOptions.length > 0) {
       setDefaultToAdult(false);
@@ -57,6 +58,7 @@ const RailZone = () => {
 
   const options = useMemo(() => {
     const mapZoneOptions = (optionsArray: string[]) => {
+      // Map the zone options to an array
       return optionsArray.map((option) => {
         const zoneOptions = option.split('+');
         return {
@@ -67,51 +69,65 @@ const RailZone = () => {
         };
       });
     };
+    // If there are no uniqueOptions try adultTravellerOptions
     return uniqueOptions.length > 0
       ? mapZoneOptions(uniqueOptions)
       : mapZoneOptions(adultTravellerOptions);
   }, [uniqueOptions, adultTravellerOptions]);
 
   useEffect(() => {
+    // If loading isn't in progress, the autocomplete selection is valid and the selection has changed, get new API results
     if (!loading) {
-      if (selectionValid && ticketInfo.stations !== previousStations) {
+      if (selectionValid && mustUpdate) {
+        setMustUpdate(false);
         getAPIResults();
       }
     }
-  }, [loading, apiResults, selectionValid, previousStations, ticketInfo.stations, getAPIResults]);
+  }, [loading, mustUpdate, selectionValid, getAPIResults]);
 
   useEffect(() => {
     const stations = selectedStations.filter((item: any) => item.id !== null);
     const zones = [...stations.map((stn: any) => stn.railZone)];
     const maxZone = Math.max(...zones);
+    const stationValue = selectedStations
+      .map((station: TForm.IStations) => station.stationName)
+      .filter((stn: string) => stn)
+      .join(',');
 
-    // Update stations context value on station change
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'firstClass' } });
-    formDispatch({
-      type: 'UPDATE_TICKET_INFO',
-      payload: {
-        name: 'stations',
-        value: selectedStations
-          .map((station: TForm.IStations) => station.stationName)
-          .filter((stn: string) => stn)
-          .join(','),
-        autoAnswered: false,
-      },
-    });
-
-    // Update out of county context value on station change
-    formDispatch({
-      type: 'UPDATE_TICKET_INFO',
-      payload: {
-        name: 'outOfCounty',
-        value: maxZone === 7,
-        autoAnswered: false,
-      },
-    });
-  }, [selectedStations, formDispatch]);
+    // Update stations context value on station change
+    if (
+      stationValue !== ticketInfo.stations &&
+      selectedStations.every((stn: any) => 'stationName' in stn)
+    ) {
+      // Update form state with new stations
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: {
+          name: 'stations',
+          value: stationValue,
+          autoAnswered: false,
+        },
+      });
+      // Update out of county form state on station change
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: {
+          name: 'outOfCounty',
+          value: maxZone === 7,
+          autoAnswered: false,
+        },
+      });
+      // Check if out of county station or if out of county has changed
+      if (ticketInfo.outOfCounty || ticketInfo.outOfCounty !== (maxZone === 7)) {
+        // Set must update to true to grab new API data
+        setMustUpdate(true);
+      }
+    }
+  }, [selectedStations, ticketInfo.stations, ticketInfo.outOfCounty, formDispatch]);
 
   useEffect(() => {
-    // Zone selection is valid if:
+    // Set zone selection valid if:
     // - at least one zones 1-5 station is selected
     // - no more than one out of county station is selected
     setZonesValid(
@@ -119,6 +135,9 @@ const RailZone = () => {
         selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1) ||
         !selectedStations.some((stn: any) => stn.id),
     );
+    // Set station selection valid if:
+    // - zone selection is valid
+    // - there is more than 1 station selected
     setSelectionValid(zonesValid && selectedStations.filter((stn: any) => stn.id).length > 1);
   }, [zonesValid, selectedStations]);
 
