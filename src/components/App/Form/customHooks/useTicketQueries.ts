@@ -9,9 +9,10 @@ const useTicketQueries = () => {
 
   const ticketQuery: any = useMemo(() => {
     let fullQuery = {};
-
+    // Prevents filtering by bus result if mode doesn't include bus and has multiple modes selected e.g. train + tram
+    const includeBus = ticketInfo.modes!.includes('bus') || ticketInfo.modes!.length === 1;
     const modesQuery = {
-      ...(ticketInfo.modes!.includes('bus') && { allowBus: ticketInfo.modes!.includes('bus') }),
+      ...(includeBus && { allowBus: ticketInfo.modes!.includes('bus') }),
       allowMetro: ticketInfo.modes!.includes('tram'),
       allowTrain: ticketInfo.modes!.includes('train'),
     };

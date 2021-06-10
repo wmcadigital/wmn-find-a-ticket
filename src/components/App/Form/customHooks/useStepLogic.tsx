@@ -53,7 +53,9 @@ const useStepLogic = () => {
         (Math.min(...ticketInfo.railZones!) !== 1 || Math.max(...ticketInfo.railZones!) < 4));
 
     // If step checks fail (return false), go to the step to get the correct information
-    if (step1Check) {
+    if (ticketId) {
+      setStep(4);
+    } else if (step1Check) {
       if (step2Check) {
         if (step3Check) {
           setStep(4);

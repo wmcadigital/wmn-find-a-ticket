@@ -90,7 +90,7 @@ const Purchase = () => {
                   </h3>
                 </div>
                 <div className="wmnds-col-1-3">
-                  {formState.ticketId ? (
+                  {!formState.skippedToResult ? (
                     <Button
                       text="Change your ticket"
                       onClick={editStep}

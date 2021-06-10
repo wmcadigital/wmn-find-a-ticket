@@ -16,14 +16,14 @@ const TravelTime = () => {
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
   // eslint-disable-next-line prettier/prettier
-  const { travellerQuery, operatorQuery, busTravelQuery, railZonesQuery, trainQuery } =
+  const { modesQuery, travellerQuery, operatorQuery, busTravelQuery, railZonesQuery, trainQuery } =
     useTicketQueries();
   let ticketQuery = { ...travellerQuery };
   if (ticketInfo.modes?.includes('bus')) {
     ticketQuery = { ...travellerQuery, ...busTravelQuery, ...operatorQuery };
   }
   if (ticketInfo.modes?.includes('train')) {
-    ticketQuery = { ...travellerQuery, ...railZonesQuery, ...trainQuery };
+    ticketQuery = { ...modesQuery, ...travellerQuery, ...railZonesQuery, ...trainQuery };
   }
 
   const uniqueOptions = getUniqueOptions(filterResults(ticketQuery), [

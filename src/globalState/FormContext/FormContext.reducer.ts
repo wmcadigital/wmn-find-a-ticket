@@ -20,6 +20,7 @@ export const initialState = (() => {
     apiResults: [],
     operators: [],
     autoAnswered: {},
+    skippedToResult: false,
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
@@ -31,6 +32,7 @@ export const initialState = (() => {
   if (getSearchParam('ticketId')) {
     sessionStorage.clear();
     state.ticketId = getSearchParam('ticketId');
+    state.skippedToResult = true;
     currentStep = 4;
   }
 

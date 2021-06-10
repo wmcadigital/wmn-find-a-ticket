@@ -11,8 +11,7 @@ interface IError {
 }
 
 const useTicketingAPI = (
-  apiPath: string = '/ticketing/v2/tickets/search',
-  apiOptions: { get?: boolean } = {},
+  apiOptions: { apiPath: string; get?: boolean } = { apiPath: '/ticketing/v2/tickets/search' },
 ) => {
   // State variables
   const [results, setResults] = useState<any[] | null>([]);
@@ -60,11 +59,9 @@ const useTicketingAPI = (
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
   const handleTicketingApiResponse = useCallback((response) => {
-    if (response.data.length) {
-      setResults(response.data);
-    } else {
-      setResults(null);
-    }
+    // Ensure response.data is passed as an array
+    const resultsArray = Array.isArray(response.data) ? response.data : [response.data];
+    setResults(resultsArray.length ? resultsArray : null);
     clearApiTimeout();
     setLoading(false);
   }, []);
@@ -100,16 +97,16 @@ const useTicketingAPI = (
 
     if (apiOptions.get) {
       axios
-        .get(REACT_APP_API_HOST + apiPath, options)
+        .get(REACT_APP_API_HOST + apiOptions.apiPath, options)
         .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     } else {
       axios
-        .post(REACT_APP_API_HOST + apiPath, ticketQuery, options)
+        .post(REACT_APP_API_HOST + apiOptions.apiPath, ticketQuery, options)
         .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     }
-  }, [apiOptions.get, apiPath, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
+  }, [apiOptions, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
     // Unmount / cleanup

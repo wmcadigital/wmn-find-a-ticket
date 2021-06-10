@@ -11,20 +11,22 @@ import s from './Form.module.scss';
 
 const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState } = useStepLogic();
-  const { getAPIResults, results, loading } = useTicketingAPI();
-  const { ticketInfo } = formState;
-
+  const { ticketInfo, ticketId } = formState;
+  const apiOptions = ticketId
+    ? { get: true, apiPath: `/ticketing/v2/tickets/${ticketId}` }
+    : { apiPath: '/ticketing/v2/tickets/search' };
+  const { getAPIResults, results, loading } = useTicketingAPI(apiOptions);
   useEffect(() => {
     // Run API search if:
     // - Train mode is not selected
     // - There are no results
     // - If modes have changed
     if (!loading) {
-      if ((results && !results.length) || prevMode !== ticketInfo.modes) {
+      if ((results && !results.length) || (prevMode !== ticketInfo.modes && !ticketId)) {
         getAPIResults();
       }
     }
-  }, [getAPIResults, loading, results, prevMode, ticketInfo.modes]);
+  }, [getAPIResults, loading, results, prevMode, ticketInfo.modes, ticketId]);
 
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>

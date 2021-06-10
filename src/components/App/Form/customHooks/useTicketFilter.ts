@@ -13,7 +13,11 @@ const useTicketFilter = () => {
         // loop through each query key
         Object.keys(query).forEach((key) => {
           let isMatch = result[key] === query[key];
-          if (query[key] === null || (query[key] === undefined && test)) {
+          if (
+            query[key] === null ||
+            (query[key] === undefined && test) ||
+            (result[key] === undefined && test)
+          ) {
             isMatch = true;
           }
           if (isMatch === false) {
