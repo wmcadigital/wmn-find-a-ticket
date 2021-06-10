@@ -4,7 +4,7 @@ import s from './SidebarSummary.module.scss';
 type SummarySectionProps = {
   title: string;
   value: React.ReactNode;
-  onChange?: () => void;
+  onChange?: (() => void) | null;
   disabled?: boolean;
 };
 
