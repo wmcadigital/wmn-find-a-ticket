@@ -19,6 +19,7 @@ const useTicketingAPI = (
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const [formState, formDispatch] = useFormContext();
   const { ticketInfo } = formState;
+  const { apiPath } = apiOptions;
 
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
@@ -45,10 +46,10 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (results && results.length) {
+    if (results && results.length && apiPath.includes('/ticketing/v2/tickets/')) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
     }
-  }, [formDispatch, results]);
+  }, [formDispatch, results, apiPath]);
 
   const startApiTimeout = useCallback(() => {
     apiTimeout.current = setTimeout(() => {
