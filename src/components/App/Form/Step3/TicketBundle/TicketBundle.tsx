@@ -17,8 +17,6 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
     (result) => result.validity === '1 Day' && result.type === 'Ticket',
   );
 
-  console.log(dayTicket);
-
   const handleContinue = () => {
     if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });
