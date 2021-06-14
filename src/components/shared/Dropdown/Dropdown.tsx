@@ -11,15 +11,24 @@ type DropdownProps = {
   hint: string;
   error: { message: string } | null;
   label: string;
+  defaultValue?: string | null;
   options: TForm.QuestionOptions[];
   onChange?: (e: React.FocusEvent<HTMLSelectElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
 };
 
-const Dropdown = ({ name, hint, label, error, options, onChange, onBlur }: DropdownProps) => {
+const Dropdown = ({
+  name,
+  hint,
+  label,
+  error,
+  options,
+  defaultValue,
+  onChange,
+  onBlur,
+}: DropdownProps) => {
   const [formState] = useFormContext(); // Get the state/dispatch of form data from FormContext
-  const defaultSelectValue = formState.ticketInfo[name] as string | number; // cast to acceptable types for a select element
-
+  const defaultSelectValue = defaultValue || (formState.ticketInfo[name] as string | number); // cast to acceptable types for a select element
   return (
     <div className="wmnds-fe-group wmnds-m-b-md">
       <fieldset className="wmnds-fe-fieldset">
@@ -49,7 +58,11 @@ const Dropdown = ({ name, hint, label, error, options, onChange, onBlur }: Dropd
           >
             <option value="">Choose from list</option>
             {options.map((option) => (
-              <option key={option.text} value={option.value}>
+              <option
+                key={option.text}
+                value={option.value}
+                selected={option.value === defaultSelectValue}
+              >
                 {option.text}
               </option>
             ))}

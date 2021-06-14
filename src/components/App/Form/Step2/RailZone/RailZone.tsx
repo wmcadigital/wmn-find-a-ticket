@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useState, useEffect, useMemo } from 'react';
+import { useContext, useState, useEffect, useMemo } from 'react';
 import dompurify from 'dompurify';
 // Import context
 import { useFormContext, TForm } from 'globalState';
@@ -26,7 +25,7 @@ const RailZone = () => {
   const name = 'railZones';
   const { value, handleChange, genericError, error, setError } = useHandleChange(name);
   const [formState, formDispatch] = useFormContext();
-  const { apiResults, ticketInfo } = formState;
+  const { ticketInfo } = formState;
   const { getAPIResults, loading } = useTicketingAPI();
   const { filterResults } = useTicketFilter();
   const [autoCompleteState] = useContext(AutoCompleteContext);

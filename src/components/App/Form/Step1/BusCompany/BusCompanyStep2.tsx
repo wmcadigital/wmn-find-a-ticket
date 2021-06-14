@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TForm, useFormContext } from 'globalState';
+import { getSearchParam, delSearchParam } from 'globalState/helpers/URLSearchParams';
 import Loader from 'components/shared/Loader/Loader';
 import Dropdown from 'components/shared/Dropdown/Dropdown';
 import Button from 'components/shared/Button/Button';
@@ -9,6 +10,7 @@ import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
 import useHandleChange from '../../customHooks/useHandleChange';
 import useTicketingAPI from '../../customHooks/useTicketingAPI';
+import checkOperatorName from '../../helpers/checkOperatorName';
 import getUniqueOptions from '../../helpers/getUniqueOptions';
 import { Operator } from '../../types/Operator.types';
 
@@ -21,10 +23,10 @@ const BusCompanyStep2 = () => {
     get: true,
   });
   const { question, hint } = questions[name] as typeof questions[typeof name];
+  const [invalidOperator, setInvalidOperator] = useState<boolean>(false);
   const [selectedOperator, setSelectedOperator] = useState<Operator | null>(null);
 
   const modesUrlString = (formState.ticketInfo as TForm.TicketInfo).modes.join('+');
-
   const validBusOperators = getUniqueOptions(formState.apiResults, ['operator']);
 
   useEffect(() => {
@@ -64,6 +66,7 @@ const BusCompanyStep2 = () => {
 
   useEffect(() => {
     if (value) {
+      setInvalidOperator(false);
       setSelectedOperator(formState.operators.find((operator) => operator.id === value));
     } else {
       setSelectedOperator(null);
@@ -83,6 +86,21 @@ const BusCompanyStep2 = () => {
     }
   };
 
+  useEffect(() => {
+    const temp = getSearchParam('useOperator') && checkOperatorName(getSearchParam('useOperator')!);
+    if (temp && formState.operators.length) {
+      const thisOperator = formState.operators.find((o) => o.name === temp);
+      if (validBusOperators.includes(temp)) {
+        setSelectedOperator(thisOperator);
+      } else if (thisOperator) {
+        setSelectedOperator(formState.operators.find((o) => o.name === temp));
+      } else {
+        setInvalidOperator(true);
+      }
+      delSearchParam('useOperator');
+    }
+  }, [validBusOperators, formState.operators]);
+
   const isSupportedOperator = selectedOperator && validBusOperators.includes(selectedOperator.name);
   const isNBusOperator = selectedOperator && (isSupportedOperator || selectedOperator.acceptnBus);
 
@@ -94,6 +112,12 @@ const BusCompanyStep2 = () => {
   return (
     <>
       {genericError}
+      {invalidOperator && (
+        <p>
+          Sorry, there appears to be an issue with the selected bus company. Please choose one from
+          the list below.
+        </p>
+      )}
       <QuestionCard>
         {loading ? (
           <div className="wmnds-p-lg">
@@ -106,6 +130,7 @@ const BusCompanyStep2 = () => {
               hint={hint}
               name={name}
               error={error}
+              defaultValue={selectedOperator?.id}
               options={operatorOptions}
               onChange={handleChange}
             />
