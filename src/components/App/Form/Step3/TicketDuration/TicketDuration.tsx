@@ -61,13 +61,30 @@ const TicketDuration = ({
                 return (
                   <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
                     <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
-                      <h4>
-                        <ReplaceTextWithIcon htmlElement={option.name} />
-                        <span className={s.totalPrice}>
-                          {' '}
-                          £{option.ticketCurrentAmount.toFixed(2)}
-                        </span>
-                      </h4>
+                      {option.standardDiscountCurrentAmount ? (
+                        <div className={`wmnds-grid ${s.sale}`}>
+                          <h4 className="wmnds-col-auto">
+                            <ReplaceTextWithIcon htmlElement={option.name} />{' '}
+                            <span className={s.fullPrice}>
+                              £{option.standardCurrentAmount.toFixed(2)}
+                            </span>{' '}
+                            <span className={s.salePrice}>
+                              £{option.ticketCurrentAmount.toFixed(2)}
+                            </span>
+                          </h4>
+                          <div className="wmnds-col-auto">
+                            <div className={s.saleBadge}>Sale</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <h4>
+                          <ReplaceTextWithIcon htmlElement={option.name} />{' '}
+                          <span className={s.totalPrice}>
+                            {' '}
+                            £{option.ticketCurrentAmount.toFixed(2)}
+                          </span>
+                        </h4>
+                      )}
                       {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
                       <Button
                         btnClass="wmnds-btn--block"

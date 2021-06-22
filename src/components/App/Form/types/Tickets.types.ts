@@ -28,6 +28,7 @@ export interface Ticket {
   endDate: string;
   ticketCurrentAmount: number;
   standardCurrentAmount: number;
+  standardDiscountCurrentAmount: number;
   swiftCurrentAmount?: number | null;
   priceOverride: string;
   purchaseLocations: PurchaseLocations;
