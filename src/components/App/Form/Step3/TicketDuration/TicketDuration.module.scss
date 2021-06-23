@@ -8,6 +8,7 @@
 
 .sale {
   flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .totalPrice,
@@ -26,6 +27,7 @@
 }
 
 .saleBadge {
+  margin-left: $size-xsm;
   padding: $size-xs $size-xsm;
   border-radius: 4px;
   color: $white;
