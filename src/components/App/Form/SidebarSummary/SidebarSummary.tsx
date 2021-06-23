@@ -1,4 +1,8 @@
+// Import global state
 import { useFormContext, TForm } from 'globalState';
+// Import helper fns
+import arrayToSentence from 'components/App/Form/helpers/arrayToSentence';
+// Import components
 import Icon from 'components/shared/Icon/Icon';
 import NIcon from 'components/shared/Icon/NIcon';
 import questions from '../questions';
@@ -8,18 +12,6 @@ import s from './SidebarSummary.module.scss';
 // helpers
 const capitalize = (str: string) => {
   return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
-};
-
-const arrayToSentence = (array: string[]) => {
-  let sentence: string;
-  if (array.length > 2) {
-    sentence = `${array.slice(0, array.length - 1).join(', ')} and ${array.slice(-1)}`;
-  } else if (array.length === 2) {
-    sentence = `${array[0]} and ${array[1]}`;
-  } else {
-    [sentence] = array;
-  }
-  return sentence;
 };
 
 const SidebarSummary = () => {

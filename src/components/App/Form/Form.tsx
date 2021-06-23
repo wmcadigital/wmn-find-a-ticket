@@ -8,6 +8,8 @@ import Step2 from './Step2/Step2';
 import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
 import s from './Form.module.scss';
+import arrayToSentence from './helpers/arrayToSentence';
+// import arrayToSentence from './helpers/arrayToSentence';
 
 const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState } = useStepLogic();
@@ -34,7 +36,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
       {loading ? (
-        <Loader text="Finding your options" />
+        <Loader text={`Finding ${arrayToSentence(ticketInfo.modes as string[])} options`} />
       ) : (
         <>
           {formState.currentStep === 4 ? (
