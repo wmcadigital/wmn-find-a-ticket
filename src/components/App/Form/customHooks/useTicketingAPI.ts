@@ -14,11 +14,11 @@ const useTicketingAPI = (
   apiOptions: { apiPath: string; get?: boolean } = { apiPath: '/ticketing/v2/tickets/search' },
 ) => {
   // State variables
+  const [{ ticketInfo }, formDispatch] = useFormContext();
   const [results, setResults] = useState<any[] | null>([]);
+  const [updateState, setUpdateState] = useState<boolean>(false);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
-  const [formState, formDispatch] = useFormContext();
-  const { ticketInfo } = formState;
   const { apiPath } = apiOptions;
 
   // Initial api query (to bring back as many results a possible)
@@ -46,10 +46,11 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (results && results.length && apiPath.includes('/ticketing/v2/tickets/')) {
+    if (updateState && results && results.length && apiPath.includes('/ticketing/v2/tickets/')) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
+      setUpdateState(false);
     }
-  }, [formDispatch, results, apiPath]);
+  }, [formDispatch, updateState, results, apiPath]);
 
   const startApiTimeout = useCallback(() => {
     apiTimeout.current = setTimeout(() => {
@@ -63,6 +64,7 @@ const useTicketingAPI = (
     // Ensure response.data is passed as an array
     const resultsArray = Array.isArray(response.data) ? response.data : [response.data];
     setResults(resultsArray.length ? resultsArray : null);
+    setUpdateState(true);
     clearApiTimeout();
     setLoading(false);
   }, []);
