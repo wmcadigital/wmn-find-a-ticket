@@ -1,4 +1,3 @@
-import React from 'react';
 import dompurify from 'dompurify';
 import Icon from './Icon';
 
@@ -6,7 +5,7 @@ const { sanitize } = dompurify;
 
 const NIcon = ({ str }: { str: string }) => {
   return (
-    <span className="wmnds-n-icon">
+    <span className="wmnds-n-icon" style={{ display: 'inline-block' }}>
       <Icon
         className="wmnds-n-icon__svg"
         iconName="general-n-ticket"
@@ -41,7 +40,7 @@ export const ReplaceTextWithIcon = ({
     // Then replace our found text with 'n' icon and text without 'n'
     const modifiedTextNode = textNode.replace(
       new RegExp(phraseToReplace, 'ig'),
-      `<span class="wmnds-n-icon">${svgIcon}${textWithoutN}</span>`,
+      `<span class="wmnds-n-icon" style="display: inline-block;">${svgIcon}${textWithoutN}</span>`,
     );
 
     return modifiedTextNode; // Return modified textNode back
