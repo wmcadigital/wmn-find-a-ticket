@@ -39,8 +39,10 @@ const BusArea = () => {
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
       if (
-        formState.ticketInfo.ticketType === 'nBus' ||
-        formState.ticketInfo.busCompany === 'National Express West Midlands'
+        (formState.ticketInfo.ticketType === 'nBus' ||
+          formState.ticketInfo.busCompany === 'National Express West Midlands') &&
+        formState.ticketInfo.traveller !== 'concessionary' &&
+        formState.ticketInfo.traveller !== 'disabled'
       ) {
         if (value !== 'West Midlands' && value !== 'Coventry') {
           formDispatch({
