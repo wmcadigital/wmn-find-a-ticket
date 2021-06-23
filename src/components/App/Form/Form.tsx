@@ -18,6 +18,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useEffect(() => {
     // Run API search if:
+    // - A search is not currently loading
     // - Train mode is not selected
     // - There are no results
     // - If modes have changed
@@ -33,7 +34,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
       {loading ? (
-        <Loader />
+        <Loader text="Finding your options" />
       ) : (
         <>
           {formState.currentStep === 4 ? (

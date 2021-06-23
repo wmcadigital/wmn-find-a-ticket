@@ -210,7 +210,13 @@ const RailZone = () => {
           <>
             {loading ? (
               <div className="wmnds-col-1 wmnds-m-t-lg">
-                <Loader />
+                <Loader
+                  text={
+                    ticketInfo.outOfCounty
+                      ? 'Finding out of county options'
+                      : 'Finding rail zone options'
+                  }
+                />
               </div>
             ) : (
               <>
