@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
+import { useFormContext } from 'globalState';
 // Import components
 import Button from 'components/shared/Button/Button';
-import Icon from 'components/shared/Icon/Icon';
 // Import context
 import { AutoCompleteContext } from './AutoCompleteContext';
 import Result from './Result/Result';
@@ -9,12 +9,11 @@ import TrainAutoComplete from './TrainAutoComplete/TrainAutocomplete';
 import s from './AutoComplete.module.scss';
 
 const AutoComplete = () => {
-  const [autoCompleteState, autoCompleteDispatch] = useContext(AutoCompleteContext);
-  const { selectedStations } = autoCompleteState;
-
+  const [{ selectedStations }, autoCompleteDispatch] = useContext(AutoCompleteContext);
   const addStation = () => {
     autoCompleteDispatch({ type: 'ADD_STATION' });
   };
+  const [, formDispatch] = useFormContext();
 
   const selectedStationIds = [...selectedStations.map((stn: any) => stn.id)];
 
@@ -25,6 +24,13 @@ const AutoComplete = () => {
     }
   });
 
+  const findRailZones = (url: string) => {
+    formDispatch({
+      type: 'REMOVE_TICKET_INFO',
+      payload: { name: 'railZones' },
+    });
+    window.location.href = url;
+  };
   return (
     <>
       <div className={`${s.traySearchContainer}`}>
@@ -38,7 +44,7 @@ const AutoComplete = () => {
           <div className="wmnds-p-b-md">
             <div className={`wmnds-inset-text wmnds-m-b-sm wmnds-p-r-none ${s.addStation}`}>
               <div className="wmnds-fe-label">Add another train station you travel to</div>
-              {selectedStations.slice(2).map((station: any, i: number) => (
+              {selectedStations.slice(2).map((_station: any, i: number) => (
                 <TrainAutoComplete
                   id={`autocomplete_add${i + 2}`}
                   key={`autocomplete_add${i + 2}`}
@@ -59,22 +65,28 @@ const AutoComplete = () => {
       <Result />
       <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
         <div className="wmnds-col-1 wmnds-col-md-1-2">
-          <a
-            href={`https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}`}
-            className={`wmnds-btn--link ${s.btnLinkIconLeft}`}
-          >
-            <Icon className="wmnds-btn__icon" iconName="general-location-pin" />
-            View rail zones on a map
-          </a>
+          <Button
+            btnClass={`wmnds-btn--link ${s.btnLinkIconLeft}`}
+            text="View rail zones on a map"
+            iconLeft="general-location-pin"
+            onClick={() =>
+              findRailZones(
+                `https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}`,
+              )
+            }
+          />
         </div>
         <div className="wmnds-col-1 wmnds-col-md-1-2">
-          <a
-            href={`https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}&mapView=false`}
-            className={`wmnds-btn--link ${s.btnLinkIconLeft}`}
-          >
-            <Icon className="wmnds-btn__icon" iconName="general-list" />
-            View rail zones in a list
-          </a>
+          <Button
+            btnClass={`wmnds-btn--link ${s.btnLinkIconLeft}`}
+            text="View rail zones in a list"
+            iconLeft="general-list"
+            onClick={() =>
+              findRailZones(
+                `https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}&mapView=false`,
+              )
+            }
+          />
         </div>
       </div>
     </>

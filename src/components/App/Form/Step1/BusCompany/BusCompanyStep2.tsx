@@ -88,8 +88,8 @@ const BusCompanyStep2 = () => {
 
   const findBusCompany = () => {
     formDispatch({
-      type: 'UPDATE_TICKET_INFO',
-      payload: { name, value: null, autoAnswered: false },
+      type: 'REMOVE_TICKET_INFO',
+      payload: { name },
     });
     window.location.href = `https://find-bus-company.wmnetwork.co.uk/?ticketSearch=true&modes=${modesUrlString}`;
   };
