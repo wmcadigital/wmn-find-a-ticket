@@ -3,7 +3,7 @@ import s from './QuestionCard.module.scss';
 import Button from '../Button/Button';
 
 type QuestionCardProps = {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
   handleContinue?: () => void;
   showChangeBtn?: boolean;
 };

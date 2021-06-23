@@ -1,5 +1,5 @@
-import questions from '../../components/App/Form/questions';
-
+import questions from 'components/App/Form/questions';
+import { Ticket } from 'components/App/Form/types/Tickets.types';
 // e.g. importing: import * as TForm
 // e.g. use: TForm.QuestionKeys
 
@@ -7,7 +7,7 @@ type Nullable<T> = T | null;
 
 export type Questions = typeof questions;
 export type QuestionKeys = keyof Questions;
-export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2';
+export type Pages = QuestionKeys | 'modes' | 'busCompanyStep2' | 'isMultiDay';
 export type Modes = 'bus' | 'tram' | 'train';
 export type TicketTypes = 'nTicket' | 'nBus' | 'tram' | 'single';
 
@@ -27,9 +27,11 @@ export type TicketInfo = {
   busNetwork: Nullable<string>;
   firstClass: Nullable<string>;
   modes: Nullable<Modes>[];
+  isMultiDay: Nullable<string>;
+  multiDay: Nullable<string>;
   railZones: Nullable<number[]>;
   outOfCounty: Nullable<boolean>;
-  stations: Nullable<any>;
+  stations: Nullable<string>;
   ticketDuration: Nullable<string>;
   ticketType: Nullable<TicketTypes>;
   travelTime: Nullable<string>;
@@ -49,6 +51,11 @@ export type State = {
   mounted: boolean;
   showAnswers: boolean;
   ticketInfo: Partial<TicketInfo>;
+  ticketId: Nullable<string>;
+  apiResults: Ticket[];
+  operators: any[];
+  autoAnswered: Partial<TicketInfo>;
+  skippedToResult: boolean;
 };
 
 /* eslint-disable @typescript-eslint/indent */
@@ -77,7 +84,30 @@ export type StateAction =
       payload: {
         name: keyof TicketInfo;
         value: TicketInfo[keyof TicketInfo];
+        autoAnswered: boolean;
       };
+    }
+  | {
+      type: 'REMOVE_TICKET_INFO';
+      payload: {
+        name: keyof TicketInfo;
+      };
+    }
+  | {
+      type: 'RESET_TICKET_INFO';
+      payload?: { [key: string]: any };
+    }
+  | {
+      type: 'ADD_API_RESULTS';
+      payload: Ticket[];
+    }
+  | {
+      type: 'ADD_OPERATORS';
+      payload: any[];
+    }
+  | {
+      type: 'UPDATE_TICKET_ID';
+      payload: string | null;
     }
   | {
       type: 'TOGGLE_SHOW_ANSWERS';

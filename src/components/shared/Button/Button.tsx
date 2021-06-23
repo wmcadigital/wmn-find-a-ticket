@@ -1,5 +1,7 @@
 // Import packages
+import s from './Button.module.scss';
 import Icon from '../Icon/Icon';
+import { ReplaceTextWithIcon } from '../Icon/NIcon';
 
 type ButtonProps = {
   btnClass?: string;
@@ -32,8 +34,8 @@ const Button = ({
       type={type}
       title={title}
       className={`wmnds-btn ${btnClass} ${isActive ? 'wmnds-is--active' : ''} ${
-        disabled ? 'wmnds-btn--disabled' : ''
-      }`}
+        iconRight ? s.iconRight : ''
+      } ${disabled ? 'wmnds-btn--disabled' : ''}`}
       onClick={onClick}
       disabled={disabled}
     >
@@ -41,7 +43,7 @@ const Button = ({
       {iconLeft ? <Icon className="wmnds-btn__icon" iconName={iconLeft} /> : null}
 
       {/* button text will go here, if any */}
-      {text}
+      <ReplaceTextWithIcon htmlElement={text} />
 
       {/* If API is fetching show spinner on button */}
       {isFetching ? (

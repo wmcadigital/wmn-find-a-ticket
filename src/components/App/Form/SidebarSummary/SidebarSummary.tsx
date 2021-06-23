@@ -1,5 +1,6 @@
 import { useFormContext, TForm } from 'globalState';
 import Icon from 'components/shared/Icon/Icon';
+import NIcon from 'components/shared/Icon/NIcon';
 import questions from '../questions';
 import SummarySection from './SummarySection';
 import s from './SidebarSummary.module.scss';
@@ -23,7 +24,7 @@ const arrayToSentence = (array: string[]) => {
 
 const SidebarSummary = () => {
   const [formState, formDispatch] = useFormContext();
-  const { ticketInfo } = formState;
+  const { ticketInfo, editMode } = formState;
 
   const capitalizedModes = ticketInfo.modes?.map((m) => capitalize(m!));
 
@@ -48,6 +49,10 @@ const SidebarSummary = () => {
       type: 'EDIT_MODE',
       payload: page,
     });
+    formDispatch({
+      type: 'REMOVE_TICKET_INFO',
+      payload: { name: 'ticketDuration' },
+    });
     handleClose();
     window.scrollTo(0, 0);
   };
@@ -62,7 +67,7 @@ const SidebarSummary = () => {
         ) : (
           <p className="wmnds-m-b-md">Zone {railZones[0]}</p>
         )}
-        {arrayToSentence(ticketInfo.stations)}
+        {ticketInfo.stations && arrayToSentence(ticketInfo.stations?.split(','))}
       </>
     );
   };
@@ -78,16 +83,14 @@ const SidebarSummary = () => {
       <SummarySection
         title="Mode of travel"
         value={arrayToSentence(capitalizedModes!)}
-        onChange={() => editStep(0, 'modes')}
+        onChange={editMode !== 'modes' ? () => editStep(0, 'modes') : null}
       />
       {(ticketInfo.busCompany || ticketInfo.ticketType === 'nBus') && (
         <>
           <SummarySection
             title="Bus company"
-            value={
-              ticketInfo.busCompany ? getOptionText('busCompany', ticketInfo.busCompany) : 'nBus'
-            }
-            onChange={() => editStep(1, 'busCompany')}
+            value={ticketInfo.busCompany ? ticketInfo.busCompany : <NIcon str="Bus" />}
+            onChange={editMode !== 'busCompany' ? () => editStep(1, 'busCompany') : null}
           />
         </>
       )}
@@ -96,7 +99,8 @@ const SidebarSummary = () => {
           <SummarySection
             title="Traveller"
             value={getOptionText('traveller', ticketInfo.traveller)}
-            onChange={() => editStep(1, 'traveller')}
+            onChange={editMode !== 'traveller' ? () => editStep(1, 'traveller') : null}
+            disabled={!!formState.autoAnswered.traveller}
           />
         </>
       )}
@@ -104,8 +108,9 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Bus area"
-            value={getOptionText('busArea', ticketInfo.busArea)}
-            onChange={() => editStep(2, 'busArea')}
+            value={ticketInfo.busArea}
+            onChange={editMode !== 'busArea' ? () => editStep(2, 'busArea') : null}
+            disabled={!!formState.autoAnswered.busArea}
           />
         </>
       )}
@@ -114,16 +119,18 @@ const SidebarSummary = () => {
           <SummarySection
             title="Rail zones"
             value={<RailZoneSummary railZones={ticketInfo.railZones} />}
-            onChange={() => editStep(2, 'railZones')}
+            onChange={editMode !== 'railZones' ? () => editStep(2, 'railZones') : null}
+            disabled={!!formState.autoAnswered.railZones}
           />
         </>
       )}
-      {ticketInfo.travelTime && (
+      {ticketInfo.travelTime && ticketInfo.travelTime !== 'any' && (
         <>
           <SummarySection
             title="Travel time"
             value={getOptionText('travelTime', ticketInfo.travelTime)}
-            onChange={() => editStep(2, 'travelTime')}
+            onChange={editMode !== 'travelTime' ? () => editStep(2, 'travelTime') : null}
+            disabled={!!formState.autoAnswered.travelTime}
           />
         </>
       )}
@@ -132,7 +139,8 @@ const SidebarSummary = () => {
           <SummarySection
             title="First class"
             value={getOptionText('firstClass', ticketInfo.firstClass)}
-            onChange={() => editStep(3, 'firstClass')}
+            onChange={editMode !== 'firstClass' ? () => editStep(3, 'firstClass') : null}
+            disabled={!!formState.autoAnswered.firstClass}
           />
         </>
       )}
@@ -140,8 +148,21 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Ticket duration"
-            value={getOptionText('ticketDuration', ticketInfo.ticketDuration)}
-            onChange={() => editStep(3, 'ticketDuration')}
+            value={ticketInfo.ticketDuration}
+            onChange={editMode !== 'ticketDuration' ? () => editStep(3, 'ticketDuration') : null}
+            disabled={!!formState.autoAnswered.ticketDuration}
+          />
+        </>
+      )}
+      {ticketInfo.isMultiDay && (
+        <>
+          <SummarySection
+            title="Multi-day tickets"
+            value={ticketInfo.isMultiDay}
+            onChange={() =>
+              formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'isMultiDay' } })
+            }
+            disabled={!!formState.autoAnswered.isMultiDay}
           />
         </>
       )}

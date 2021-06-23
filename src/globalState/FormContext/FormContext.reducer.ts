@@ -1,5 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { setSearchParam, getSearchParam, delSearchParam } from '../helpers/URLSearchParams'; // (used to sync state with URL)
+import {
+  setSearchParam,
+  getSearchParam,
+  delSearchParam,
+  getAllSearchParams,
+} from '../helpers/URLSearchParams'; // (used to sync state with URL)
 import questions from '../../components/App/Form/questions';
 import * as TForm from './FormContext.types';
 
@@ -11,10 +16,24 @@ export const initialState = (() => {
     mounted: false,
     showAnswers: false,
     ticketInfo: {},
+    ticketId: null,
+    apiResults: [],
+    operators: [],
+    autoAnswered: {},
+    skippedToResult: false,
   };
+
+  let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
 
   if (window.location.search.length === 0) {
     sessionStorage.clear();
+  }
+
+  if (getSearchParam('ticketId')) {
+    sessionStorage.clear();
+    state.ticketId = getSearchParam('ticketId');
+    state.skippedToResult = true;
+    currentStep = 4;
   }
 
   const storedInfo: TForm.TicketInfo =
@@ -29,13 +48,12 @@ export const initialState = (() => {
   }
 
   // Set intial state
-  state.ticketInfo = {
-    // Cast the corrext types for modes and type as getSearchParam returns string | null
+  ticketInfo = {
+    // Cast the correct types for modes and type as getSearchParam returns string | null
     modes: storedInfo.modes || (getSearchParam('modes')?.split(' ') as TForm.TicketInfo['modes']),
     ticketType: storedInfo.ticketType || (getSearchParam('type') as TForm.TicketInfo['ticketType']),
   };
 
-  let { ticketInfo } = state; // create a variable with the right types to be added back to the state obj at the end
   // loop through questions object
   (Object.keys(questions) as TForm.QuestionKeys[]).forEach((key) => {
     // split string into array of integers
@@ -58,7 +76,7 @@ export const initialState = (() => {
     }
   });
 
-  return { ...state, ticketInfo };
+  return { ...state, currentStep, ticketInfo };
 })();
 
 // Returns an array of params to be removed based on ticket type
@@ -125,6 +143,43 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
       return {
         ...state,
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: action.payload.value },
+        autoAnswered: { ...state.autoAnswered, [action.payload.name]: action.payload.autoAnswered },
+      };
+
+    case 'ADD_API_RESULTS':
+      return {
+        ...state,
+        apiResults: action.payload,
+      };
+
+    case 'ADD_OPERATORS':
+      return {
+        ...state,
+        operators: action.payload,
+      };
+
+    case 'UPDATE_TICKET_ID':
+      return {
+        ...state,
+        ticketId: action.payload,
+      };
+
+    case 'REMOVE_TICKET_INFO':
+      delSearchParam(action.payload.name);
+      return {
+        ...state,
+        ticketInfo: { ...state.ticketInfo, [action.payload.name]: null },
+        autoAnswered: { ...state.autoAnswered, [action.payload.name]: false },
+      };
+
+    case 'RESET_TICKET_INFO':
+      getAllSearchParams().forEach((param) => {
+        delSearchParam(param.name);
+      });
+      // return initial ticketInfo state with payload (info to retain)
+      return {
+        ...state,
+        ticketInfo: { ...initialState.ticketInfo, ...action.payload },
       };
 
     case 'TOGGLE_SHOW_ANSWERS':

@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+// Import contexts
 import { useFormContext } from 'globalState';
 import axios from 'axios';
-// Import contexts
 
 interface IError {
   title: string;
@@ -10,66 +10,29 @@ interface IError {
   isTimeoutError?: boolean;
 }
 
-const useTicketingAPI = (apiPath: string) => {
+const useTicketingAPI = (
+  apiOptions: { apiPath: string; get?: boolean } = { apiPath: '/ticketing/v2/tickets/search' },
+) => {
   // State variables
-  const [results, setResults] = useState<any>([]);
+  const [{ ticketInfo }, formDispatch] = useFormContext();
+  const [results, setResults] = useState<any[] | null>([]);
+  const [updateState, setUpdateState] = useState<boolean>(false);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
-  const [formState] = useFormContext();
-  const { ticketInfo } = formState;
+  const { apiPath } = apiOptions;
 
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
+    // Include stations if stations have been added and an out of county station is selected
+    const stations =
+      ticketInfo.outOfCounty && ticketInfo.stations ? ticketInfo.stations.split(',') : null;
     return {
-      allowBus: ticketInfo.modes!.includes('bus'),
-      allowMetro: ticketInfo.modes!.includes('tram'),
-      allowTrain: ticketInfo.modes!.includes('train'),
+      allowMetro: ticketInfo.modes?.includes('tram'),
+      allowTrain: ticketInfo.modes?.includes('train'),
+      // Include bus mode query only if tram isn't selected
+      ...(!ticketInfo.modes?.includes('tram') && { allowBus: ticketInfo.modes?.includes('bus') }),
+      ...(stations && { stationNames: stations }),
     };
-  }, [ticketInfo]);
-
-  const ticketFilter: any = useMemo(() => {
-    let query = {
-      allowBus: ticketInfo.modes!.includes('bus'),
-      allowMetro: ticketInfo.modes!.includes('tram'),
-      allowTrain: ticketInfo.modes!.includes('train'),
-      allowPeakTravel: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-      // passengerType: ticketInfo.traveller,
-      isAdult: ticketInfo.traveller === 'adult',
-      isChild: ticketInfo.traveller === 'youngPerson',
-      isStudent: ticketInfo.traveller === 'student',
-      isConcessionary: ticketInfo.traveller === 'concessionary',
-      isFamily: ticketInfo.traveller === 'family',
-      timePeriod1: ticketInfo.travelTime === 'peak' || ticketInfo.travelTime === 'senior',
-      timePeriod2: ticketInfo.travelTime !== 'senior',
-      timePeriod3: ticketInfo.travelTime !== 'senior',
-      timePeriod4: ticketInfo.travelTime !== 'senior',
-    };
-
-    // INCLUDES BUS ONLY
-    const busQuery = {
-      busTravelArea: ticketInfo.busArea,
-      operator: ticketInfo.busCompany || 'Network West Midlands',
-    };
-
-    const trainQuery = {
-      firstClass: ticketInfo.firstClass === 'yes',
-      networkTicket: ticketInfo.ticketType === 'nTicket',
-      railZoneFrom: (ticketInfo.railZones && Math.min(...ticketInfo.railZones)) || null,
-      railZoneTo:
-        (!ticketInfo.outOfCounty && ticketInfo.railZones && Math.max(...ticketInfo.railZones)) ||
-        null,
-      outOfCounty: ticketInfo.outOfCounty,
-    };
-
-    if (ticketInfo.modes?.includes('bus')) {
-      query = { ...query, ...busQuery };
-    }
-
-    if (ticketInfo.modes?.includes('train')) {
-      query = { ...query, ...trainQuery };
-    }
-
-    return query;
   }, [ticketInfo]);
 
   // Reference variables
@@ -81,6 +44,14 @@ const useTicketingAPI = (apiPath: string) => {
     if (source.current) source.current.cancel('Api request timeout');
   };
 
+  // on Results
+  useEffect(() => {
+    if (updateState && results && results.length && apiPath.includes('/ticketing/v2/tickets/')) {
+      formDispatch({ type: 'ADD_API_RESULTS', payload: results });
+      setUpdateState(false);
+    }
+  }, [formDispatch, updateState, results, apiPath]);
+
   const startApiTimeout = useCallback(() => {
     apiTimeout.current = setTimeout(() => {
       cancelRequest();
@@ -89,45 +60,16 @@ const useTicketingAPI = (apiPath: string) => {
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
 
-  const handleAutoCompleteApiResponse = useCallback(
-    (response) => {
-      setLoading(false); // Set loading state to false after data is received
+  const handleTicketingApiResponse = useCallback((response) => {
+    // Ensure response.data is passed as an array
+    const resultsArray = Array.isArray(response.data) ? response.data : [response.data];
+    setResults(resultsArray.length ? resultsArray : null);
+    setUpdateState(true);
+    clearApiTimeout();
+    setLoading(false);
+  }, []);
 
-      console.log(ticketFilter);
-      const filteredResults = response.data.filter((result: any) => {
-        // check if each result value matches the equivalent query value
-        const valuesMatch = () => {
-          console.log(`%c${result.name}`, 'font-weight: bold');
-          let test = true;
-          // loop through each query key
-          Object.keys(ticketFilter).forEach((key) => {
-            let isMatch = result[key] === ticketFilter[key];
-            if (ticketFilter[key] === null || ticketFilter[key] === undefined) {
-              isMatch = true;
-            }
-            if (isMatch === false) {
-              console.log(`R: '${result[key]}',`, `Q: '${ticketFilter[key]}',`, `name: ${key}`);
-              test = false; // fail test if values don't match
-            }
-          });
-          return test;
-        };
-        return valuesMatch();
-      });
-      console.log(filteredResults);
-      setResults(filteredResults);
-
-      if (!filteredResults.length && mounted.current) {
-        setErrorInfo({
-          title: 'No results found',
-          message: 'Make sure you are looking for the right service, and try again.',
-        });
-      }
-    },
-    [ticketFilter],
-  );
-
-  const handleAutoCompleteApiError = (error: any) => {
+  const handleTicketingApiError = (error: any) => {
     setLoading(false); // Set loading state to false after data is received
     setErrorInfo({
       // Update error message
@@ -135,7 +77,7 @@ const useTicketingAPI = (apiPath: string) => {
       message: 'Apologies, we are having technical difficulties.',
       isTimeoutError: axios.isCancel(error),
     });
-    setResults([]); // Reset the results so that the dropdown disappears
+    setResults([]); // Reset the results
     if (!axios.isCancel(error)) {
       // eslint-disable-next-line no-console
       console.log({ error });
@@ -143,34 +85,42 @@ const useTicketingAPI = (apiPath: string) => {
   };
 
   // Take main function out of useEffect, so it can be called elsewhere to retry the search
-  const getAutoCompleteResults = useCallback(() => {
+  const getAPIResults = useCallback(() => {
     source.current = axios.CancelToken.source();
     mounted.current = true; // Set mounted to true (used later to make sure we don't do events as component is unmounting)
     const { REACT_APP_API_HOST, REACT_APP_API_KEY } = process.env; // Destructure env vars
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
-    axios
-      .post(REACT_APP_API_HOST + apiPath, ticketQuery, {
-        headers: {
-          'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
-        },
-        cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
-      })
-      .then(handleAutoCompleteApiResponse)
-      .catch(handleAutoCompleteApiError);
-  }, [apiPath, handleAutoCompleteApiResponse, ticketQuery, startApiTimeout]);
+    const options = {
+      headers: {
+        'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
+      },
+      cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
+    };
+
+    if (apiOptions.get) {
+      axios
+        .get(REACT_APP_API_HOST + apiOptions.apiPath, options)
+        .then((res) => mounted.current && handleTicketingApiResponse(res))
+        .catch(handleTicketingApiError);
+    } else {
+      axios
+        .post(REACT_APP_API_HOST + apiOptions.apiPath, ticketQuery, options)
+        .then((res) => mounted.current && handleTicketingApiResponse(res))
+        .catch(handleTicketingApiError);
+    }
+  }, [apiOptions, handleTicketingApiResponse, ticketQuery, startApiTimeout]);
 
   useEffect(() => {
-    getAutoCompleteResults();
     // Unmount / cleanup
     return () => {
       mounted.current = false; // Set mounted back to false on unmount
       cancelRequest(); // cancel the request
       clearApiTimeout(); // clear timeout
     };
-  }, [getAutoCompleteResults]);
+  }, []);
 
-  return { loading, errorInfo, results, ticketQuery, getAutoCompleteResults };
+  return { loading, errorInfo, results, ticketQuery, getAPIResults };
 };
 
 export default useTicketingAPI;

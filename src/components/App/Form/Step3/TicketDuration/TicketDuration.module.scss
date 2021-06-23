@@ -6,9 +6,35 @@
 @import '~assets/wmnds/vars';
 @import '~assets/wmnds/mixins';
 
-.totalPrice {
+.sale {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.totalPrice,
+.fullPrice {
   font-size: 1em;
   font-weight: 400;
+}
+
+.fullPrice {
+  text-decoration: line-through;
+}
+
+.salePrice {
+  color: get-color(error);
+  font-size: 1em;
+}
+
+.saleBadge {
+  margin-left: $size-xsm;
+  padding: $size-xs $size-xsm;
+  border-radius: 4px;
+  color: $white;
+  background-color: get-color(error);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .ticketCard {

@@ -1,13 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useMemo } from 'react';
 import dompurify from 'dompurify';
 // Import context
 import { useFormContext, TForm } from 'globalState';
 // Import components
+import Icon from 'components/shared/Icon/Icon';
+import NIcon from 'components/shared/Icon/NIcon';
 import Button from 'components/shared/Button/Button';
 import Message from 'components/shared/Message/Message';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
+import Loader from 'components/shared/Loader/Loader';
 
+import getUniqueOptions from '../../helpers/getUniqueOptions';
+import useTicketingAPI from '../../customHooks/useTicketingAPI';
+import useTicketQueries from '../../customHooks/useTicketQueries';
+import useTicketFilter from '../../customHooks/useTicketFilter';
 import useHandleChange from '../../customHooks/useHandleChange';
 import AutoComplete from './AutoComplete/AutoComplete';
 import { AutoCompleteProvider, AutoCompleteContext } from './AutoComplete/AutoCompleteContext';
@@ -15,71 +22,111 @@ import { AutoCompleteProvider, AutoCompleteContext } from './AutoComplete/AutoCo
 const { sanitize } = dompurify;
 
 const RailZone = () => {
-  interface IZoneOptions {
-    text: string;
-    value: string;
-  }
-
   const name = 'railZones';
   const { value, handleChange, genericError, error, setError } = useHandleChange(name);
-  const [, formDispatch] = useFormContext();
+  const [formState, formDispatch] = useFormContext();
+  const { ticketInfo } = formState;
+  const { getAPIResults, loading } = useTicketingAPI();
+  const { filterResults } = useTicketFilter();
   const [autoCompleteState] = useContext(AutoCompleteContext);
   const { selectedStations } = autoCompleteState;
+  const [defaultToAdult, setDefaultToAdult] = useState<boolean>(false);
+  const [mustUpdate, setMustUpdate] = useState<boolean>(false);
   const [zonesValid, setZonesValid] = useState<boolean>(false);
-  const [outOfCounty, setOutOfCounty] = useState<boolean>(false);
-  const [recommendedOptions, setRecommendedOptions] = useState<IZoneOptions[] | []>([]);
-  const [additionalOptions, setAdditionalOptions] = useState<IZoneOptions[] | []>([]);
+  const [selectionValid, setSelectionValid] = useState<boolean>(false);
+  // Destructure queries for filter
+  const { travellerQuery, trainQuery } = useTicketQueries();
+  // Returns the unique options from the API results
+  const uniqueOptions = getUniqueOptions(filterResults({ ...travellerQuery, ...trainQuery }), [
+    'railZoneFrom',
+    'railZoneTo',
+  ]);
+  // Returns the unique options with traveller as adult from the API results
+  const adultTravellerOptions = getUniqueOptions(filterResults({ isAdult: true, ...trainQuery }), [
+    'railZoneFrom',
+    'railZoneTo',
+  ]);
+  // If there are no options set default to adult so we can check if adult tickets have options
+  useEffect(() => {
+    if (uniqueOptions.length > 0) {
+      setDefaultToAdult(false);
+    } else {
+      setDefaultToAdult(true);
+    }
+  }, [uniqueOptions]);
 
-  const handleContinue = () => {
-    if (value && value.length !== 0) {
-      formDispatch({ type: 'EDIT_MODE', payload: null });
-      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value } });
+  const options = useMemo(() => {
+    const mapZoneOptions = (optionsArray: string[]) => {
+      // Map the zone options to an array
+      return optionsArray.map((option) => {
+        const zoneOptions = option.split('+');
+        return {
+          text: `Zone ${zoneOptions[0]}${
+            zoneOptions[0] !== zoneOptions[1] ? ` to ${zoneOptions[1]}` : ''
+          }`,
+          value: option,
+        };
+      });
+    };
+    // If there are no uniqueOptions try adultTravellerOptions
+    return uniqueOptions.length > 0
+      ? mapZoneOptions(uniqueOptions)
+      : mapZoneOptions(adultTravellerOptions);
+  }, [uniqueOptions, adultTravellerOptions]);
+
+  useEffect(() => {
+    // If loading isn't in progress, the autocomplete selection is valid and the selection has changed, get new API results
+    if (!loading) {
+      if (selectionValid && mustUpdate) {
+        setMustUpdate(false);
+        getAPIResults();
+      }
+    }
+  }, [loading, mustUpdate, selectionValid, getAPIResults]);
+
+  useEffect(() => {
+    const stations = selectedStations.filter((item: any) => item.id !== null);
+    const zones = [...stations.map((stn: any) => stn.railZone)];
+    const maxZone = Math.max(...zones);
+    const stationValue = selectedStations
+      .map((station: TForm.IStations) => station.stationName)
+      .filter((stn: string) => stn)
+      .join(',');
+
+    formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'firstClass' } });
+    // Update stations context value on station change
+    if (
+      stationValue !== ticketInfo.stations &&
+      selectedStations.every((stn: any) => 'stationName' in stn)
+    ) {
+      // Update form state with new stations
       formDispatch({
         type: 'UPDATE_TICKET_INFO',
         payload: {
           name: 'stations',
-          value: selectedStations
-            .map((station: TForm.IStations) => station.stationName)
-            .filter((stn: string) => stn),
+          value: stationValue,
+          autoAnswered: false,
         },
       });
+      // Update out of county form state on station change
       formDispatch({
         type: 'UPDATE_TICKET_INFO',
         payload: {
           name: 'outOfCounty',
-          value: outOfCounty,
+          value: maxZone === 7,
+          autoAnswered: false,
         },
       });
-    } else {
-      setError({ message: 'Please select an answer' });
+      // Check if out of county station or if out of county has changed
+      if (ticketInfo.outOfCounty || ticketInfo.outOfCounty !== (maxZone === 7)) {
+        // Set must update to true to grab new API data
+        setMustUpdate(true);
+      }
     }
-  };
+  }, [selectedStations, ticketInfo.stations, ticketInfo.outOfCounty, formDispatch]);
 
   useEffect(() => {
-    const options = [
-      {
-        text: 'Zone 1 to 2',
-        value: '1+2',
-      },
-      {
-        text: 'Zone 1 to 3',
-        value: '1+3',
-      },
-      {
-        text: 'Zone 1 to 4',
-        value: '1+4',
-      },
-      {
-        text: 'Zone 1 to 5',
-        value: '1+5',
-      },
-      {
-        text: 'Zone 2 to 5',
-        value: '2+5',
-      },
-    ];
-
-    // Zone selection is valid if:
+    // Set zone selection valid if:
     // - at least one zones 1-5 station is selected
     // - no more than one out of county station is selected
     setZonesValid(
@@ -87,46 +134,57 @@ const RailZone = () => {
         selectedStations.filter((stn: any) => stn.railZone === 7).length <= 1) ||
         !selectedStations.some((stn: any) => stn.id),
     );
+    // Set station selection valid if:
+    // - zone selection is valid
+    // - there is more than 1 station selected
+    setSelectionValid(zonesValid && selectedStations.filter((stn: any) => stn.id).length > 1);
+  }, [zonesValid, selectedStations]);
 
-    // Get valid selected stations
+  // Split zone options into recommended and additional options
+  const getOptions = () => {
     const stations = selectedStations.filter((item: any) => item.id !== null);
     const zones = [...stations.map((stn: any) => stn.railZone)];
     const minZone = Math.min(...zones);
     const maxZone = Math.max(...zones);
 
-    if (maxZone === 7) {
-      setOutOfCounty(true);
-    } else {
-      setOutOfCounty(false);
-    }
+    const allValidOptions = options.filter(
+      (o) =>
+        o.value.split('+')[0] <= `${minZone}` &&
+        o.value.split('+')[1] >= `${maxZone > 5 ? 5 : maxZone}`,
+    );
+    const additionalOptions = allValidOptions.filter(
+      (o) =>
+        o.value.split('+')[0] === '1' && o.value.split('+')[1] > `${maxZone > 5 ? 5 : maxZone}`,
+    );
+    const recommendedOptions = allValidOptions.filter(
+      (o) =>
+        (o.value.split('+')[0] === '1' &&
+          o.value.split('+')[1] === `${maxZone > 5 ? 5 : maxZone}`) ||
+        o.value.split('+')[0] === '2',
+    );
 
-    // Set zoneOptions if:
-    // - zone selection is valid
-    // - more than one station is selected
-    if (zonesValid && selectedStations.filter((stn: any) => stn.id).length > 1) {
-      const allValidOptions = options.filter(
-        (o) =>
-          o.value.split('+')[0] <= `${minZone}` &&
-          o.value.split('+')[1] >= `${maxZone > 5 ? 5 : maxZone}`,
-      );
-      setRecommendedOptions(
-        allValidOptions.filter(
-          (o) =>
-            (o.value.split('+')[0] === '1' &&
-              o.value.split('+')[1] === `${maxZone > 5 ? 5 : maxZone}`) ||
-            o.value.split('+')[0] === '2',
-        ),
-      );
-      setAdditionalOptions(
-        allValidOptions.filter(
-          (o) =>
-            o.value.split('+')[0] === '1' && o.value.split('+')[1] > `${maxZone > 5 ? 5 : maxZone}`,
-        ),
-      );
+    return {
+      recommendedOptions: recommendedOptions.length ? recommendedOptions : additionalOptions || [],
+      additionalOptions: !recommendedOptions.length ? [] : additionalOptions || [],
+    };
+  };
+
+  const { recommendedOptions, additionalOptions } = getOptions();
+
+  const handleContinue = () => {
+    if (value && value.length !== 0) {
+      formDispatch({ type: 'EDIT_MODE', payload: null });
+      formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
+      if (defaultToAdult) {
+        formDispatch({
+          type: 'UPDATE_TICKET_INFO',
+          payload: { name: 'traveller', value: 'adult', autoAnswered: false },
+        });
+      }
     } else {
-      setRecommendedOptions([]);
+      setError({ message: 'Please select an answer' });
     }
-  }, [zonesValid, selectedStations]);
+  };
 
   return (
     <>
@@ -138,9 +196,7 @@ const RailZone = () => {
         <p>You can only choose one Out of County station.</p>
         <AutoComplete />
 
-        {zonesValid ? (
-          <></>
-        ) : (
+        {!zonesValid && (
           <Message
             type="error"
             title="Select a station in a West Midlands zone"
@@ -148,40 +204,50 @@ const RailZone = () => {
           />
         )}
 
-        {recommendedOptions.length > 0 ? (
+        {selectionValid && (
           <>
-            <div className="wmnds-fe-group wmnds-m-t-lg wmnds-m-b-md">
-              <fieldset className="wmnds-fe-fieldset">
-                <legend className="wmnds-fe-fieldset__legend">
-                  <h2 className="wmnds-fe-question">Select your rail zones</h2>
-                </legend>
-                <div className={error ? ' wmnds-fe-group--error' : ''}>
-                  {/* If there is an error, show here */}
-                  {error && (
-                    <span
-                      className="wmnds-fe-error-message"
-                      dangerouslySetInnerHTML={{
-                        __html: sanitize(error.message),
-                      }}
-                    />
-                  )}
-                  <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
-                    <p>Based on the stations you&rsquo;ve told us about</p>
-                    {recommendedOptions.map((option: any) => (
-                      <Radio
-                        key={`railZones${option.value}`}
-                        name="railZones"
-                        text={option.text}
-                        value={option.value}
-                        onChange={handleChange}
-                      />
-                    ))}
-                    {additionalOptions.length > 0 && (
-                      <details className="wmnds-details wmnds-m-t-sm wmnds-m-b-md">
-                        <summary className="wmnds-link">I need to travel in more zones</summary>
-                        <div className="wmnds-details__content">
-                          <p>Select a different zone</p>
-                          {additionalOptions.map((option: any) => (
+            {loading ? (
+              <div className="wmnds-col-1 wmnds-m-t-lg">
+                <Loader
+                  text={
+                    ticketInfo.outOfCounty
+                      ? 'Finding out of county options'
+                      : 'Finding rail zone options'
+                  }
+                />
+              </div>
+            ) : (
+              <>
+                <div className="wmnds-fe-group wmnds-m-t-lg wmnds-m-b-md">
+                  <fieldset className="wmnds-fe-fieldset">
+                    <legend className="wmnds-fe-fieldset__legend">
+                      <h2 className="wmnds-fe-question">Select your rail zones</h2>
+                    </legend>
+                    <div className={error ? ' wmnds-fe-group--error' : ''}>
+                      {/* If there is an error, show here */}
+                      {error && (
+                        <span
+                          className="wmnds-fe-error-message"
+                          dangerouslySetInnerHTML={{
+                            __html: sanitize(error.message),
+                          }}
+                        />
+                      )}
+                      <div className="wmnds-fe-radios wmnds-fe-radios--inline wmnds-m-b-md">
+                        {defaultToAdult ? (
+                          <div className="wmnds-warning-text wmnds-m-b-md">
+                            <Icon
+                              iconName="general-warning-circle"
+                              className="wmnds-warning-text__icon"
+                            />
+                            We only sell adult <NIcon str="train" /> tickets. Select a rail zone to
+                            continue with an adult ticket.
+                          </div>
+                        ) : (
+                          <p>Based on the stations you&rsquo;ve told us about</p>
+                        )}
+                        {recommendedOptions.length > 0 ? (
+                          recommendedOptions.map((option: any) => (
                             <Radio
                               key={`railZones${option.value}`}
                               name="railZones"
@@ -189,22 +255,47 @@ const RailZone = () => {
                               value={option.value}
                               onChange={handleChange}
                             />
-                          ))}
-                        </div>
-                      </details>
-                    )}
-                  </div>
+                          ))
+                        ) : (
+                          <div className="wmnds-warning-text wmnds-m-b-md">
+                            <Icon
+                              iconName="general-warning-circle"
+                              className="wmnds-warning-text__icon"
+                            />
+                            No results found. Please try a different search.
+                          </div>
+                        )}
+                        {additionalOptions.length > 0 && (
+                          <details className="wmnds-details wmnds-m-t-sm wmnds-m-b-md">
+                            <summary className="wmnds-link">I need to travel in more zones</summary>
+                            <div className="wmnds-details__content">
+                              <p>Select a different zone</p>
+                              {additionalOptions.map((option: any) => (
+                                <Radio
+                                  key={`railZones${option.value}`}
+                                  name="railZones"
+                                  text={option.text}
+                                  value={option.value}
+                                  onChange={handleChange}
+                                />
+                              ))}
+                            </div>
+                          </details>
+                        )}
+                      </div>
+                    </div>
+                  </fieldset>
                 </div>
-              </fieldset>
-            </div>
-            <Button
-              btnClass="wmnds-col-1 wmnds-col-sm-auto"
-              text="Continue"
-              onClick={handleContinue}
-            />
+                {recommendedOptions.length > 0 && (
+                  <Button
+                    btnClass="wmnds-col-1 wmnds-col-sm-auto"
+                    text="Continue"
+                    onClick={handleContinue}
+                  />
+                )}
+              </>
+            )}
           </>
-        ) : (
-          <></>
         )}
       </QuestionCard>
     </>

@@ -10,6 +10,7 @@ const Step2 = () => {
   // Logic to determine which to section to show
   if (
     (formState.ticketInfo.ticketType === 'nBus' && !formState.ticketInfo.busArea) ||
+    (formState.ticketInfo.ticketType === 'single' && !formState.ticketInfo.busArea) ||
     editMode === 'busArea'
   ) {
     sectionToRender = <BusArea />;

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const questions = {
   busNetwork: {
     question: 'Do you want to travel on any bus?',
@@ -13,79 +14,79 @@ const questions = {
     options: [
       {
         text: 'A & M Group',
-        value: 'AMG',
+        value: 'A & M Group',
       },
       {
         text: 'Arriva Fox County',
-        value: 'AFC',
+        value: 'Arriva Fox County',
       },
       {
         text: 'Arriva Midlands',
-        value: 'AMN',
+        value: 'Arriva Midlands',
       },
       {
         text: 'Chaserider',
-        value: 'CRD',
+        value: 'Chaserider',
       },
       {
         text: 'D & G Bus',
-        value: 'DGC',
+        value: 'D & G Bus',
       },
       {
         text: 'Diamond Bus',
-        value: 'DIA',
+        value: 'Diamond Bus',
       },
       {
         text: 'First Bus Potteries',
-        value: 'PMT',
+        value: 'First Bus Potteries',
       },
       {
         text: "Johnson's Excelbus",
-        value: 'JOH',
+        value: "Johnson's Excelbus",
       },
       {
         text: 'LandFlight',
-        value: 'SIL',
+        value: 'LandFlight',
       },
       {
         text: "Let's Go!",
-        value: 'SIL',
+        value: "Let's Go!",
       },
       {
         text: 'Lilbourne Community Minibus',
-        value: 'LCM',
+        value: 'Lilbourne Community Minibus',
       },
       {
         text: 'Midland Classic',
-        value: 'MDC',
+        value: 'Midland Classic',
       },
       {
         text: 'National Express Coventry',
-        value: 'TCV',
+        value: 'National Express Coventry',
       },
       {
         text: 'National Express West Midlands',
-        value: 'NXB',
+        value: 'National Express West Midlands',
       },
       {
         text: 'NN Cresswell',
-        value: 'CWL',
+        value: 'NN Cresswell',
       },
       {
         text: 'Roberts Travel',
-        value: 'RTS',
+        value: 'Roberts Travel',
       },
       {
         text: 'Stagecoach Midlands',
-        value: 'SMR',
+        value: 'Stagecoach Midlands',
       },
       {
         text: 'Trent Barton',
-        value: 'TRN',
+        value: 'Trent Barton',
       },
       {
         text: 'Wyre Forest Dial a Ride',
-        value: 'WFD',
+        value: 'Wyre Forest Dial a Ride',
       },
     ],
   },
@@ -96,14 +97,12 @@ const questions = {
       {
         text: 'Young person (5-18)',
         value: 'youngPerson',
-        info:
-          'If you&rsquo;re over 16, you need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18</a> or <a href="https://wmnetwork.co.uk/swift/swift-for-you/student-season-tickets/" target="_blank" rel="nofollow">student Swift card</a>. If you look older than 16, you&rsquo;ll need to prove your age.',
+        info: 'If you&rsquo;re over 16, you need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18</a> or <a href="https://wmnetwork.co.uk/swift/swift-for-you/student-season-tickets/" target="_blank" rel="nofollow">student Swift card</a>. If you look older than 16, you&rsquo;ll need to prove your age.',
       },
       {
         text: 'Student (16+)',
         value: 'student',
-        info:
-          'You need a student Swift card. If you can&rsquo;t get one, you&rsquo;ll need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18 Swift card</a> or pay adult fare.',
+        info: 'You need a student Swift card. If you can&rsquo;t get one, you&rsquo;ll need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18 Swift card</a> or pay adult fare.',
       },
       {
         text: 'Group or Family',
@@ -112,14 +111,12 @@ const questions = {
       {
         text: 'Older person',
         value: 'concessionary',
-        info:
-          'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/older-persons-pass/" target="_blank" rel="nofollow">WMCA older person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
+        info: 'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/older-persons-pass/" target="_blank" rel="nofollow">WMCA older person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
       },
       {
         text: 'Disabled person',
         value: 'disabled',
-        info:
-          'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/disabled-persons-pass/" target="_blank" rel="nofollow">WMCA disabled person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
+        info: 'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/disabled-persons-pass/" target="_blank" rel="nofollow">WMCA disabled person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
       },
     ],
   },
@@ -186,19 +183,16 @@ const questions = {
         value: 'offpeak',
       },
       {
-        html:
-          '<strong>Disabled or Older Person’s pass holder</strong> I need to travel before 9.30am ',
+        html: '<strong>Disabled or Older Person’s pass holder</strong> I need to travel before 9.30am ',
         text: 'Disabled or Older Person’s pass holder',
-        value: 'senior',
-        info:
-          'As a disabled or older person’s pass holder, you get free travel after 9.30am on weekdays and all weekend. You only need a ticket if you need to regularly travel before 9.30am.',
+        value: 'concessionary',
+        info: 'As a disabled or older person’s pass holder, you get free travel after 9.30am on weekdays and all weekend. You only need a ticket if you need to regularly travel before 9.30am.',
       },
     ],
   },
   firstClass: {
     question: 'Do you want to sit in first class?',
-    hint:
-      'First class is only available on CrossCountry, Avanti West Coast and some London Northwestern trains.',
+    hint: 'First class is only available on CrossCountry, Avanti West Coast and some London Northwestern trains.',
     options: [
       {
         text: 'Yes',
@@ -239,6 +233,11 @@ const questions = {
         value: '52weeks',
       },
     ],
+  },
+  multiDay: {
+    question: 'How many 1 day tickets do you need?',
+    hint: 'Multi-day tickets are bundles of 5, 10 or 15 day tickets. You activate a ticket when you tap in and can use it all day.',
+    options: [],
   },
 };
 

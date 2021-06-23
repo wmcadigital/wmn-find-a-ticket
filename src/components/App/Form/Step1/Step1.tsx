@@ -1,4 +1,3 @@
-import React from 'react';
 import Traveller from './Traveller/Traveller';
 import BusCompany from './BusCompany/BusCompany';
 import useStepLogic from '../customHooks/useStepLogic';
@@ -6,6 +5,7 @@ import useStepLogic from '../customHooks/useStepLogic';
 const Step1 = () => {
   const { formState } = useStepLogic();
   const { editMode, ticketInfo } = formState;
+
   // showBusCompany returns boolean based on if:
   // - modes include bus and not train
   // - ticketType is not set to nBus

@@ -4,7 +4,7 @@ import { useFormContext, TForm } from 'globalState';
 
 const useStepLogic = () => {
   const [formState, formDispatch] = useFormContext(); // Get the state/dispatch of form data from FormDataContext
-  const { ticketInfo, mounted, editMode } = formState;
+  const { ticketInfo, mounted, editMode, ticketId } = formState;
   const { modes, ticketType } = ticketInfo;
 
   // Function for setting the step of the form
@@ -29,6 +29,7 @@ const useStepLogic = () => {
       railZones,
       firstClass,
       ticketDuration,
+      multiDay,
     } = ticketInfo;
     formDispatch({ type: 'EDIT_MODE', payload: null });
 
@@ -38,19 +39,23 @@ const useStepLogic = () => {
       (ticketType && traveller && ticketType !== 'single');
     // Checks to see if step 2 is complete
     const step2Check =
-      (travelTime && busArea && ticketType === 'nBus') ||
+      (travelTime && busArea && (ticketType === 'nBus' || ticketType === 'single')) ||
       (travelTime && railZones && ticketType === 'nTicket') ||
-      (travelTime && (ticketType === 'single' || ticketType === 'tram'));
+      (travelTime && ticketType === 'tram');
     // Checks to see if step 3 is complete
     const step3Check =
-      (ticketDuration && ticketType !== 'nTicket') ||
-      (ticketDuration && firstClass) ||
-      (ticketDuration &&
+      (ticketId && ticketDuration && ticketType !== 'nTicket') ||
+      (ticketId && ticketDuration && ticketType !== 'nTicket' && multiDay) ||
+      (ticketId && ticketDuration && firstClass) ||
+      (ticketId &&
+        ticketDuration &&
         railZones &&
         (Math.min(...ticketInfo.railZones!) !== 1 || Math.max(...ticketInfo.railZones!) < 4));
 
     // If step checks fail (return false), go to the step to get the correct information
-    if (step1Check) {
+    if (ticketId) {
+      setStep(4);
+    } else if (step1Check) {
       if (step2Check) {
         if (step3Check) {
           setStep(4);
@@ -65,7 +70,7 @@ const useStepLogic = () => {
     }
     // save state to session storage
     sessionStorage.setItem('ticketInfo', JSON.stringify(ticketInfo));
-  }, [setStep, formDispatch, ticketInfo, ticketType]);
+  }, [setStep, formDispatch, ticketInfo, ticketId, ticketType]);
 
   // Try to set the ticket type based on data available
   const setTicketType = useCallback(() => {
