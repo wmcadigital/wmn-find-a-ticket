@@ -178,7 +178,7 @@ const RailZone = () => {
       if (defaultToAdult) {
         formDispatch({
           type: 'UPDATE_TICKET_INFO',
-          payload: { name: 'traveller', value: 'adult', autoAnswered: true },
+          payload: { name: 'traveller', value: 'adult', autoAnswered: false },
         });
       }
     } else {
