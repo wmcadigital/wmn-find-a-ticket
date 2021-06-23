@@ -3,7 +3,6 @@ import { useFormContext } from 'globalState';
 // import dompurify from 'dompurify';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
-import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
 import questions from '../../questions';
 
 import { Ticket } from '../../types/Tickets.types';
@@ -17,9 +16,9 @@ const TicketDuration = ({
   results: Ticket[];
 }) => {
   const name = 'ticketDuration';
-  const [formState, formDispatch] = useFormContext();
+  const [{ ticketInfo }, formDispatch] = useFormContext();
+  const { ticketType, firstClass } = ticketInfo;
   const { question, hint } = questions[name];
-  const { ticketType, firstClass } = formState.ticketInfo;
 
   // Automatically set first class to 'no' if it hasn't been set yet and includes train.
   useEffect(() => {
@@ -47,6 +46,23 @@ const TicketDuration = ({
     formDispatch({ type: 'REMOVE_TICKET_INFO', payload: { name: 'multiDay' } });
   };
 
+  const getValidityInfo = (text: string) => {
+    switch (text) {
+      case '1 Day':
+        return { quantity: 1, text: '1 day' };
+      case '1 Week':
+        return { quantity: 7, text: '1 week' };
+      case '1 Month':
+        return { quantity: 28, text: '28 days' };
+      case '1 Term':
+        return { quantity: 90, text: '1 term' };
+      case '1 Year':
+        return { quantity: 365, text: '52 weeks' };
+      default:
+        return { quantity: 1, text };
+    }
+  };
+
   return (
     <>
       <QuestionCard showChangeBtn={false}>
@@ -57,44 +73,70 @@ const TicketDuration = ({
         <>
           {results && results!.length > 0 ? (
             <>
-              {results!.map((option: Ticket) => {
-                return (
-                  <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
-                    <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
-                      {option.standardDiscountCurrentAmount ? (
-                        <div className={`wmnds-grid ${s.sale}`}>
-                          <h4 className="wmnds-col-auto">
-                            <ReplaceTextWithIcon htmlElement={option.name} />{' '}
-                            <span className={s.fullPrice}>
-                              £{option.standardCurrentAmount.toFixed(2)}
-                            </span>{' '}
-                            <span className={s.salePrice}>
-                              £{option.ticketCurrentAmount.toFixed(2)}
-                            </span>
-                          </h4>
-                          <div className="wmnds-col-auto">
-                            <div className={s.saleBadge}>Sale</div>
+              {results!
+                .sort((a, b) => a.ticketCurrentAmount - b.ticketCurrentAmount)
+                .map((option: Ticket) => {
+                  return (
+                    <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
+                      <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
+                        {option.standardDiscountCurrentAmount ? (
+                          <div>
+                            <div className={`wmnds-grid ${s.sale}`}>
+                              <h4 className="wmnds-col-auto">
+                                {option.buyOnDirectDebit
+                                  ? 'Monthly Direct Debit'
+                                  : getValidityInfo(option.validity).text}{' '}
+                                <span className={s.fullPrice}>
+                                  £{option.standardCurrentAmount.toFixed(2)}
+                                </span>{' '}
+                                <span className={s.salePrice}>
+                                  £{option.ticketCurrentAmount.toFixed(2)}
+                                </span>
+                              </h4>
+                              <div className="wmnds-col-auto">
+                                <div className={s.saleBadge}>Sale</div>
+                              </div>
+                            </div>
+                            <div className="wmnds-m-b-sm">
+                              £
+                              {(
+                                option.ticketCurrentAmount /
+                                getValidityInfo(option.validity).quantity
+                              ).toFixed(2)}{' '}
+                              per day
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <h4>
-                          <ReplaceTextWithIcon htmlElement={option.name} />{' '}
-                          <span className={s.totalPrice}>
-                            {' '}
-                            £{option.ticketCurrentAmount.toFixed(2)}
-                          </span>
-                        </h4>
-                      )}
-                      {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
-                      <Button
-                        btnClass="wmnds-btn--block"
-                        text="Select"
-                        onClick={() => handleContinue(option)}
-                      />
+                        ) : (
+                          <div>
+                            <h4>
+                              {option.buyOnDirectDebit
+                                ? 'Monthly Direct Debit'
+                                : getValidityInfo(option.validity).text}{' '}
+                              <span className={s.totalPrice}>
+                                {' '}
+                                £{option.ticketCurrentAmount.toFixed(2)}
+                              </span>
+                            </h4>
+                            <div className="wmnds-m-b-sm">
+                              £
+                              {(
+                                option.ticketCurrentAmount /
+                                getValidityInfo(option.validity).quantity
+                              ).toFixed(2)}{' '}
+                              per day
+                            </div>
+                          </div>
+                        )}
+                        {/* <p>£{parseFloat(option.ticketCurrentAmount).toFixed(2)} per day</p> */}
+                        <Button
+                          btnClass="wmnds-btn--block"
+                          text="Select"
+                          onClick={() => handleContinue(option)}
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </>
           ) : (
             <div className="wmnds-col-1">
