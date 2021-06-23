@@ -86,6 +86,14 @@ const BusCompanyStep2 = () => {
     }
   };
 
+  const findBusCompany = () => {
+    formDispatch({
+      type: 'UPDATE_TICKET_INFO',
+      payload: { name, value: null, autoAnswered: false },
+    });
+    window.location.href = `https://find-bus-company.wmnetwork.co.uk/?ticketSearch=true&modes=${modesUrlString}`;
+  };
+
   useEffect(() => {
     const temp = getSearchParam('useOperator') && checkOperatorName(getSearchParam('useOperator')!);
     if (temp && formState.operators.length) {
@@ -176,12 +184,11 @@ const BusCompanyStep2 = () => {
               </div>
             )}
             <div className="wmnds-p-b-lg">
-              <a
-                className="wmnds-link"
-                href={`https://find-bus-company.wmnetwork.co.uk//?ticketSearch=true&modes=${modesUrlString}`}
-              >
-                I don&rsquo;t know the bus company I travel with
-              </a>
+              <Button
+                btnClass="wmnds-btn--link"
+                onClick={findBusCompany}
+                text="I don't know the bus company I travel with"
+              />
             </div>
             <div>
               {selectedOperator ? (
