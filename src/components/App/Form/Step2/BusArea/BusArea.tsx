@@ -1,5 +1,6 @@
 import dompurify from 'dompurify';
 import { useFormContext } from 'globalState';
+import Icon from 'components/shared/Icon/Icon';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import questions from '../../questions';
@@ -56,6 +57,9 @@ const BusArea = () => {
           });
         }
       }
+    } else if (!regional.length && !local.length) {
+      formDispatch({ type: 'EDIT_MODE', payload: 'traveller' });
+      formDispatch({ type: 'UPDATE_STEP', payload: 1 });
     } else {
       setError({ message: 'Please select an answer' });
     }
@@ -150,6 +154,12 @@ const BusArea = () => {
                       onChange={handleChange}
                     />
                   ))}
+                </div>
+              )}
+              {!regional.length && !local.length && (
+                <div className="wmnds-warning-text wmnds-m-b-md">
+                  <Icon iconName="general-warning-circle" className="wmnds-warning-text__icon" />
+                  Sorry, no bus areas match your search.
                 </div>
               )}
               {getExcludedBusAreas().length > 0 && (
