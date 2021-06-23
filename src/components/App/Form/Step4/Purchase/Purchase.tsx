@@ -119,8 +119,12 @@ const Purchase = () => {
       ) : (
         <div className="wmnds-col-1-1 wmnds-col-md-2-3">
           <QuestionCard>
-            <h2>No ticket found</h2>
-            <a href="/">Start a new search</a>
+            <h2>Ticket not found</h2>
+            <div className="wmnds-warning-text wmnds-m-b-md">
+              <Icon iconName="general-warning-circle" className="wmnds-warning-text__icon" />
+              Sorry, there were no results found for your search. <br />
+              <a href="/">Start a new search</a>
+            </div>
           </QuestionCard>
         </div>
       )}

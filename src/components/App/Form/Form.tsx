@@ -15,7 +15,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   const apiOptions = ticketId
     ? { get: true, apiPath: `/ticketing/v2/tickets/${ticketId}` }
     : { apiPath: '/ticketing/v2/tickets/search' };
-  const { getAPIResults, results, loading } = useTicketingAPI(apiOptions);
+  const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useEffect(() => {
     // Run API search if:
     // - Train mode is not selected
@@ -23,10 +23,12 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
     // - If modes have changed
     if (!loading) {
       if ((results && !results.length) || (prevMode !== ticketInfo.modes && !ticketId)) {
-        getAPIResults();
+        if (!errorInfo) {
+          getAPIResults();
+        }
       }
     }
-  }, [getAPIResults, loading, results, prevMode, ticketInfo.modes, ticketId]);
+  }, [getAPIResults, loading, results, prevMode, ticketInfo.modes, errorInfo, ticketId]);
 
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
