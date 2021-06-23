@@ -112,12 +112,6 @@ const BusCompanyStep2 = () => {
   return (
     <>
       {genericError}
-      {invalidOperator && (
-        <p>
-          Sorry, there appears to be an issue with the selected bus company. Please choose one from
-          the list below.
-        </p>
-      )}
       <QuestionCard>
         {loading ? (
           <div className="wmnds-p-lg">
@@ -125,6 +119,13 @@ const BusCompanyStep2 = () => {
           </div>
         ) : (
           <>
+            {invalidOperator && (
+              <div className="wmnds-m-b-lg wmnds-msg-help wmnds-p-md">
+                Sorry, there appears to be an issue with the selected bus company.
+                <br />
+                <strong>Please choose an option from the list below.</strong>
+              </div>
+            )}
             <Dropdown
               label={question}
               hint={hint}
@@ -136,7 +137,7 @@ const BusCompanyStep2 = () => {
             />
 
             {/* If there is a value selected and the value has busInfo */}
-            {selectedOperator ? (
+            {selectedOperator && (
               <div className="wmnds-inset-text wmnds-m-t-md wmnds-m-b-lg">
                 {isSupportedOperator ? (
                   <>
@@ -173,8 +174,6 @@ const BusCompanyStep2 = () => {
                   </>
                 )}
               </div>
-            ) : (
-              <></>
             )}
             <div className="wmnds-p-b-lg">
               <a

@@ -196,9 +196,7 @@ const RailZone = () => {
         <p>You can only choose one Out of County station.</p>
         <AutoComplete />
 
-        {zonesValid ? (
-          <></>
-        ) : (
+        {!zonesValid && (
           <Message
             type="error"
             title="Select a station in a West Midlands zone"
@@ -206,7 +204,7 @@ const RailZone = () => {
           />
         )}
 
-        {selectionValid ? (
+        {selectionValid && (
           <>
             {loading ? (
               <div className="wmnds-col-1 wmnds-m-t-lg">
@@ -298,8 +296,6 @@ const RailZone = () => {
               </>
             )}
           </>
-        ) : (
-          <></>
         )}
       </QuestionCard>
     </>
