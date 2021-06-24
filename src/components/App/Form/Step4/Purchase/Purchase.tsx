@@ -59,14 +59,12 @@ const Purchase = () => {
       {ticket ? (
         <>
           <div className="wmnds-col-1-1 wmnds-col-md-2-3">
-            <QuestionCard>
-              <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
-                <div className="wmnds-col-2-3">
-                  {ticket && Object.entries(ticket).length > 0 && (
-                    <>
-                      <h2 className={s.heading}>
-                        <ReplaceTextWithIcon htmlElement={ticket.name} />
-                      </h2>
+            <QuestionCard showChangeBtn={false}>
+              {Object.entries(ticket).length > 0 && (
+                <>
+                  <div className={`wmnds-grid wmnds-grid--spacing-md-2-md ${s.ticketHeader}`}>
+                    <h2 className={`wmnds-col-1 wmnds-col-md-2-3 ${s.heading}`}>
+                      <ReplaceTextWithIcon htmlElement={ticket.name} />
                       <div className={s.icons}>
                         {getModeIcons(ticket).map((mode: any) => (
                           <Icon
@@ -76,36 +74,49 @@ const Purchase = () => {
                           />
                         ))}
                       </div>
-                      <ReplaceTextWithIcon htmlElement={ticket.description} />
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: sanitize(ticket.description),
-                        }}
-                      />
-                      <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.summary) }} />
-                    </>
-                  )}
-                  <h3>
+                    </h2>
+                    <div className="wmnds-col-1-2 wmnds-col-md-1-3 wmnds-m-b-sm">
+                      {!formState.skippedToResult ? (
+                        <Button
+                          text="Change your ticket"
+                          onClick={editStep}
+                          btnClass="wmnds-btn--secondary wmnds-col-1"
+                        />
+                      ) : (
+                        <a href="/" className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
+                          Change your ticket
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  <p className="h3 wmnds-m-t-none wmnds-m-b-lg">
                     £{ticket.ticketCurrentAmount?.toFixed(2)} for {ticket.validity}
-                  </h3>
-                </div>
-                <div className="wmnds-col-1-3">
-                  {!formState.skippedToResult ? (
-                    <Button
-                      text="Change your ticket"
-                      onClick={editStep}
-                      btnClass="wmnds-btn--secondary wmnds-col-1"
-                    />
-                  ) : (
-                    <a href="/" className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
-                      Change your ticket
-                    </a>
-                  )}
-                </div>
-              </div>
+                  </p>
+                  <div
+                    className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md ${s.description}`}
+                  >
+                    <div className="wmnds-ticket-summary-msg__header">
+                      <h3 className="wmnds-ticket-summary-msg__title">Summary</h3>
+                    </div>
+                    <div className="wmnds-ticket-summary-msg__info">
+                      <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.summary) }} />
+                    </div>
+                  </div>
+                  <div
+                    className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-must ${s.description}`}
+                  >
+                    <div className="wmnds-ticket-summary-msg__header">
+                      <h3 className="wmnds-ticket-summary-msg__title">Description</h3>
+                    </div>
+                    <div className="wmnds-ticket-summary-msg__info">
+                      <ReplaceTextWithIcon htmlElement={ticket.description} />
+                    </div>
+                  </div>
+                </>
+              )}
             </QuestionCard>
           </div>
-          <div className="wmnds-col-1-1 wmnds-col-md-1-3">
+          <div className="wmnds-col-1 wmnds-col-md-1-3">
             <div className="bg-white wmnds-p-md">
               <h2>Buy online</h2>
               <Button
@@ -117,7 +128,7 @@ const Purchase = () => {
           </div>
         </>
       ) : (
-        <div className="wmnds-col-1-1 wmnds-col-md-2-3">
+        <div className="wmnds-col-1 wmnds-col-md-2-3">
           <QuestionCard>
             <h2>Ticket not found</h2>
             <div className="wmnds-warning-text wmnds-m-b-md">

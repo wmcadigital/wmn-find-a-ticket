@@ -22,7 +22,7 @@ const ChangeAnswers = () => {
   );
 };
 
-const QuestionCard = ({ children, handleContinue, showChangeBtn }: QuestionCardProps) => {
+const QuestionCard = ({ children, handleContinue, showChangeBtn = true }: QuestionCardProps) => {
   return (
     <div className={`${s.card} bg-white wmnds-m-b-lg`}>
       {children}

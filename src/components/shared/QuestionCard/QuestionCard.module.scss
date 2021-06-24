@@ -9,7 +9,7 @@
 .card {
   margin-right: -$size-sm;
   margin-left: -$size-sm;
-  padding: $size-md;
+  padding: 1.5rem $size-md;
   @media screen and (min-width: $breakpoint-md) {
     margin-right: 0;
     margin-left: 0;
