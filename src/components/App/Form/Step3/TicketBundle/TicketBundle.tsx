@@ -18,7 +18,10 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
   );
 
   const handleContinue = () => {
-    if (value && value.length !== 0) {
+    if (value === 'swiftGo') {
+      // Navigate to swift go ticket page
+      window.location.href = '/?ticketId=811';
+    } else if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({
         type: 'UPDATE_TICKET_ID',
