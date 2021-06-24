@@ -94,7 +94,11 @@ function StartPage() {
                   Tickets can cover different modes of transport. This means you will not need to
                   have separate tickets for your journey.
                 </p>
-                <div className={`wmnds-fe-group ${error ? 'wmnds-fe-group--error' : ''}`}>
+                <div
+                  className={`wmnds-fe-group wmnds-p-b-sm wmnds-m-b-md ${
+                    error ? 'wmnds-fe-group--error' : ''
+                  }`}
+                >
                   {error && (
                     <span className="wmnds-fe-error-message">
                       Please select at least one option
@@ -102,28 +106,34 @@ function StartPage() {
                   )}
                   <p>Choose all modes of transport you will use.</p>
                   <div className="wmnds-grid wmnds-grid--spacing-3-md">
-                    <div className="wmnds-col-1-3 wmnds-col-md-auto">
+                    <div className="wmnds-col-1-3 wmnds-col-md-1-4">
                       <Button
                         text=" Bus"
-                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${s.btnBus}`}
+                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${
+                          !selectedModes.bus ? s.btnBus : ''
+                        }`}
                         iconLeft="modes-isolated-bus"
                         isActive={selectedModes.bus}
                         onClick={() => toggleMode('bus')}
                       />
                     </div>
-                    <div className="wmnds-col-1-3 wmnds-col-md-auto">
+                    <div className="wmnds-col-1-3 wmnds-col-md-1-4">
                       <Button
                         text=" Train"
-                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${s.btnTrain}`}
+                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${
+                          !selectedModes.train ? s.btnTrain : ''
+                        }`}
                         iconLeft="modes-isolated-rail"
                         isActive={selectedModes.train}
                         onClick={() => toggleMode('train')}
                       />
                     </div>
-                    <div className="wmnds-col-1-3 wmnds-col-md-auto">
+                    <div className="wmnds-col-1-3 wmnds-col-md-1-4">
                       <Button
                         text=" Tram"
-                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${s.btnTram}`}
+                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${
+                          !selectedModes.tram ? s.btnTram : ''
+                        }`}
                         iconLeft="modes-isolated-metro"
                         isActive={selectedModes.tram}
                         onClick={() => toggleMode('tram')}
