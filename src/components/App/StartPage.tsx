@@ -6,6 +6,8 @@ import useStepLogic from './Form/customHooks/useStepLogic';
 import Button from '../shared/Button/Button';
 import GenericError from '../shared/Errors/GenericError';
 import QuestionCard from '../shared/QuestionCard/QuestionCard';
+// Styles
+import s from './StartPage.module.scss';
 
 function StartPage() {
   const { formState, formDispatch, runStepLogic } = useStepLogic();
@@ -100,28 +102,28 @@ function StartPage() {
                   )}
                   <p>Choose all modes of transport you will use.</p>
                   <div className="wmnds-grid wmnds-grid--spacing-3-md">
-                    <div className="wmnds-col-auto">
+                    <div className="wmnds-col-1-3 wmnds-col-md-auto">
                       <Button
                         text=" Bus"
-                        btnClass="wmnds-btn--mode"
+                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${s.btnBus}`}
                         iconLeft="modes-isolated-bus"
                         isActive={selectedModes.bus}
                         onClick={() => toggleMode('bus')}
                       />
                     </div>
-                    <div className="wmnds-col-auto">
+                    <div className="wmnds-col-1-3 wmnds-col-md-auto">
                       <Button
                         text=" Train"
-                        btnClass="wmnds-btn--mode"
+                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${s.btnTrain}`}
                         iconLeft="modes-isolated-rail"
                         isActive={selectedModes.train}
                         onClick={() => toggleMode('train')}
                       />
                     </div>
-                    <div className="wmnds-col-auto">
+                    <div className="wmnds-col-1-3 wmnds-col-md-auto">
                       <Button
                         text=" Tram"
-                        btnClass="wmnds-btn--mode"
+                        btnClass={`wmnds-btn--mode wmnds-col-1 wmnds-btn--align-left ${s.btnTram}`}
                         iconLeft="modes-isolated-metro"
                         isActive={selectedModes.tram}
                         onClick={() => toggleMode('tram')}
