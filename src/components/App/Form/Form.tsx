@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import Loader from 'components/shared/Loader/Loader';
 import useStepLogic from './customHooks/useStepLogic';
 import useTicketingAPI from './customHooks/useTicketingAPI';
@@ -18,7 +18,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
     ? { get: true, apiPath: `/ticketing/v2/tickets/${ticketId}` }
     : { apiPath: '/ticketing/v2/tickets/search' };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Run API search if:
     // - A search is not currently loading
     // - Train mode is not selected
@@ -36,7 +36,13 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
       {loading ? (
-        <Loader text={`Finding ${arrayToSentence(ticketInfo.modes as string[])} options`} />
+        <Loader
+          text={
+            ticketId
+              ? 'Getting ticket details'
+              : `Finding ${arrayToSentence(ticketInfo.modes as string[])} options`
+          }
+        />
       ) : (
         <>
           {formState.currentStep === 4 ? (

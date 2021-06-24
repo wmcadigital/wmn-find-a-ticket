@@ -166,6 +166,10 @@ export const reducer = (state = initialState, action: TForm.StateAction): TForm.
 
     case 'REMOVE_TICKET_INFO':
       delSearchParam(action.payload.name);
+      sessionStorage.setItem(
+        'ticketInfo',
+        JSON.stringify({ ...state.ticketInfo, [action.payload.name]: null }),
+      );
       return {
         ...state,
         ticketInfo: { ...state.ticketInfo, [action.payload.name]: null },
