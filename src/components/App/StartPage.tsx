@@ -82,8 +82,8 @@ function StartPage() {
       <div className="wmnds-col-1">
         <h1 className="wmnds-p-t-md">Find a ticket</h1>
         <p>Find and buy day, week and season tickets based on the way you travel.</p>
-        <div className="wmnds-grid">
-          <div className="wmnds-col-md-2-3">
+        <div className="wmnds-grid wmnds-grid--justify-between wmnds-grid--spacing-2-lg wmnds-grid--spacing-md-2-lg">
+          <div className="wmnds-col-1 wmnds-col-md-2-3">
             {error && (
               <GenericError errors={{ required: { message: 'Please check your responses' } }} />
             )}
@@ -167,6 +167,7 @@ function StartPage() {
               <a href="https://wmnetwork.co.uk">Swift card</a>.
             </p>
           </div>
+          <div className="wmnds-col-1 wmnds-col-md-1-3" data-id="ticketing-sidebar"></div>
         </div>
       </div>
     </div>
