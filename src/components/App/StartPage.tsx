@@ -167,7 +167,8 @@ function StartPage() {
               <a href="https://wmnetwork.co.uk">Swift card</a>.
             </p>
           </div>
-          <div className="wmnds-col-1 wmnds-col-md-1-3" data-id="ticketing-sidebar"></div>
+          <div className="wmnds-col-1 wmnds-col-md-1-3" data-id="ticketing-sidebar">
+          </div>
         </div>
       </div>
     </div>
