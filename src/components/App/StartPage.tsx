@@ -77,6 +77,17 @@ function StartPage() {
     }
   };
 
+  useEffect(() => {
+    // Adding umbraco controlled sidebar via js
+    const script = document.createElement('script');
+    script.src = 'https://tfwm.org.uk/scripts/ticketing-sidebar.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div className="wmnds-container wmnds-p-b-lg wmnds-grid">
       <div className="wmnds-col-1">
