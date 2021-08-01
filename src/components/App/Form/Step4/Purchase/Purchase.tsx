@@ -13,6 +13,9 @@ const { sanitize } = dompurify;
 const Purchase = () => {
   const [formState, formDispatch] = useFormContext();
 
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isAndroid = userAgent.indexOf('android') > -1;
+
   const ticket: Ticket | null =
     formState.apiResults?.find((t) => formState.ticketId === `${t.id}`) || null;
 
@@ -122,11 +125,26 @@ const Purchase = () => {
           <div className="wmnds-col-1 wmnds-col-md-1-3">
             <div className="bg-white wmnds-p-md">
               <h2>Buy online</h2>
-              <Button
-                text="Apply for Direct Debit"
-                btnClass="wmnds-col-1"
-                iconRight="general-chevron-right"
-              />
+              {isAndroid && formState.isSwiftApp ? (
+                <a href="#0" className="wmnds-btn wmnds-col-1">
+                  Buy on Google Pay
+                  <Icon
+                    className="wmnds-btn__icon wmnds-btn__icon--right"
+                    iconName="general-chevron-right"
+                  />
+                </a>
+              ) : (
+                <a
+                  href={ticket.buyTicketUrl ? ticket.buyTicketUrl : '#0'}
+                  className="wmnds-btn wmnds-col-1"
+                >
+                  Apply for Direct Debit
+                  <Icon
+                    className="wmnds-btn__icon wmnds-btn__icon--right"
+                    iconName="general-chevron-right"
+                  />
+                </a>
+              )}
             </div>
           </div>
         </>

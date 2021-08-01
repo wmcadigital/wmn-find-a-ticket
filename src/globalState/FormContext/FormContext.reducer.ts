@@ -21,7 +21,8 @@ export const initialState = (() => {
     operators: [],
     autoAnswered: {},
     skippedToResult: false,
-    isSwiftApp: getSearchParam('swiftApp') === 'true',
+    isSwiftApp:
+      getSearchParam('swiftApp') === 'true' || sessionStorage.getItem('swiftApp') === 'true',
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
@@ -31,6 +32,7 @@ export const initialState = (() => {
     (getAllSearchParams().length && getSearchParam('swiftApp'))
   ) {
     sessionStorage.clear();
+    sessionStorage.setItem('swiftApp', 'true');
   }
 
   if (getSearchParam('ticketId')) {
