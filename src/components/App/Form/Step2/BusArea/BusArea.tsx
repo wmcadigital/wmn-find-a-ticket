@@ -24,11 +24,12 @@ const BusArea = () => {
   const validBusAreas = useGetValidBusAreas(travellerBusResults);
   const validAdultBusAreas = useGetValidBusAreas(adultBusResults);
   const getExcludedBusAreas = () => {
-    const travellerBusAreas = [...validBusAreas.regional, ...validBusAreas.local].map(
-      (area) => area.name,
+    const travellerBusAreas = [...validBusAreas.regional, ...validBusAreas.local].map((area) =>
+      area.name === 'Sandwell & Dudley' ? 'Sandwell and Dudley' : area.name,
     );
+    // eslint-disable-next-line prettier/prettier
     const adultBusAreas = [...validAdultBusAreas.regional, ...validAdultBusAreas.local].map(
-      (area) => area.name,
+      (area) => (area.name === 'Sandwell & Dudley' ? 'Sandwell and Dudley' : area.name),
     );
     return adultBusAreas.filter((area) => !travellerBusAreas.includes(area));
   };
@@ -145,15 +146,19 @@ const BusArea = () => {
               {local.length > 0 && (
                 <div className="wmnds-fe-radios wmnds-m-b-md">
                   {regional.length > 0 && <h3 className="wmnds-m-b-md">Local</h3>}
-                  {local.map((radio) => (
-                    <Radio
-                      key={radio.name}
-                      name={name}
-                      text={radio.name}
-                      value={radio.name}
-                      onChange={handleChange}
-                    />
-                  ))}
+                  {local.map((radio) => {
+                    const radioName =
+                      radio.name === 'Sandwell & Dudley' ? 'Sandwell and Dudley' : radio.name;
+                    return (
+                      <Radio
+                        key={radioName}
+                        name={name}
+                        text={radioName}
+                        value={radioName}
+                        onChange={handleChange}
+                      />
+                    );
+                  })}
                 </div>
               )}
               {!regional.length && !local.length && (

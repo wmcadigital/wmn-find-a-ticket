@@ -9,6 +9,9 @@ const useTicketQueries = () => {
 
   const ticketQuery: any = useMemo(() => {
     let fullQuery = {};
+    // Hot fix for sandwell & dudley search
+    const busArea =
+      ticketInfo.busArea === 'Sandwell and Dudley' ? 'Sandwell & Dudley' : ticketInfo.busArea;
     // Prevents filtering by bus result if mode doesn't include bus and has multiple modes selected e.g. train + tram
     const includeBus = ticketInfo.modes!.includes('bus') || ticketInfo.modes!.length === 1;
     const modesQuery = {
@@ -36,8 +39,7 @@ const useTicketQueries = () => {
 
     // INCLUDES BUS ONLY
     const busTravelQuery = {
-      busTravelArea:
-        ticketInfo.busArea === 'Diamond Bus Area' ? 'Entire Operator Area' : ticketInfo.busArea,
+      busTravelArea: ticketInfo.busArea === 'Diamond Bus Area' ? 'Entire Operator Area' : busArea,
     };
 
     const railZonesQuery = {
