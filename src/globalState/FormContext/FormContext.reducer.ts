@@ -21,11 +21,15 @@ export const initialState = (() => {
     operators: [],
     autoAnswered: {},
     skippedToResult: false,
+    isSwiftApp: getSearchParam('swiftApp') === 'true',
   };
 
   let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
 
-  if (window.location.search.length === 0) {
+  if (
+    window.location.search.length === 0 ||
+    (getAllSearchParams().length && getSearchParam('swiftApp'))
+  ) {
     sessionStorage.clear();
   }
 

@@ -56,6 +56,7 @@ export type State = {
   operators: any[];
   autoAnswered: Partial<TicketInfo>;
   skippedToResult: boolean;
+  isSwiftApp: boolean;
 };
 
 /* eslint-disable @typescript-eslint/indent */

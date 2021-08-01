@@ -83,7 +83,10 @@ const Purchase = () => {
                           btnClass="wmnds-btn--secondary wmnds-col-1"
                         />
                       ) : (
-                        <a href="/" className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
+                        <a
+                          href={`/${formState.isSwiftApp ? '?swiftApp=true' : ''}`}
+                          className="wmnds-btn wmnds-btn--secondary wmnds-col-1"
+                        >
                           Change your ticket
                         </a>
                       )}
