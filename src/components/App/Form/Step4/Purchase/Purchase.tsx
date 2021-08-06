@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+import { Helmet } from 'react-helmet';
 import dompurify from 'dompurify';
 import { useFormContext } from 'globalState';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
@@ -6,6 +8,7 @@ import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
 import Button from 'components/shared/Button/Button';
 import s from './Purchase.module.scss';
 import { Ticket } from '../../types/Tickets.types';
+import createLdJson from './createLdJson';
 
 const { sanitize } = dompurify;
 
@@ -58,6 +61,9 @@ const Purchase = () => {
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
       {ticket ? (
         <>
+          <Helmet>
+            <script type="application/ld+json">{JSON.stringify(createLdJson(ticket))}</script>
+          </Helmet>
           <div className="wmnds-col-1-1 wmnds-col-md-2-3">
             <QuestionCard showChangeBtn={false}>
               {Object.entries(ticket).length > 0 && (
