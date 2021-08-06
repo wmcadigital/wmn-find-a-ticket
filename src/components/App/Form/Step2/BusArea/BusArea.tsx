@@ -97,7 +97,7 @@ const BusArea = () => {
               <p>Birmingham and Solihull do not have local bus areas. </p>
               <p>
                 If you’re not sure, you can{' '}
-                <a href="https://find-bus-area.wmnetwork.co.uk">
+                <a href="https://find-bus-area.tfwm.org.uk">
                   find out which bus areas particular stops are in
                 </a>
                 .

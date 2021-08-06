@@ -5,9 +5,9 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const BusCompanyStep1 = () => {
   const name = 'busNetwork';
-  const { formDispatch, handleChange, value, genericError, error, setError } = useHandleChange(
-    name,
-  );
+  // eslint-disable-next-line prettier/prettier
+  const { formDispatch, handleChange, value, genericError, error, setError } =
+    useHandleChange(name);
   const { question, hint, options } = questions[name] as typeof questions[typeof name];
 
   const handleContinue = () => {
@@ -34,7 +34,7 @@ const BusCompanyStep1 = () => {
           onChange={handleChange}
         />
         <div className="wmnds-p-b-lg">
-          <a href="https://journeyplanner.wmnetwork.co.uk/" target="_blank" rel="noreferrer">
+          <a href="https://journeyplanner.tfwm.org.uk/" target="_blank" rel="noreferrer">
             I don&rsquo;t know which bus I need
           </a>
         </div>
