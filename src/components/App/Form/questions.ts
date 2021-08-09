@@ -97,12 +97,12 @@ const questions = {
       {
         text: 'Young person (5-18)',
         value: 'youngPerson',
-        info: 'If you&rsquo;re over 16, you need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18</a> or <a href="https://wmnetwork.co.uk/swift/swift-for-you/student-season-tickets/" target="_blank" rel="nofollow">student Swift card</a>. If you look older than 16, you&rsquo;ll need to prove your age.',
+        info: 'If you&rsquo;re over 16, you need a <a href="https://tfwm.org.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18</a> or <a href="https://tfwm.org.uk/swift/swift-for-you/student-season-tickets/" target="_blank" rel="nofollow">student Swift card</a>. If you look older than 16, you&rsquo;ll need to prove your age.',
       },
       {
         text: 'Student (16+)',
         value: 'student',
-        info: 'You need a student Swift card. If you can&rsquo;t get one, you&rsquo;ll need a <a href="https://wmnetwork.co.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18 Swift card</a> or pay adult fare.',
+        info: 'You need a student Swift card. If you can&rsquo;t get one, you&rsquo;ll need a <a href="https://tfwm.org.uk/swift/swift-for-you/16-18-photocard/" target="_blank" rel="nofollow">16-18 Swift card</a> or pay adult fare.',
       },
       {
         text: 'Group or Family',
@@ -111,12 +111,12 @@ const questions = {
       {
         text: 'Older person',
         value: 'concessionary',
-        info: 'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/older-persons-pass/" target="_blank" rel="nofollow">WMCA older person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
+        info: 'If you have a <a href="https://www.tfwm.org.uk/tickets-and-swift/discounts-and-free-travel-passes/older-persons-pass/" target="_blank" rel="nofollow">WMCA older person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
       },
       {
         text: 'Disabled person',
         value: 'disabled',
-        info: 'If you have a <a href="https://www.wmnetwork.co.uk/tickets-and-swift/discounts-and-free-travel-passes/disabled-persons-pass/" target="_blank" rel="nofollow">WMCA disabled person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
+        info: 'If you have a <a href="https://www.tfwm.org.uk/tickets-and-swift/discounts-and-free-travel-passes/disabled-persons-pass/" target="_blank" rel="nofollow">WMCA disabled person&rsquo;s pass</a>, you only need a ticket to travel before 9.30am on weekdays.',
       },
     ],
   },

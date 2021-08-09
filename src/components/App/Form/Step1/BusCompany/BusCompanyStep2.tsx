@@ -91,7 +91,7 @@ const BusCompanyStep2 = () => {
       type: 'REMOVE_TICKET_INFO',
       payload: { name },
     });
-    window.location.href = `https://find-bus-company.wmnetwork.co.uk/?ticketSearch=true&modes=${modesUrlString}`;
+    window.location.href = `https://find-bus-company.tfwm.org.uk/?ticketSearch=true&modes=${modesUrlString}`;
   };
 
   useEffect(() => {

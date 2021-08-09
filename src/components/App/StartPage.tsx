@@ -170,12 +170,12 @@ function StartPage() {
             <h2>Other tickets</h2>
             <p>
               You can find single and return fares when you{' '}
-              <a href="https://wmnetwork.co.uk">plan a journey</a>. You usually buy these on your
+              <a href="https:///tfwm.org.uk">plan a journey</a>. You usually buy these on your
               journey.
             </p>
             <p>
               You can also pay for buses and trams with Swift Go or a pay as you go{' '}
-              <a href="https://wmnetwork.co.uk">Swift card</a>.
+              <a href="https://tfwm.org.uk">Swift card</a>.
             </p>
           </div>
           <div className="wmnds-col-1 wmnds-col-md-1-3" data-id="ticketing-sidebar" />

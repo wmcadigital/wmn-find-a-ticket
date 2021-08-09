@@ -70,9 +70,7 @@ const AutoComplete = () => {
             text="View rail zones on a map"
             iconLeft="general-location-pin"
             onClick={() =>
-              findRailZones(
-                `https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}`,
-              )
+              findRailZones(`https://find-rail-zones.tfwm.org.uk/?ticketSearch=true${linkParams}`)
             }
           />
         </div>
@@ -83,7 +81,7 @@ const AutoComplete = () => {
             iconLeft="general-list"
             onClick={() =>
               findRailZones(
-                `https://find-rail-zones.wmnetwork.co.uk/?ticketSearch=true${linkParams}&mapView=false`,
+                `https://find-rail-zones.tfwm.org.uk/?ticketSearch=true${linkParams}&mapView=false`,
               )
             }
           />

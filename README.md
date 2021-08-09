@@ -1,4 +1,4 @@
-# West Midlands Network Create React App template
+# Transport for West Midlands Create React App template
 
 ## Get started
 
