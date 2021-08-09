@@ -170,7 +170,7 @@ function StartPage() {
             <h2>Other tickets</h2>
             <p>
               You can find single and return fares when you{' '}
-              <a href="https:///tfwm.org.uk">plan a journey</a>. You usually buy these on your
+              <a href="https://tfwm.org.uk">plan a journey</a>. You usually buy these on your
               journey.
             </p>
             <p>
