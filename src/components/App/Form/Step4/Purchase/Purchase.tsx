@@ -85,16 +85,31 @@ const Purchase = () => {
   };
 
   const directives: any = {};
+  const paymentDirective: any = [];
   if (ticket && ticket.directives) {
     ticket.directives.forEach((directive) => {
-      const qualifier = directive.qualifier.length ? directive.qualifier : 'swift';
-      if (directives[qualifier]) {
-        directives[qualifier] = [...directives[qualifier], directive];
+      const qualifier = directive.qualifier.length ? directive.qualifier : null;
+      const { category } = directive;
+      if (qualifier) {
+        if (directives[qualifier]) {
+          directives[qualifier] = [...directives[qualifier], directive];
+        } else {
+          directives[qualifier] = [directive];
+        }
+      } else if (directive.category === 'Swift card') {
+        if (directives[category]) {
+          directives[category] = [...directives[category], directive];
+        } else {
+          directives[category] = [directive];
+        }
       } else {
-        directives[qualifier] = [directive];
+        paymentDirective.push(directive);
       }
     });
   }
+
+  console.log(directives);
+  console.log(paymentDirective);
 
   return (
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
@@ -201,7 +216,7 @@ const Purchase = () => {
                       </div>
                     </div>
                   )}
-                  {directives.swift && (
+                  {directives['Swift card'] && (
                     <div className="wmnds-ticket-summary-msg wmnds-ticket-summary-msg--swift wmnds-m-b-md">
                       <div className="wmnds-ticket-summary-msg__header">
                         <Icon
@@ -212,7 +227,7 @@ const Purchase = () => {
                       </div>
                       <div className="wmnds-ticket-summary-msg__info">
                         <ul className="wmnds-ticket-summary-msg__list">
-                          {directives.swift.map((directive: any) => (
+                          {directives['Swift card'].map((directive: any) => (
                             <li key={directive.id}>
                               <ReplaceTextWithIcon
                                 htmlElement={convertDescription(directive.description, ticket)}

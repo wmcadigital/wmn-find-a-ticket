@@ -61,8 +61,8 @@ const useConvertDescription = () => {
           : `${ticket.railZoneFrom} to ${ticket.railZoneTo}`,
       outOfCountyStation: ticket.station,
       operatorName: ticket.operator,
-      startDate: formatDate(ticket.termStartDate),
-      endDate: formatDate(ticket.termEndDate),
+      startDate: ticket.termStartDate && formatDate(ticket.termStartDate),
+      endDate: ticket.termEndDate && formatDate(ticket.termEndDate),
       destinations: arrayToSentence(excludedDestinations.slice(0, 3)),
     };
     convertedDescription = convertTemplate(description, variables);
