@@ -108,9 +108,6 @@ const Purchase = () => {
     });
   }
 
-  console.log(directives);
-  console.log(paymentDirective);
-
   return (
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
       {ticket ? (

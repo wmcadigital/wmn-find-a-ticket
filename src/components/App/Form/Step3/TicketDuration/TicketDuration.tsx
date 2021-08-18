@@ -4,12 +4,13 @@ import { useFormContext } from 'globalState';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
+import useConvertDescription from '../../Step4/Purchase/useConvertDescription';
 
 import { Ticket } from '../../types/Tickets.types';
 import s from './TicketDuration.module.scss';
 
 const TicketDuration = ({
-  results,
+  results: res,
   hasBundleTickets,
 }: {
   hasBundleTickets: boolean;
@@ -19,6 +20,8 @@ const TicketDuration = ({
   const [{ ticketInfo }, formDispatch] = useFormContext();
   const { ticketType, firstClass } = ticketInfo;
   const { question, hint } = questions[name];
+  const { filterTermDates } = useConvertDescription();
+  const results = filterTermDates(res);
 
   // Automatically set first class to 'no' if it hasn't been set yet and includes train.
   useEffect(() => {

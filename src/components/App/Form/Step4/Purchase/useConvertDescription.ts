@@ -1,3 +1,4 @@
+import { Ticket } from 'components/App/Form/types/Tickets.types';
 import arrayToSentence from '../../helpers/arrayToSentence';
 import railData from '../../Step2/RailZone/RailData.json';
 
@@ -10,7 +11,7 @@ const useConvertDescription = () => {
     return str;
   };
 
-  const formatDate = (date: string) => {
+  const formatDate = (date: string, full?: boolean) => {
     const months = [
       'January',
       'February',
@@ -26,8 +27,10 @@ const useConvertDescription = () => {
       'December',
     ];
     const newDate = date.slice(0, 10).split('-').reverse();
-    newDate[1] = months[parseInt(newDate[1], 10) - 1];
-    return newDate.join(' ');
+    if (full) {
+      newDate[1] = months[parseInt(newDate[1], 10) - 1];
+    }
+    return full ? newDate.join(' ') : newDate.join('-');
   };
 
   const convertDescription = (description: string, ticket: any) => {
@@ -61,8 +64,8 @@ const useConvertDescription = () => {
           : `${ticket.railZoneFrom} to ${ticket.railZoneTo}`,
       outOfCountyStation: ticket.station,
       operatorName: ticket.operator,
-      startDate: ticket.termStartDate && formatDate(ticket.termStartDate),
-      endDate: ticket.termEndDate && formatDate(ticket.termEndDate),
+      startDate: ticket.termStartDate && formatDate(ticket.termStartDate, true),
+      endDate: ticket.termEndDate && formatDate(ticket.termEndDate, true),
       destinations: arrayToSentence(excludedDestinations.slice(0, 3)),
     };
     convertedDescription = convertTemplate(description, variables);
@@ -70,7 +73,22 @@ const useConvertDescription = () => {
     return convertedDescription;
   };
 
-  return { convertDescription, convertTemplate };
+  const filterTermDates = (results: Ticket[]) => {
+    return results.filter((r) => {
+      const now = new Date(Date.now()).toISOString();
+      const today = formatDate(now);
+      const startDate = formatDate(r.startDate);
+      const endDate = formatDate(r.endDate);
+      const isLater = (d1: string, d2: string) => {
+        return d1 > d2;
+      };
+      const isTerm = r.validity.toLowerCase() === '1 term';
+      const match = isTerm ? isLater(today, startDate) && !isLater(today, endDate) : true;
+      return match;
+    });
+  };
+
+  return { convertDescription, convertTemplate, formatDate, filterTermDates };
 };
 
 export default useConvertDescription;
