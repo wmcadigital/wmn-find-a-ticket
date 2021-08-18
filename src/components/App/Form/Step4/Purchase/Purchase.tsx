@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Helmet } from 'react-helmet';
-import dompurify from 'dompurify';
 import { useFormContext } from 'globalState';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import Icon from 'components/shared/Icon/Icon';
@@ -9,8 +8,6 @@ import Button from 'components/shared/Button/Button';
 import s from './Purchase.module.scss';
 import { Ticket } from '../../types/Tickets.types';
 import createLdJson from './createLdJson';
-
-const { sanitize } = dompurify;
 
 // Purchase Journey (TO DO)
 const Purchase = () => {
@@ -57,6 +54,18 @@ const Purchase = () => {
     return icons;
   };
 
+  const directives: any = {};
+  if (ticket && ticket.directives) {
+    ticket.directives.forEach((directive) => {
+      const qualifier = directive.qualifier.length ? directive.qualifier : 'swift';
+      if (directives[qualifier]) {
+        directives[qualifier] = [...directives[qualifier], directive];
+      } else {
+        directives[qualifier] = [directive];
+      }
+    });
+  }
+
   return (
     <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
       {ticket ? (
@@ -96,28 +105,91 @@ const Purchase = () => {
                     </div>
                   </div>
                   <p className="h3 wmnds-m-t-none wmnds-m-b-lg">
-                    £{ticket.ticketCurrentAmount?.toFixed(2)} for {ticket.validity}
+                    £{/* £{ticket.ticketCurrentAmount?.toFixed(2)} for {ticket.validity} */}
                   </p>
-                  <div
-                    className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md ${s.description}`}
-                  >
-                    <div className="wmnds-ticket-summary-msg__header">
-                      <h3 className="wmnds-ticket-summary-msg__title">Summary</h3>
+                  {directives['You can'] && (
+                    <div
+                      className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md ${s.description}`}
+                    >
+                      <div className="wmnds-ticket-summary-msg__header">
+                        <Icon
+                          iconName="general-checkmark"
+                          className="wmnds-ticket-summary-msg__icon"
+                        />
+                        <h3 className="wmnds-ticket-summary-msg__title">You can</h3>
+                      </div>
+                      <div className="wmnds-ticket-summary-msg__info">
+                        <ul className="wmnds-ticket-summary-msg__list">
+                          {directives['You can'].map((directive: any) => (
+                            <li key={directive.id}>
+                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="wmnds-ticket-summary-msg__info">
-                      <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.summary) }} />
+                  )}
+                  {directives["You can't"] && (
+                    <div
+                      className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-cannot wmnds-m-b-md ${s.description}`}
+                    >
+                      <div className="wmnds-ticket-summary-msg__header">
+                        <Icon iconName="general-cross" className="wmnds-ticket-summary-msg__icon" />
+                        <h3 className="wmnds-ticket-summary-msg__title">You can&rsquo;t</h3>
+                      </div>
+                      <div className="wmnds-ticket-summary-msg__info">
+                        <ul className="wmnds-ticket-summary-msg__list">
+                          {directives["You can't"].map((directive: any) => (
+                            <li key={directive.id}>
+                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-must ${s.description}`}
-                  >
-                    <div className="wmnds-ticket-summary-msg__header">
-                      <h3 className="wmnds-ticket-summary-msg__title">Description</h3>
+                  )}
+                  {directives['You must'] && (
+                    <div
+                      className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-must wmnds-m-b-md ${s.description}`}
+                    >
+                      <div className="wmnds-ticket-summary-msg__header">
+                        <Icon
+                          iconName="general-warning-circle"
+                          className="wmnds-ticket-summary-msg__icon"
+                        />
+                        <h3 className="wmnds-ticket-summary-msg__title">You must</h3>
+                      </div>
+                      <div className="wmnds-ticket-summary-msg__info">
+                        <ul className="wmnds-ticket-summary-msg__list">
+                          {directives['You must'].map((directive: any) => (
+                            <li key={directive.id}>
+                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="wmnds-ticket-summary-msg__info">
-                      <ReplaceTextWithIcon htmlElement={ticket.description} />
+                  )}
+                  {directives.swift && (
+                    <div className="wmnds-ticket-summary-msg wmnds-ticket-summary-msg--swift wmnds-m-b-md">
+                      <div className="wmnds-ticket-summary-msg__header">
+                        <Icon
+                          iconName="swift-full-logo"
+                          className="wmnds-ticket-summary-msg__icon"
+                        />
+                        <h3 className="wmnds-ticket-summary-msg__title">photocard</h3>
+                      </div>
+                      <div className="wmnds-ticket-summary-msg__info">
+                        <ul className="wmnds-ticket-summary-msg__list">
+                          {directives.swift.map((directive: any) => (
+                            <li key={directive.id}>
+                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </>
               )}
             </QuestionCard>
@@ -125,6 +197,8 @@ const Purchase = () => {
           <div className="wmnds-col-1 wmnds-col-md-1-3">
             <div className="bg-white wmnds-p-md">
               <h2>Buy online</h2>
+              <p>You can add this ticket to your Swift photocard online.</p>
+              <p>The next part of the process takes around 10 minutes. </p>
               <Button
                 text="Apply for Direct Debit"
                 btnClass="wmnds-col-1"
