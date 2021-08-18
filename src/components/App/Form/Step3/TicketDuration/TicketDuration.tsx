@@ -4,7 +4,7 @@ import { useFormContext } from 'globalState';
 import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/QuestionCard';
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
-import useConvertDescription from '../../Step4/Purchase/useConvertDescription';
+import useConvertDescription from '../../Step4/customHooks/useConvertDescription';
 
 import { Ticket } from '../../types/Tickets.types';
 import s from './TicketDuration.module.scss';
