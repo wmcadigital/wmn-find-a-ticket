@@ -147,6 +147,9 @@ export interface Ticket {
   availableOperators: string;
   isSeasonTicket: boolean;
   displayInSwiftSearch: boolean;
+  ticketCurrentAmount: number;
+  termStartDate?: string;
+  termEndDate?: string;
 }
 export interface PurchaseLocations {
   natEx: boolean;

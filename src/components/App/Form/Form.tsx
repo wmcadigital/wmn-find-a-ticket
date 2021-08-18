@@ -15,8 +15,8 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState } = useStepLogic();
   const { ticketInfo, ticketId } = formState;
   const apiOptions = ticketId
-    ? { get: true, apiPath: `/ticketing/v2/tickets/${ticketId}` }
-    : { apiPath: '/ticketing/v2/tickets/search' };
+    ? { get: true, apiPath: `/ticketing/tickets/${ticketId}/Complete/` }
+    : { apiPath: '/ticketing/tickets/search/complete' };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useLayoutEffect(() => {
     // Run API search if:

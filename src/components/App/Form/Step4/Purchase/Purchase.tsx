@@ -8,10 +8,12 @@ import Button from 'components/shared/Button/Button';
 import s from './Purchase.module.scss';
 import { Ticket } from '../../types/Tickets.types';
 import createLdJson from './createLdJson';
+import useConvertDescription from './useConvertDescription';
 
 // Purchase Journey (TO DO)
 const Purchase = () => {
   const [formState, formDispatch] = useFormContext();
+  const { convertDescription } = useConvertDescription();
 
   const ticket: Ticket | null =
     formState.apiResults?.find((t) => formState.ticketId === `${t.id}`) || null;
@@ -52,6 +54,34 @@ const Purchase = () => {
     if (ticketData?.allowTrain) icons.push('train');
     if (ticketData?.allowMetro) icons.push('metro');
     return icons;
+  };
+
+  const getValidityInfo = (text: string) => {
+    switch (text) {
+      case '1':
+        return '1 day';
+      case '7':
+        return '1 week';
+      case '14':
+        return '14 days';
+      case '28':
+        return '28 days';
+      case '30':
+      case '31':
+        return '1 month';
+      case '91':
+        return '13 weeks';
+      case '115':
+      case '122':
+        return '1 term';
+      case '244':
+        return '2 terms';
+      case '344':
+      case '365':
+        return '52 weeks';
+      default:
+        return text;
+    }
   };
 
   const directives: any = {};
@@ -105,12 +135,11 @@ const Purchase = () => {
                     </div>
                   </div>
                   <p className="h3 wmnds-m-t-none wmnds-m-b-lg">
-                    £{/* £{ticket.ticketCurrentAmount?.toFixed(2)} for {ticket.validity} */}
+                    £{ticket.ticketCurrentAmount?.toFixed(2)} for{' '}
+                    {getValidityInfo(ticket.validity).toLowerCase()}
                   </p>
                   {directives['You can'] && (
-                    <div
-                      className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md ${s.description}`}
-                    >
+                    <div className="wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md">
                       <div className="wmnds-ticket-summary-msg__header">
                         <Icon
                           iconName="general-checkmark"
@@ -122,7 +151,9 @@ const Purchase = () => {
                         <ul className="wmnds-ticket-summary-msg__list">
                           {directives['You can'].map((directive: any) => (
                             <li key={directive.id}>
-                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                              <ReplaceTextWithIcon
+                                htmlElement={convertDescription(directive.description, ticket)}
+                              />
                             </li>
                           ))}
                         </ul>
@@ -130,9 +161,7 @@ const Purchase = () => {
                     </div>
                   )}
                   {directives["You can't"] && (
-                    <div
-                      className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-cannot wmnds-m-b-md ${s.description}`}
-                    >
+                    <div className="wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-cannot wmnds-m-b-md">
                       <div className="wmnds-ticket-summary-msg__header">
                         <Icon iconName="general-cross" className="wmnds-ticket-summary-msg__icon" />
                         <h3 className="wmnds-ticket-summary-msg__title">You can&rsquo;t</h3>
@@ -141,7 +170,9 @@ const Purchase = () => {
                         <ul className="wmnds-ticket-summary-msg__list">
                           {directives["You can't"].map((directive: any) => (
                             <li key={directive.id}>
-                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                              <ReplaceTextWithIcon
+                                htmlElement={convertDescription(directive.description, ticket)}
+                              />
                             </li>
                           ))}
                         </ul>
@@ -149,9 +180,7 @@ const Purchase = () => {
                     </div>
                   )}
                   {directives['You must'] && (
-                    <div
-                      className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-must wmnds-m-b-md ${s.description}`}
-                    >
+                    <div className="wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-must wmnds-m-b-md">
                       <div className="wmnds-ticket-summary-msg__header">
                         <Icon
                           iconName="general-warning-circle"
@@ -163,7 +192,9 @@ const Purchase = () => {
                         <ul className="wmnds-ticket-summary-msg__list">
                           {directives['You must'].map((directive: any) => (
                             <li key={directive.id}>
-                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                              <ReplaceTextWithIcon
+                                htmlElement={convertDescription(directive.description, ticket)}
+                              />
                             </li>
                           ))}
                         </ul>
@@ -183,10 +214,19 @@ const Purchase = () => {
                         <ul className="wmnds-ticket-summary-msg__list">
                           {directives.swift.map((directive: any) => (
                             <li key={directive.id}>
-                              <ReplaceTextWithIcon htmlElement={directive.description} />
+                              <ReplaceTextWithIcon
+                                htmlElement={convertDescription(directive.description, ticket)}
+                              />
                             </li>
                           ))}
                         </ul>
+                        <a
+                          href="https://www.tfwm.org.uk/terms-and-conditions/swift-card/"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Read the full terms and conditions
+                        </a>
                       </div>
                     </div>
                   )}

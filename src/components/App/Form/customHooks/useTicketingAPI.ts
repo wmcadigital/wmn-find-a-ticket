@@ -11,7 +11,9 @@ interface IError {
 }
 
 const useTicketingAPI = (
-  apiOptions: { apiPath: string; get?: boolean } = { apiPath: '/ticketing/v2/tickets/search' },
+  apiOptions: { apiPath: string; get?: boolean } = {
+    apiPath: '/ticketing/tickets/search/Complete',
+  },
 ) => {
   // State variables
   const [{ ticketInfo }, formDispatch] = useFormContext();
@@ -46,7 +48,7 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (updateState && results && results.length && apiPath.includes('/ticketing/v2/tickets/')) {
+    if (updateState && results && results.length && apiPath.includes('/ticketing/tickets/')) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
       setUpdateState(false);
     }
