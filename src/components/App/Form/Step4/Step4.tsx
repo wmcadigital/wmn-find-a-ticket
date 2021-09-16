@@ -86,7 +86,7 @@ const Step4 = () => {
   };
 
   const directives: any = {};
-  const paymentDirective: any = [];
+  const paymentDirectives: any = [];
   if (ticket && ticket.directives) {
     ticket.directives.forEach((directive) => {
       const qualifier = directive.qualifier.length ? directive.qualifier : null;
@@ -104,7 +104,7 @@ const Step4 = () => {
           directives[category] = [directive];
         }
       } else {
-        paymentDirective.push(directive);
+        paymentDirectives.push(directive);
       }
     });
   }
@@ -114,6 +114,7 @@ const Step4 = () => {
       {ticket ? (
         <>
           <Helmet>
+            <title>Find a ticket - {ticket.name}</title>
             <script type="application/ld+json">{JSON.stringify(createLdJson(ticket))}</script>
           </Helmet>
           <div className="wmnds-col-1-1 wmnds-col-md-2-3">
@@ -247,7 +248,7 @@ const Step4 = () => {
               )}
             </QuestionCard>
           </div>
-          <Purchase ticket={ticket} />
+          <Purchase ticket={ticket} paymentDirectives={paymentDirectives} />
         </>
       ) : (
         <div className="wmnds-col-1 wmnds-col-md-2-3">

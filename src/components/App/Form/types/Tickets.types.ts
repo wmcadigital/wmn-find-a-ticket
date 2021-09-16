@@ -148,6 +148,8 @@ export interface Ticket {
   isSeasonTicket: boolean;
   displayInSwiftSearch: boolean;
   ticketCurrentAmount: number;
+  swiftCurrentAmount?: number;
+  buyTicketUrl: string;
   termStartDate?: string;
   termEndDate?: string;
 }
