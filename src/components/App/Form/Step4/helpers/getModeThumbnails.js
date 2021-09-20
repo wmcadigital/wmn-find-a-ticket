@@ -4,7 +4,6 @@ const getModeThumbnails = (ticket) => {
   }`;
 
   const imagePath = process.env.PUBLIC_URL;
-  console.log(imagePath);
 
   const thumbs = {
     bus: [
