@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Helmet } from 'react-helmet';
+import { useHistory } from 'react-router-dom';
 import { useFormContext } from 'globalState';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
 import Icon from 'components/shared/Icon/Icon';
@@ -12,12 +13,10 @@ import useConvertDescription from './customHooks/useConvertDescription';
 import Purchase from './Purchase/Purchase';
 
 // Purchase Journey (TO DO)
-const Step4 = () => {
+const Step4 = ({ ticket }: { ticket: Ticket | null }) => {
   const [formState, formDispatch] = useFormContext();
   const { convertDescription } = useConvertDescription();
-
-  const ticket: Ticket | null =
-    formState.apiResults?.find((t) => formState.ticketId === `${t.id}`) || null;
+  const history = useHistory();
 
   const editStep = () => {
     formDispatch({
@@ -37,6 +36,7 @@ const Step4 = () => {
       payload: null,
     });
     window.scrollTo(0, 0);
+    history.push('/');
   };
 
   const iconText = (mode: string) => {
@@ -135,7 +135,7 @@ const Step4 = () => {
                       </div>
                     </h2>
                     <div className="wmnds-col-1-2 wmnds-col-md-1-3 wmnds-m-b-sm">
-                      {!formState.skippedToResult ? (
+                      {formState.ticketInfo.modes ? (
                         <Button
                           text="Change your ticket"
                           onClick={editStep}
