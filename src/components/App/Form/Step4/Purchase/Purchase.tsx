@@ -1,144 +1,63 @@
-import dompurify from 'dompurify';
-import { useFormContext } from 'globalState';
-import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
-import Icon from 'components/shared/Icon/Icon';
-import { ReplaceTextWithIcon } from 'components/shared/Icon/NIcon';
-import Button from 'components/shared/Button/Button';
-import s from './Purchase.module.scss';
-import { Ticket } from '../../types/Tickets.types';
+import { Ticket } from 'components/App/Form/types/Tickets.types';
 
-const { sanitize } = dompurify;
+const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirectives: any }) => {
+  const buttonLink = () => {
+    let linkToShow = ticket.buyTicketUrl;
+    // More Information - no online buy link
+    const showMoreInfo = !ticket.buyTicketUrl && !ticket.isPayAsYouGo && ticket.swiftCurrentAmount;
 
-// Purchase Journey (TO DO)
-const Purchase = () => {
-  const [formState, formDispatch] = useFormContext();
+    // Buy Swift PAYG credit - if product is swift payg or ticket can only be brought on swift payg
+    const swiftPAYG = ticket.isPayAsYouGo && ticket.swiftCurrentAmount && ticket.id !== 811;
 
-  const ticket: Ticket | null =
-    formState.apiResults?.find((t) => formState.ticketId === `${t.id}`) || null;
+    // Buy on Google Pay - if product can be brought on GPay
+    const gPay = ticket.validityId === 45093000 && ticket.purchaseLocations.swiftOnMobile;
 
-  const editStep = () => {
-    formDispatch({
-      type: 'UPDATE_STEP',
-      payload: 3,
-    });
-    formDispatch({
-      type: 'EDIT_MODE',
-      payload: 'ticketDuration',
-    });
-    formDispatch({
-      type: 'REMOVE_TICKET_INFO',
-      payload: { name: 'ticketDuration' },
-    });
-    formDispatch({
-      type: 'UPDATE_TICKET_ID',
-      payload: null,
-    });
-    window.scrollTo(0, 0);
-  };
+    // Buy button (buy button for all other tickets apart from swift payg)
+    const buyButton = !ticket.isPayAsYouGo && ticket.swiftCurrentAmount;
 
-  const iconText = (mode: string) => {
-    let icon = mode;
-    if (mode === 'tram') {
-      icon = 'metro';
-    } else if (mode === 'train') {
-      icon = 'rail';
+    const getInTouch = ticket.purchaseLocations.tic && !ticket.hasOnlinePurchaseChannel;
+
+    if (gPay || swiftPAYG || buyButton) {
+      linkToShow = ticket.buyTicketUrl;
     }
-    return icon;
+    if (getInTouch) {
+      linkToShow = 'https://www.wmnetwork.co.uk/get-in-touch/travel-centres/';
+    }
+    if (showMoreInfo) {
+      return null;
+    }
+    return linkToShow;
   };
 
-  const getModeIcons = (ticketData: Ticket): string[] => {
-    const icons = [];
-    if (ticketData?.allowBus) icons.push('bus');
-    if (ticketData?.allowTrain) icons.push('train');
-    if (ticketData?.allowMetro) icons.push('metro');
-    return icons;
+  const buttonText = () => {
+    if (ticket.buyOnDirectDebit) {
+      return 'Apply for Direct Debit';
+    }
+    if (ticket.buyOnSwift) {
+      return 'Buy on Swift';
+    }
+    if (ticket.hasOnlinePurchaseChannel) {
+      return 'Buy now';
+    }
+    if (ticket.purchaseLocations.tic) {
+      return 'Buy at travel centre';
+    }
+    return 'Buy now';
   };
 
   return (
-    <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
-      {ticket ? (
-        <>
-          <div className="wmnds-col-1-1 wmnds-col-md-2-3">
-            <QuestionCard showChangeBtn={false}>
-              {Object.entries(ticket).length > 0 && (
-                <>
-                  <div className={`wmnds-grid wmnds-grid--spacing-md-2-md ${s.ticketHeader}`}>
-                    <h2 className={`wmnds-col-1 wmnds-col-md-2-3 ${s.heading}`}>
-                      <ReplaceTextWithIcon htmlElement={ticket.name} />
-                      <div className={s.icons}>
-                        {getModeIcons(ticket).map((mode: any) => (
-                          <Icon
-                            key={`icon-${mode}`}
-                            iconName={`modes-isolated-${iconText(mode)}`}
-                            className={`${s.modeIcon} ${s[mode]}`}
-                          />
-                        ))}
-                      </div>
-                    </h2>
-                    <div className="wmnds-col-1-2 wmnds-col-md-1-3 wmnds-m-b-sm">
-                      {!formState.skippedToResult ? (
-                        <Button
-                          text="Change your ticket"
-                          onClick={editStep}
-                          btnClass="wmnds-btn--secondary wmnds-col-1"
-                        />
-                      ) : (
-                        <a href="/" className="wmnds-btn wmnds-btn--secondary wmnds-col-1">
-                          Change your ticket
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                  <p className="h3 wmnds-m-t-none wmnds-m-b-lg">
-                    £{ticket.ticketCurrentAmount?.toFixed(2)} for {ticket.validity}
-                  </p>
-                  <div
-                    className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md ${s.description}`}
-                  >
-                    <div className="wmnds-ticket-summary-msg__header">
-                      <h3 className="wmnds-ticket-summary-msg__title">Summary</h3>
-                    </div>
-                    <div className="wmnds-ticket-summary-msg__info">
-                      <div dangerouslySetInnerHTML={{ __html: sanitize(ticket.summary) }} />
-                    </div>
-                  </div>
-                  <div
-                    className={`wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-must ${s.description}`}
-                  >
-                    <div className="wmnds-ticket-summary-msg__header">
-                      <h3 className="wmnds-ticket-summary-msg__title">Description</h3>
-                    </div>
-                    <div className="wmnds-ticket-summary-msg__info">
-                      <ReplaceTextWithIcon htmlElement={ticket.description} />
-                    </div>
-                  </div>
-                </>
-              )}
-            </QuestionCard>
-          </div>
-          <div className="wmnds-col-1 wmnds-col-md-1-3">
-            <div className="bg-white wmnds-p-md">
-              <h2>Buy online</h2>
-              <Button
-                text="Apply for Direct Debit"
-                btnClass="wmnds-col-1"
-                iconRight="general-chevron-right"
-              />
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="wmnds-col-1 wmnds-col-md-2-3">
-          <QuestionCard>
-            <h2>Ticket not found</h2>
-            <div className="wmnds-warning-text wmnds-m-b-md">
-              <Icon iconName="general-warning-circle" className="wmnds-warning-text__icon" />
-              Sorry, there were no results found for your search. <br />
-              <a href="/">Start a new search</a>
-            </div>
-          </QuestionCard>
-        </div>
-      )}
+    <div className="wmnds-col-1 wmnds-col-md-1-3">
+      <div className="bg-white wmnds-p-md">
+        <h2>{buttonText()}</h2>
+        {paymentDirectives.map((directive: any) => (
+          <p key={directive.id}>{directive.description}</p>
+        ))}
+        {buttonLink() && (
+          <a href={buttonLink()!} className="wmnds-btn wmnds-col-1">
+            {buttonText()}
+          </a>
+        )}
+      </div>
     </div>
   );
 };
