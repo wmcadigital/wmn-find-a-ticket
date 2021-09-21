@@ -9,14 +9,12 @@ import Step3 from './Step3/Step3';
 import Step4 from './Step4/Step4';
 import s from './Form.module.scss';
 import arrayToSentence from './helpers/arrayToSentence';
-// import arrayToSentence from './helpers/arrayToSentence';
+import { Ticket } from './types/Tickets.types';
 
 const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState } = useStepLogic();
-  const { ticketInfo, ticketId } = formState;
-  const apiOptions = ticketId
-    ? { get: true, apiPath: `/ticketing/tickets/${ticketId}/Complete/` }
-    : { apiPath: '/ticketing/tickets/search/complete' };
+  const { currentStep, ticketInfo, ticketId, showAnswers } = formState;
+  const apiOptions = { apiPath: '/ticketing/tickets/search/complete' };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useLayoutEffect(() => {
     // Run API search if:
@@ -33,6 +31,9 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
     }
   }, [getAPIResults, loading, results, prevMode, ticketInfo.modes, errorInfo, ticketId]);
 
+  const ticket: Ticket | null =
+    formState.apiResults?.find((t) => formState.ticketId === `${t.id}`) || null;
+
   return (
     <div className={`${s.container} wmnds-container wmnds-p-b-lg`}>
       {loading ? (
@@ -45,19 +46,19 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
         />
       ) : (
         <>
-          {formState.currentStep === 4 ? (
-            <Step4 />
+          {currentStep === 4 ? (
+            <Step4 ticket={ticket} />
           ) : (
             <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
               <div className="wmnds-col-1-1 wmnds-col-md-2-3">
                 <form>
-                  {formState.currentStep === 1 && <Step1 />}
-                  {formState.currentStep === 2 && <Step2 />}
-                  {formState.currentStep === 3 && <Step3 />}
+                  {currentStep === 1 && <Step1 />}
+                  {currentStep === 2 && <Step2 />}
+                  {currentStep === 3 && <Step3 />}
                 </form>
               </div>
               <div className="wmnds-col-1-1 wmnds-col-md-1-3">
-                {formState.showAnswers && (
+                {showAnswers && (
                   <div className="wmnds-hide-desktop">
                     <SidebarSummary />
                   </div>

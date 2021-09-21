@@ -20,20 +20,12 @@ export const initialState = (() => {
     apiResults: [],
     operators: [],
     autoAnswered: {},
-    skippedToResult: false,
   };
 
-  let { currentStep, ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
+  let { ticketInfo } = state; // create a variables with the right types to be added back to the state obj at the end
 
   if (window.location.search.length === 0) {
     sessionStorage.clear();
-  }
-
-  if (getSearchParam('ticketId')) {
-    sessionStorage.clear();
-    state.ticketId = getSearchParam('ticketId');
-    state.skippedToResult = true;
-    currentStep = 4;
   }
 
   const storedInfo: TForm.TicketInfo =
@@ -76,7 +68,7 @@ export const initialState = (() => {
     }
   });
 
-  return { ...state, currentStep, ticketInfo };
+  return { ...state, ticketInfo };
 })();
 
 // Returns an array of params to be removed based on ticket type
