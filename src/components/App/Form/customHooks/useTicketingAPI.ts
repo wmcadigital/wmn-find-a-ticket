@@ -98,7 +98,7 @@ const useTicketingAPI = (
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     const options = {
-      headers: {
+      headers: process.env.NODE_ENV === 'development' && {
         'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
       },
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount
