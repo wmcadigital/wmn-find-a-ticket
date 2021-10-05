@@ -3,6 +3,11 @@ import { Ticket } from 'components/App/Form/types/Tickets.types';
 const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirectives: any }) => {
   const buttonLink = () => {
     let linkToShow = ticket.buyTicketUrl;
+    const replaceLink = (url: string) =>
+      url.replace(
+        'https://natex-ssp.unicard-uk.com/ssp/swift/',
+        'https://my.swiftcard.org.uk/ssp/swift/',
+      );
     // More Information - no online buy link
     const showMoreInfo = !ticket.buyTicketUrl && !ticket.isPayAsYouGo && ticket.swiftCurrentAmount;
 
@@ -26,7 +31,7 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
     if (showMoreInfo) {
       return null;
     }
-    return linkToShow;
+    return replaceLink(linkToShow);
   };
 
   const buttonText = () => {
