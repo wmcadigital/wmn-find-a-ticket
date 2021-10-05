@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 // Import contexts
 import { useFormContext } from 'globalState';
 import axios from 'axios';
+import { Ticket } from '../types/Tickets.types';
 
 interface IError {
   title: string;
@@ -11,11 +12,16 @@ interface IError {
 }
 
 const useTicketingAPI = (
-  apiOptions: { apiPath: string; get?: boolean } = { apiPath: '/ticketing/v2/tickets/search' },
+  apiOptions: { apiPath: string; get?: boolean } = {
+    apiPath:
+      process.env.NODE_ENV === 'development'
+        ? '/ticketing/tickets/search/complete'
+        : '/ticketing/v2/tickets/search/complete',
+  },
 ) => {
   // State variables
   const [{ ticketInfo }, formDispatch] = useFormContext();
-  const [results, setResults] = useState<any[] | null>([]);
+  const [results, setResults] = useState<Ticket[] | null>([]);
   const [updateState, setUpdateState] = useState<boolean>(false);
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
@@ -46,7 +52,7 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (updateState && results && results.length && apiPath.includes('/ticketing/v2/tickets/')) {
+    if (updateState && results && results.length && apiPath.includes('/ticketing/tickets/')) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
       setUpdateState(false);
     }

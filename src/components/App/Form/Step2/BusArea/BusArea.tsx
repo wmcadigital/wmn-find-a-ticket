@@ -13,7 +13,7 @@ const { sanitize } = dompurify;
 
 const BusArea = () => {
   const name = 'busArea';
-  const [formState, formDispatch] = useFormContext();
+  const [{ ticketInfo }, formDispatch] = useFormContext();
   const { handleChange, genericError, value, error, setError } = useHandleChange(name);
   const { question } = questions[name];
   const { modesQuery, operatorQuery, travellerQuery } = useTicketQueries();
@@ -41,17 +41,17 @@ const BusArea = () => {
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({ type: 'UPDATE_TICKET_INFO', payload: { name, value, autoAnswered: false } });
       if (
-        (formState.ticketInfo.ticketType === 'nBus' ||
-          formState.ticketInfo.busCompany === 'National Express West Midlands') &&
-        formState.ticketInfo.traveller !== 'concessionary' &&
-        formState.ticketInfo.traveller !== 'disabled'
+        (ticketInfo.ticketType === 'nBus' ||
+          ticketInfo.busCompany === 'National Express West Midlands') &&
+        ticketInfo.traveller !== 'concessionary' &&
+        ticketInfo.traveller !== 'disabled'
       ) {
         if (value !== 'West Midlands' && value !== 'Coventry') {
           formDispatch({
             type: 'UPDATE_TICKET_INFO',
             payload: { name: 'travelTime', value: 'any', autoAnswered: true },
           });
-        } else if (formState.ticketInfo.travelTime) {
+        } else if (ticketInfo.travelTime) {
           formDispatch({
             type: 'REMOVE_TICKET_INFO',
             payload: { name: 'travelTime' },
@@ -67,7 +67,7 @@ const BusArea = () => {
   };
 
   const busCompanyWebsite = () => {
-    switch (formState.ticketInfo.busCompany) {
+    switch (ticketInfo.busCompany) {
       case 'National Express West Midlands':
         return 'https://nxbus.co.uk/west-midlands/help-information/our-operating-area';
       case 'Diamond Bus':
@@ -77,7 +77,7 @@ const BusArea = () => {
       case 'Johnsons of Henley':
         return 'https://www.johnsonscoaches.co.uk/bus-route-maps/';
       default:
-        return '#';
+        return 'https://find-bus-area.tfwm.org.uk';
     }
   };
 
@@ -91,7 +91,7 @@ const BusArea = () => {
             The West Midlands is split into different bus areas. You can choose which bus area you
             want your ticket to cover.{' '}
           </p>
-          {formState.ticketInfo.busCompany === 'nBus' ? (
+          {ticketInfo.busCompany === 'nBus' || !ticketInfo.busCompany ? (
             <>
               <p>Local areas have smaller boundaries and tickets are cheaper.</p>
               <p>Birmingham and Solihull do not have local bus areas. </p>
@@ -107,7 +107,7 @@ const BusArea = () => {
             <p>
               If you’re not sure, you can{' '}
               <a href={busCompanyWebsite()} target="_blank" rel="noreferrer">
-                view the bus areas on the {formState.ticketInfo.busCompany} website
+                view the bus areas on the {ticketInfo.busCompany} website
               </a>
               .
             </p>

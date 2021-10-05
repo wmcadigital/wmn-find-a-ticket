@@ -34,7 +34,7 @@ const useTicketQueries = () => {
       operator:
         ticketInfo.busCompany && ticketInfo.busCompany !== 'nBus'
           ? ticketInfo.busCompany
-          : 'Network West Midlands',
+          : 'National Express West Midlands',
     };
 
     // INCLUDES BUS ONLY

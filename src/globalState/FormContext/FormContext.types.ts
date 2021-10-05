@@ -55,7 +55,6 @@ export type State = {
   apiResults: Ticket[];
   operators: any[];
   autoAnswered: Partial<TicketInfo>;
-  skippedToResult: boolean;
 };
 
 /* eslint-disable @typescript-eslint/indent */

@@ -1,4 +1,5 @@
 import dompurify from 'dompurify';
+import { useHistory } from 'react-router-dom';
 import Radio from 'components/shared/Radios/Radio/Radio';
 import Radios from 'components/shared/Radios/Radios';
 import QuestionCard from 'components/shared/QuestionCard/QuestionCard';
@@ -9,6 +10,7 @@ import useHandleChange from '../../customHooks/useHandleChange';
 
 const TicketBundle = ({ results }: { results: Ticket[] }) => {
   const name = 'multiDay';
+  const history = useHistory();
   const [formState, formDispatch] = useFormContext();
   const { handleChange, genericError, error, setError, value } = useHandleChange(name);
   const { question, hint } = questions[name];
@@ -20,7 +22,7 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
   const handleContinue = () => {
     if (value === 'swiftGo') {
       // Navigate to swift go ticket page
-      window.location.href = '/?ticketId=811';
+      history.push('/811');
     } else if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({
