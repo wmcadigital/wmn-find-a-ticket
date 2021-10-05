@@ -22,7 +22,7 @@ const TicketBundle = ({ results }: { results: Ticket[] }) => {
   const handleContinue = () => {
     if (value === 'swiftGo') {
       // Navigate to swift go ticket page
-      history.push('/811');
+      history.push('/ticket/811');
     } else if (value && value.length !== 0) {
       formDispatch({ type: 'EDIT_MODE', payload: null });
       formDispatch({
