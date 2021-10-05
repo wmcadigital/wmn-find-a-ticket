@@ -11,7 +11,13 @@ const TicketPage = () => {
   const { ticketId } = useParams<any>();
   const location = useLocation();
 
-  const apiOptions = { get: true, apiPath: `/ticketing/tickets/${ticketId}/Complete/` };
+  const apiOptions = {
+    get: true,
+    apiPath:
+      process.env.NODE_ENV === 'development'
+        ? `/ticketing/tickets/${ticketId}/complete/`
+        : `/ticketing/v2/tickets/${ticketId}/complete/`,
+  };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useLayoutEffect(() => {
     // Run API search if:

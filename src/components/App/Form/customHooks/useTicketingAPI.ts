@@ -13,7 +13,10 @@ interface IError {
 
 const useTicketingAPI = (
   apiOptions: { apiPath: string; get?: boolean } = {
-    apiPath: '/ticketing/tickets/search/Complete',
+    apiPath:
+      process.env.NODE_ENV === 'development'
+        ? '/ticketing/tickets/search/complete'
+        : '/ticketing/v2/tickets/search/complete',
   },
 ) => {
   // State variables

@@ -14,7 +14,12 @@ import { Ticket } from './types/Tickets.types';
 const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState } = useStepLogic();
   const { currentStep, ticketInfo, ticketId, showAnswers } = formState;
-  const apiOptions = { apiPath: '/ticketing/tickets/search/complete' };
+  const apiOptions = {
+    apiPath:
+      process.env.NODE_ENV === 'development'
+        ? '/ticketing/tickets/search/complete'
+        : '/ticketing/v2/tickets/search/complete',
+  };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useLayoutEffect(() => {
     // Run API search if:
