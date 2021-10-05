@@ -29,12 +29,12 @@ const useTicketQueries = () => {
       isFamily: ticketInfo.traveller === 'family',
     };
 
-    // If bus company is null or 'nBus' default to 'Network West Midlands' as filter
+    // If bus company is null or 'nBus' default to 'West Midlands Combined Authority' as filter
     const operatorQuery = {
       operator:
         ticketInfo.busCompany && ticketInfo.busCompany !== 'nBus'
           ? ticketInfo.busCompany
-          : 'National Express West Midlands',
+          : 'West Midlands Combined Authority',
     };
 
     // INCLUDES BUS ONLY
