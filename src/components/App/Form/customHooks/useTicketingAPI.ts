@@ -52,7 +52,12 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (updateState && results && results.length && apiPath.includes('/ticketing/tickets/')) {
+    if (
+      updateState &&
+      results &&
+      results.length &&
+      (apiPath.includes('/ticketing/tickets/') || apiPath.includes('/ticketing/v2/tickets/'))
+    ) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
       setUpdateState(false);
     }
