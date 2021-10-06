@@ -91,14 +91,11 @@ const TicketDuration = ({
               {results!
                 .sort((a, b) => a.ticketCurrentAmount - b.ticketCurrentAmount)
                 .map((option: Ticket) => {
-                  const saleTicketPrice = option.priceLevels?.find(
-                    (t) => t.type === 'Standard (Discount)',
-                  );
-                  const ticketPrice = option.priceLevels?.find((t) => t.type === 'Standard');
+                  const isSale = option.ticketCurrentAmount < option.standardCurrentAmount;
                   return (
                     <div key={option.id} className="wmnds-col-1 wmnds-col-sm-1-2 wmnds-m-b-lg">
                       <div className={`bg-white wmnds-p-md ${s.ticketCard}`}>
-                        {saleTicketPrice ? (
+                        {isSale ? (
                           <div>
                             <div className={`wmnds-grid ${s.sale}`}>
                               <h4 className="wmnds-col-auto">
@@ -106,10 +103,10 @@ const TicketDuration = ({
                                   ? 'Monthly Direct Debit'
                                   : getValidityInfo(option.validityDays)}{' '}
                                 <span className={s.fullPrice}>
-                                  £{ticketPrice!.amount.toFixed(2)}
+                                  £{option.standardCurrentAmount.toFixed(2)}
                                 </span>{' '}
                                 <span className={s.salePrice}>
-                                  £{saleTicketPrice.amount.toFixed(2)}
+                                  £{option.ticketCurrentAmount.toFixed(2)}
                                 </span>
                               </h4>
                               <div className="wmnds-col-auto">
@@ -123,7 +120,7 @@ const TicketDuration = ({
                                 <>
                                   £
                                   {(
-                                    ticketPrice!.amount / parseInt(option.validityDays, 10)
+                                    option.ticketCurrentAmount / parseInt(option.validityDays, 10)
                                   ).toFixed(2)}{' '}
                                   per day
                                 </>
@@ -138,12 +135,14 @@ const TicketDuration = ({
                                 : getValidityInfo(option.validityDays)}{' '}
                               <span className={s.totalPrice}>
                                 {' '}
-                                £{ticketPrice!.amount.toFixed(2)}
+                                £{option.ticketCurrentAmount.toFixed(2)}
                               </span>
                             </h4>
                             <div className="wmnds-m-b-sm">
                               £
-                              {(ticketPrice!.amount / parseInt(option.validityDays, 10)).toFixed(2)}{' '}
+                              {(
+                                option.ticketCurrentAmount / parseInt(option.validityDays, 10)
+                              ).toFixed(2)}{' '}
                               per day
                             </div>
                           </div>
