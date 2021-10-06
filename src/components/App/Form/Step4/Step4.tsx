@@ -148,10 +148,12 @@ const Step4 = ({ ticket }: { ticket: Ticket | null }) => {
                       )}
                     </div>
                   </div>
-                  <p className="h3 wmnds-m-t-none wmnds-m-b-lg">
-                    £{ticket.ticketCurrentAmount?.toFixed(2)} for{' '}
-                    {getValidityInfo(ticket.validity).toLowerCase()}
-                  </p>
+                  {ticket.ticketCurrentAmount > 0 && (
+                    <p className="h3 wmnds-m-t-none wmnds-m-b-lg">
+                      £{ticket.ticketCurrentAmount?.toFixed(2)} for{' '}
+                      {getValidityInfo(ticket.validity).toLowerCase()}
+                    </p>
+                  )}
                   {directives['You can'] && (
                     <div className="wmnds-ticket-summary-msg wmnds-ticket-summary-msg--you-can wmnds-m-b-md">
                       <div className="wmnds-ticket-summary-msg__header">
