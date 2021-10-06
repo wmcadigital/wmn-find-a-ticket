@@ -129,21 +129,39 @@ const TicketDuration = ({
                           </div>
                         ) : (
                           <div>
-                            <h4>
-                              {option.buyOnDirectDebit
-                                ? 'Monthly Direct Debit'
-                                : getValidityInfo(option.validityDays)}{' '}
-                              <span className={s.totalPrice}>
-                                {' '}
-                                £{option.ticketCurrentAmount.toFixed(2)}
-                              </span>
-                            </h4>
+                            {option.ticketCurrentAmount === 0 && option.validityDays === '1' ? (
+                              <h4>Swift Go</h4>
+                            ) : (
+                              <h4>
+                                <>
+                                  {option.buyOnDirectDebit
+                                    ? 'Monthly Direct Debit'
+                                    : getValidityInfo(option.validityDays)}{' '}
+                                  <span className={s.totalPrice}>
+                                    {' '}
+                                    {option.ticketCurrentAmount > 0 && (
+                                      <>£{option.ticketCurrentAmount.toFixed(2)}</>
+                                    )}
+                                  </span>
+                                </>
+                              </h4>
+                            )}
                             <div className="wmnds-m-b-sm">
-                              £
-                              {(
-                                option.ticketCurrentAmount / parseInt(option.validityDays, 10)
-                              ).toFixed(2)}{' '}
-                              per day
+                              {option.validityDays === '1' ? (
+                                <span>
+                                  {option.ticketCurrentAmount > 0
+                                    ? 'This is also a daily fare cap on Swift Go.'
+                                    : 'Capped at either a 1 day, 3 day or weekly charge'}
+                                </span>
+                              ) : (
+                                <>
+                                  £
+                                  {(
+                                    option.ticketCurrentAmount / parseInt(option.validityDays, 10)
+                                  ).toFixed(2)}{' '}
+                                  per day
+                                </>
+                              )}
                             </div>
                           </div>
                         )}
