@@ -66,7 +66,7 @@ const useTicketingAPI = (
   const startApiTimeout = useCallback(() => {
     apiTimeout.current = setTimeout(() => {
       cancelRequest();
-    }, 15000); // 15 seconds
+    }, 30000); // 30 seconds
   }, []);
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);

@@ -62,7 +62,7 @@ const useTicketQueries = () => {
         ticketInfo.travelTime === 'concessionary' ||
         ticketInfo.travelTime === 'any',
       timePeriod2: ticketInfo.travelTime !== 'concessionary',
-      timePeriod3: ticketInfo.travelTime !== 'concessionary',
+      timePeriod3: ticketInfo.travelTime !== 'concessionary' && null, // if travelTime is not concessionary ignore this filter.
       timePeriod4: ticketInfo.travelTime !== 'concessionary',
     };
 
