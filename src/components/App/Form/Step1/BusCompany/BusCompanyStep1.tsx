@@ -34,8 +34,9 @@ const BusCompanyStep1 = () => {
           onChange={handleChange}
         />
         <div className="wmnds-p-b-lg">
+          If you do not know what bus you need, you&rsquo;ll need to{' '}
           <a href="https://journeyplanner.tfwm.org.uk/" target="_blank" rel="noreferrer">
-            I don&rsquo;t know which bus I need
+            plan a journey
           </a>
         </div>
       </QuestionCard>
