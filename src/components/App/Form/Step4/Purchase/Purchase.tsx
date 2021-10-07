@@ -1,4 +1,6 @@
 import { Ticket } from 'components/App/Form/types/Tickets.types';
+import Accordion from 'components/shared/Accordion/Accordion';
+import s from './Purchase.module.scss';
 
 const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirectives: any }) => {
   const buttonLink = () => {
@@ -56,8 +58,8 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
 
   return (
     <div className="wmnds-col-1 wmnds-col-md-1-3">
-      <div className="bg-white wmnds-p-md">
-        <h2>{buttonText()}</h2>
+      <div className="bg-white wmnds-p-md wmnds-m-b-md">
+        <h2>Buy online</h2>
         {paymentDirectives.map((directive: any) => (
           <p key={directive.id}>{directive.description}</p>
         ))}
@@ -66,6 +68,27 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
             {buttonText()}
           </a>
         )}
+      </div>
+      <div className="bg-white wmnds-p-md wmnds-m-b-md">
+        <h2>Buy through the app</h2>
+        <div className={s.accordionContainer}>
+          <Accordion id="swiftAppAccordion" title="Swift app" info="£64.00 per month">
+            Download an app onto your smartphone for this ticket.
+          </Accordion>
+          <Accordion
+            id="NXAppAccordion"
+            title="National Express West Midlands app"
+            info="£64.00 per month"
+          >
+            Download an app onto your smartphone for this ticket.
+          </Accordion>
+          <Accordion id="MMAppAccordion" title="Swift app" info="£64.00 per month">
+            Download an app onto your smartphone for this ticket.
+          </Accordion>
+        </div>
+      </div>
+      <div className="bg-white wmnds-p-md wmnds-m-b-md">
+        <h2>Buy in person</h2>
       </div>
     </div>
   );
