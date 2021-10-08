@@ -6,8 +6,11 @@
 @import '~assets/wmnds/vars';
 @import '~assets/wmnds/mixins';
 
+$duration: 0.25s;
+
 .icon {
   transform: rotate(90deg);
+  transition: transform $duration ease-out;
   fill: get-color(primary);
 }
 
@@ -22,4 +25,10 @@
   padding-top: $size-xsm;
   padding-bottom: $size-xsm;
   align-items: flex-start;
+}
+
+.content {
+  *:last-child {
+    margin-bottom: 0;
+  }
 }

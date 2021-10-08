@@ -33,7 +33,7 @@ const Accordion = ({
           />
         </div>
       </button>
-      <div className="wmnds-accordion__content wmnds-p-t-xsm" id={id}>
+      <div className={`${s.content} wmnds-accordion__content wmnds-p-t-xsm`} id={id}>
         {children}
       </div>
     </div>
