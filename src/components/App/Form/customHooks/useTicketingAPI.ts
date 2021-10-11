@@ -75,6 +75,7 @@ const useTicketingAPI = (
     // Ensure response.data is passed as an array
     const resultsArray = Array.isArray(response.data) ? response.data : [response.data];
     setResults(resultsArray.length ? resultsArray : null);
+    setErrorInfo(null);
     setUpdateState(true);
     clearApiTimeout();
     setLoading(false);
@@ -85,7 +86,8 @@ const useTicketingAPI = (
     setErrorInfo({
       // Update error message
       title: 'Please try again',
-      message: 'Apologies, we are having technical difficulties.',
+      message:
+        'Apologies, we are having technical difficulties. Please try again or come back later.',
       isTimeoutError: axios.isCancel(error),
     });
     setResults([]); // Reset the results
