@@ -82,10 +82,6 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
             groupedDirectives['Direct Debit'].map((directive: any) => (
               <p key={directive.id}>{directive.description}</p>
             ))}
-          {groupedDirectives['Swift go'] &&
-            groupedDirectives['Swift go'].map((directive: any) => (
-              <p key={directive.id}>{directive.description}</p>
-            ))}
           <a href={buttonLink()!} className="wmnds-btn wmnds-btn--align-left wmnds-col-1">
             {buttonText()}{' '}
             <Icon
@@ -100,7 +96,7 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
           <h2>Buy through the app</h2>
           <div className={s.accordionContainer}>
             {groupedDirectives['Swift go'] && (
-              <Accordion id="swiftAppAccordion" title="Swift app" info="£64.00 per month">
+              <Accordion id="swiftAppAccordion" title="Swift app">
                 {groupedDirectives['Swift go'].map((directive: any) => (
                   <p key={directive.id}>{directive.description}</p>
                 ))}
@@ -113,6 +109,13 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
         <div className="bg-white wmnds-p-md wmnds-m-b-md">
           <h2>Buy in person</h2>
           <div className={s.accordionContainer}>
+            {groupedDirectives['On-bus'] && (
+              <Accordion id="swiftAppAccordion" title="On the bus">
+                {groupedDirectives['On-bus'].map((directive: any) => (
+                  <p key={directive.id}>{directive.description}</p>
+                ))}
+              </Accordion>
+            )}
             {groupedDirectives['Train station'] && (
               <Accordion id="swiftAppAccordion" title="Train station" info="£64.00 per month">
                 {groupedDirectives['Train station'].map((directive: any) => (
