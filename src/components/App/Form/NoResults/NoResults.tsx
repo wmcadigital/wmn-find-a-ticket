@@ -37,7 +37,7 @@ const NoResultsCard = ({
 
 const NoResults = () => {
   const [{ ticketInfo }] = useFormContext();
-  if (ticketInfo.traveller === 'concessionary') {
+  if (ticketInfo.traveller === 'concessionary' || ticketInfo.traveller === 'disabled') {
     return (
       <NoResultsCard title="Free travel in the West Midlands">
         <p>
@@ -50,7 +50,7 @@ const NoResults = () => {
         </p>
         <p>Off-peak times are:</p>
         <ul>
-          <li>9.30am and 11pm, Monday to Friday </li>
+          <li>Between 9.30am and 11pm, Monday to Friday </li>
           <li>all day at weekends and on public holidays.</li>
         </ul>
         <p className="wmnds-m-none">

@@ -5,7 +5,7 @@ import QuestionCard, { ChangeAnswers } from 'components/shared/QuestionCard/Ques
 import Button from 'components/shared/Button/Button';
 import questions from '../../questions';
 import useConvertDescription from '../../Step4/customHooks/useConvertDescription';
-import NoResults from './NoResults/ NoResults';
+import NoResults from '../../NoResults/NoResults';
 
 import { Ticket } from '../../types/Tickets.types';
 import s from './TicketDuration.module.scss';

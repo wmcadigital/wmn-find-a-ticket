@@ -9,9 +9,9 @@ import useTicketFilter from '../../customHooks/useTicketFilter';
 import getUniqueOptions from '../../helpers/getUniqueOptions';
 
 const TravelTime = () => {
-  const [formState, formDispatch] = useFormContext();
+  const [{ ticketInfo }, formDispatch] = useFormContext();
   const { filterResults } = useTicketFilter();
-  const { ticketInfo } = formState;
+  const { traveller, travelTime } = ticketInfo;
   const name = 'travelTime';
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
@@ -25,6 +25,15 @@ const TravelTime = () => {
   if (ticketInfo.modes?.includes('train')) {
     ticketQuery = { ...modesQuery, ...travellerQuery, ...railZonesQuery, ...trainQuery };
   }
+
+  useEffect(() => {
+    if ((traveller === 'concessionary' || traveller === 'disabled') && !travelTime) {
+      formDispatch({
+        type: 'UPDATE_TICKET_INFO',
+        payload: { name: 'travelTime', value: 'concessionary', autoAnswered: true },
+      });
+    }
+  }, [traveller, travelTime, formDispatch]);
 
   const uniqueOptions = getUniqueOptions(filterResults(ticketQuery), [
     'timePeriod1',
