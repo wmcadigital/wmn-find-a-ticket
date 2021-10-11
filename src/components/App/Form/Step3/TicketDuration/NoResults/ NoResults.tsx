@@ -1,8 +1,45 @@
-const NoResults = () => {
+import { useFormContext } from 'globalState';
+
+const NoResultsCard = ({
+  title = 'We could not find any tickets',
+  children,
+}: {
+  title?: string;
+  children?: React.ReactNode;
+}) => {
   return (
     <div className="wmnds-col-1">
-      <div className="wmnds-p-lg bg-white">
-        <h2>Free travel in the West Midlands</h2>
+      <div className="wmnds-p-lg bg-white wmnds-m-b-lg">
+        <h2>{title}</h2>
+        {children || (
+          <>
+            <p>
+              You’ll need to change your traveller type or travel time to find tickets for your
+              journey.
+            </p>
+            <p className="wmnds-m-b-none">
+              If you need help finding a ticket, you can{' '}
+              <a
+                href="https://www.tfwm.org.uk/get-help/contact-us/"
+                rel="noreferrer"
+                target="_blank"
+              >
+                contact us
+              </a>
+              .
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const NoResults = () => {
+  const [{ ticketInfo }] = useFormContext();
+  if (ticketInfo.traveller === 'concessionary') {
+    return (
+      <NoResultsCard title="Free travel in the West Midlands">
         <p>
           If you have a Disabled person’s pass or an Older person’s pass you can travel off-peak on
           the bus across the UK. You can also travel off-peak on the train and tram in the{' '}
@@ -35,9 +72,10 @@ const NoResults = () => {
           </a>{' '}
           on our website.
         </p>
-      </div>
-    </div>
-  );
+      </NoResultsCard>
+    );
+  }
+  return <NoResultsCard />;
 };
 
 export default NoResults;
