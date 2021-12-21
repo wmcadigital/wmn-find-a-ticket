@@ -34,7 +34,7 @@ const useTicketQueries = () => {
       operator:
         ticketInfo.busCompany && ticketInfo.busCompany !== 'nBus'
           ? ticketInfo.busCompany
-          : 'West Midlands Combined Authority',
+          : 'All Operators*',
     };
 
     // INCLUDES BUS ONLY
