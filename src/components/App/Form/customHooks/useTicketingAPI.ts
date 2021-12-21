@@ -52,7 +52,12 @@ const useTicketingAPI = (
 
   // on Results
   useEffect(() => {
-    if (updateState && results && results.length && apiPath.includes('/ticketing/tickets/')) {
+    if (
+      updateState &&
+      results &&
+      results.length &&
+      (apiPath.includes('/ticketing/tickets/') || apiPath.includes('/ticketing/v2/tickets/'))
+    ) {
       formDispatch({ type: 'ADD_API_RESULTS', payload: results });
       setUpdateState(false);
     }
@@ -61,7 +66,7 @@ const useTicketingAPI = (
   const startApiTimeout = useCallback(() => {
     apiTimeout.current = setTimeout(() => {
       cancelRequest();
-    }, 15000); // 15 seconds
+    }, 30000); // 30 seconds
   }, []);
 
   const clearApiTimeout = () => clearTimeout(apiTimeout.current);
@@ -70,6 +75,7 @@ const useTicketingAPI = (
     // Ensure response.data is passed as an array
     const resultsArray = Array.isArray(response.data) ? response.data : [response.data];
     setResults(resultsArray.length ? resultsArray : null);
+    setErrorInfo(null);
     setUpdateState(true);
     clearApiTimeout();
     setLoading(false);
@@ -80,7 +86,8 @@ const useTicketingAPI = (
     setErrorInfo({
       // Update error message
       title: 'Please try again',
-      message: 'Apologies, we are having technical difficulties.',
+      message:
+        'Apologies, we are having technical difficulties. Please try again or come back later.',
       isTimeoutError: axios.isCancel(error),
     });
     setResults([]); // Reset the results
@@ -98,7 +105,7 @@ const useTicketingAPI = (
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     const options = {
-      headers: {
+      headers: process.env.NODE_ENV === 'development' && {
         'Ocp-Apim-Subscription-Key': REACT_APP_API_KEY,
       },
       cancelToken: source.current.token, // Set token with API call, so we can cancel this call on unmount

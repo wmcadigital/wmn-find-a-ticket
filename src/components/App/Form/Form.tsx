@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react';
 import Loader from 'components/shared/Loader/Loader';
+import Message from 'components/shared/Message/Message';
 import useStepLogic from './customHooks/useStepLogic';
 import useTicketingAPI from './customHooks/useTicketingAPI';
 import SidebarSummary from './SidebarSummary/SidebarSummary';
@@ -51,28 +52,44 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
         />
       ) : (
         <>
-          {currentStep === 4 ? (
-            <Step4 ticket={ticket} />
-          ) : (
-            <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
-              <div className="wmnds-col-1-1 wmnds-col-md-2-3">
-                <form>
-                  {currentStep === 1 && <Step1 />}
-                  {currentStep === 2 && <Step2 />}
-                  {currentStep === 3 && <Step3 />}
-                </form>
-              </div>
-              <div className="wmnds-col-1-1 wmnds-col-md-1-3">
-                {showAnswers && (
-                  <div className="wmnds-hide-desktop">
-                    <SidebarSummary />
-                  </div>
-                )}
-                <div className="wmnds-hide-mobile">
-                  <SidebarSummary />
-                </div>
+          {errorInfo ? (
+            <div className="wmnds-grid">
+              <div className="wmnds-col-12 wmnds-col-md-2-3">
+                <Message
+                  type="error"
+                  title={errorInfo.title}
+                  message={errorInfo.message}
+                  showRetry={errorInfo.isTimeoutError}
+                  retryCallback={getAPIResults}
+                />
               </div>
             </div>
+          ) : (
+            <>
+              {currentStep === 4 ? (
+                <Step4 ticket={ticket} />
+              ) : (
+                <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
+                  <div className="wmnds-col-1-1 wmnds-col-md-2-3">
+                    <form>
+                      {currentStep === 1 && <Step1 />}
+                      {currentStep === 2 && <Step2 />}
+                      {currentStep === 3 && <Step3 />}
+                    </form>
+                  </div>
+                  <div className="wmnds-col-1-1 wmnds-col-md-1-3">
+                    {showAnswers && (
+                      <div className="wmnds-hide-desktop">
+                        <SidebarSummary />
+                      </div>
+                    )}
+                    <div className="wmnds-hide-mobile">
+                      <SidebarSummary />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       )}

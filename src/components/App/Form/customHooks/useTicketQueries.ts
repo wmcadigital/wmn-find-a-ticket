@@ -29,12 +29,14 @@ const useTicketQueries = () => {
       isFamily: ticketInfo.traveller === 'family',
     };
 
-    // If bus company is null or 'nBus' default to 'Network West Midlands' as filter
+    // If bus company is null or 'nBus' match id for all operators
     const operatorQuery = {
       operator:
-        ticketInfo.busCompany && ticketInfo.busCompany !== 'nBus'
-          ? ticketInfo.busCompany
-          : 'National Express West Midlands',
+        ticketInfo.busCompany && ticketInfo.busCompany !== 'nBus' ? ticketInfo.busCompany : null,
+      operatorId:
+        !ticketInfo.busCompany || ticketInfo.busCompany === 'nBus'
+          ? '74ab7f8a-7c80-e411-9265-0050568f6584'
+          : null,
     };
 
     // INCLUDES BUS ONLY
@@ -62,7 +64,7 @@ const useTicketQueries = () => {
         ticketInfo.travelTime === 'concessionary' ||
         ticketInfo.travelTime === 'any',
       timePeriod2: ticketInfo.travelTime !== 'concessionary',
-      timePeriod3: ticketInfo.travelTime !== 'concessionary',
+      timePeriod3: ticketInfo.travelTime !== 'concessionary' && null, // if travelTime is not concessionary ignore this filter.
       timePeriod4: ticketInfo.travelTime !== 'concessionary',
     };
 

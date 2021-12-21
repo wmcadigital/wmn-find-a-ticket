@@ -77,7 +77,7 @@ const BusArea = () => {
       case 'Johnsons of Henley':
         return 'https://www.johnsonscoaches.co.uk/bus-route-maps/';
       default:
-        return 'https://find-bus-area.tfwm.org.uk';
+        return 'https://find-bus-area.tfwm.org.uk?ticketSearch=true';
     }
   };
 
@@ -97,7 +97,7 @@ const BusArea = () => {
               <p>Birmingham and Solihull do not have local bus areas. </p>
               <p>
                 If you’re not sure, you can{' '}
-                <a href="https://find-bus-area.tfwm.org.uk">
+                <a href="https://find-bus-area.tfwm.org.uk?ticketSearch=true">
                   find out which bus areas particular stops are in
                 </a>
                 .

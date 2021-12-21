@@ -32,7 +32,7 @@ const Radio = ({ name, onChange, text, value, info }: RadioProps) => {
         {info && (
           <div
             className={`${s.insetText} wmnds-inset-text wmnds-m-t-xs`}
-            dangerouslySetInnerHTML={{ __html: sanitize(info) }}
+            dangerouslySetInnerHTML={{ __html: sanitize(info, { ADD_ATTR: ['target'] }) }}
           />
         )}
         <span className="wmnds-fe-radios__checkmark" />

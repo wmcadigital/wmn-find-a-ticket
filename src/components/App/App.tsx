@@ -9,7 +9,7 @@ function App() {
     <ContextProvider>
       <Router>
         <Switch>
-          <Route path="/:ticketId">
+          <Route path="/ticket/:ticketId">
             <TicketPage />
           </Route>
           <Route path="/">

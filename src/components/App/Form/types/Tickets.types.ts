@@ -85,6 +85,7 @@ export interface Ticket {
   isSeasonTicket: boolean;
   displayInSwiftSearch: boolean;
   ticketCurrentAmount: number;
+  standardCurrentAmount: number;
   swiftCurrentAmount?: number;
   buyTicketUrl: string;
   termStartDate?: string;

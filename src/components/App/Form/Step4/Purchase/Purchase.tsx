@@ -9,7 +9,7 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
         'https://my.swiftcard.org.uk/ssp/swift/',
       );
     // More Information - no online buy link
-    const showMoreInfo = !ticket.buyTicketUrl && !ticket.isPayAsYouGo && ticket.swiftCurrentAmount;
+    const showMoreInfo = !ticket.buyTicketUrl && !ticket.isPayAsYouGo && !ticket.swiftCurrentAmount;
 
     // Buy Swift PAYG credit - if product is swift payg or ticket can only be brought on swift payg
     const swiftPAYG = ticket.isPayAsYouGo && ticket.swiftCurrentAmount && ticket.id !== 811;
@@ -22,8 +22,12 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
 
     const getInTouch = ticket.purchaseLocations.tic && !ticket.hasOnlinePurchaseChannel;
 
-    if (gPay || swiftPAYG || buyButton) {
+    if (gPay || swiftPAYG) {
       linkToShow = ticket.buyTicketUrl;
+    }
+    if (buyButton) {
+      linkToShow =
+        'https://my.swiftcard.org.uk/ssp/swift/dnr_importBasket.jsp?[{matrixId:%27AAC001%27}]';
     }
     if (getInTouch) {
       linkToShow = 'https://www.wmnetwork.co.uk/get-in-touch/travel-centres/';
@@ -38,7 +42,7 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
     if (ticket.buyOnDirectDebit) {
       return 'Apply for Direct Debit';
     }
-    if (ticket.buyOnSwift) {
+    if (ticket.buyOnSwift || ticket.swiftCurrentAmount) {
       return 'Buy on Swift';
     }
     if (ticket.hasOnlinePurchaseChannel) {
