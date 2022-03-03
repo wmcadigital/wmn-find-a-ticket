@@ -89,7 +89,33 @@ const useConvertDescription = () => {
     });
   };
 
-  return { convertDescription, convertTemplate, formatDate, filterTermDates };
+  const filterByPrice = (results: Ticket[]) => {
+    return results.filter((r) => {
+      const value = r.ticketCurrentAmount;
+      if (value !== null || value !== 0) {
+        return value;
+      }
+      return false;
+    });
+  };
+
+  const filterDirectives = (results: Ticket[]) => {
+    return results.filter((r) => {
+      if (r.directives && r.directives.length !== 0) {
+        return r.directives;
+      }
+      return false;
+    });
+  };
+
+  return {
+    convertDescription,
+    convertTemplate,
+    formatDate,
+    filterTermDates,
+    filterByPrice,
+    filterDirectives,
+  };
 };
 
 export default useConvertDescription;

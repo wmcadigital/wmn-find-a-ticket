@@ -21,8 +21,8 @@ const TicketDuration = ({
   const [{ ticketInfo }, formDispatch] = useFormContext();
   const { ticketType, firstClass } = ticketInfo;
   const { question, hint } = questions[name];
-  const { filterTermDates } = useConvertDescription();
-  const results = filterTermDates(res);
+  const { filterTermDates, filterByPrice, filterDirectives } = useConvertDescription();
+  const results = filterTermDates(filterByPrice(filterDirectives(res)));
 
   // Automatically set first class to 'no' if it hasn't been set yet and includes train.
   useEffect(() => {
