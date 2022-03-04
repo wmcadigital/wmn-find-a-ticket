@@ -13,7 +13,8 @@ module.exports = {
         })
       );
     }
-
+    // JS
+    config.output.filename = 'static/js/main.min.js';
     return config;
   },
   // jest: function(config) {
