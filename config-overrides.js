@@ -14,6 +14,8 @@ module.exports = {
       );
     }
 
+    // JS
+    config.output.filename = 'static/js/build.min.js';
     return config;
   },
   // jest: function(config) {
