@@ -70,7 +70,9 @@ const AutoComplete = () => {
             text="View tram zones on a map"
             iconLeft="general-location-pin"
             onClick={() =>
-              findRailZones(`https://find-rail-zones.tfwm.org.uk/?ticketSearch=true${linkParams}`)
+              findRailZones(`
+                https://tfwm-find-my-metro-zones.netlify.app/?ticketSearch=true${linkParams}
+              `)
             }
           />
         </div>
@@ -81,7 +83,7 @@ const AutoComplete = () => {
             iconLeft="general-list"
             onClick={() =>
               findRailZones(
-                `https://find-rail-zones.tfwm.org.uk/?ticketSearch=true${linkParams}&mapView=false`,
+                `https://tfwm-find-my-metro-zones.netlify.app?ticketSearch=true${linkParams}&mapView=false`,
               )
             }
           />

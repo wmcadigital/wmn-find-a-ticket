@@ -1,27 +1,6 @@
 {
   "metroStations": [
     {
-      "crsCode": "EDG",
-      "stationName": "Edgbaston Village",
-      "metroZone": 1,
-      "parking": false,
-      "stepFreeAccess": "full"
-    },
-    {
-      "crsCode": "FWY",
-      "stationName": "Five Ways",
-      "metroZone": 1,
-      "parking": false,
-      "stepFreeAccess": "full"
-    },
-    {
-      "crsCode": "BYP",
-      "stationName": "Brindley Place ",
-      "metroZone": 1,
-      "parking": false,
-      "stepFreeAccess": "full"
-    },
-    {
       "crsCode": "LIB",
       "stationName": "Library",
       "metroZone": 1,
@@ -205,14 +184,6 @@
       "stationName": "The Crescent",
       "metroZone": 3,
       "parking": false,
-      "stepFreeAccess": "full"
-    },
-    {
-      "crsCode": "PTF",
-      "stationName": "Priestfield",
-      "metroZone": 3,
-      "metroZoneSecond": 4,
-      "parking": true,
       "stepFreeAccess": "full"
     },
     {
