@@ -1,3 +1,4 @@
 # domain redirects
+https://wmn-find-a-ticket.netlify.app/* https://find-a-ticket.tfwm.org.uk/:splat 301!
 https://find-a-ticket.wmnetwork.co.uk/* https://find-a-ticket.tfwm.org.uk/:splat 301!
 /* /index.html 200
