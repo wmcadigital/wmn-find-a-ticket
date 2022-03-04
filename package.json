@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "WMCA",
-  "main": "build/src/index.js",
+  "main": "build/static/index.js",
   "repository": "https://github.com/wmcadigital/wmn-ticket-finder",
   "bugs": {
     "url": "https://github.com/wmcadigital/wmn-ticket-finder/issues"
