@@ -109,7 +109,7 @@ const SidebarSummary = () => {
       {ticketInfo.railZones && (
         <>
           <SummarySection
-            title="Rail zones"
+            title={ticketInfo.ticketType === 'tram' ? 'Metro zones' : 'Rail zones'}
             value={<RailZoneSummary railZones={ticketInfo.railZones} />}
             onChange={editMode !== 'railZones' ? () => editStep(2, 'railZones') : null}
             disabled={!!formState.autoAnswered.railZones}

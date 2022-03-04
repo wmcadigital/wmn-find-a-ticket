@@ -18,7 +18,7 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   const apiOptions = {
     apiPath:
       process.env.NODE_ENV === 'development'
-        ? '/ticketing/tickets/search/complete'
+        ? '/ticketing/v2/tickets/search/complete'
         : '/ticketing/v2/tickets/search/complete',
   };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
