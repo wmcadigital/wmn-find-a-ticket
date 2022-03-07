@@ -16,7 +16,10 @@ const Form = ({ prevMode }: { prevMode: string[] }) => {
   const { formState } = useStepLogic();
   const { currentStep, ticketInfo, ticketId, showAnswers } = formState;
   const apiOptions = {
-    apiPath: '/ticketing/v2/tickets/search/complete',
+    apiPath:
+      process.env.NODE_ENV === 'development'
+        ? '/ticketing/v2/tickets/search/complete'
+        : '/ticketing/v2/tickets/search/complete',
   };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
   useLayoutEffect(() => {
