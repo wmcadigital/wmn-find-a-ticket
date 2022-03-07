@@ -101,7 +101,7 @@ const useTicketingAPI = (
   const getAPIResults = useCallback(() => {
     source.current = axios.CancelToken.source();
     mounted.current = true; // Set mounted to true (used later to make sure we don't do events as component is unmounting)
-    const { REACT_APP_API_HOST, REACT_APP_API_KEY } = process.env; // Destructure env vars
+    const { REACT_APP_API_KEY } = process.env; // Destructure env vars
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     const options = {
@@ -113,7 +113,7 @@ const useTicketingAPI = (
 
     if (apiOptions.get) {
       axios
-        .get(REACT_APP_API_HOST + apiOptions.apiPath, options)
+        .get(REACT_APP_API_HOST1 + apiOptions.apiPath, options)
         .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     } else {
