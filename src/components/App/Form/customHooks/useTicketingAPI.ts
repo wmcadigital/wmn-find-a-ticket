@@ -26,7 +26,7 @@ const useTicketingAPI = (
   const [loading, setLoading] = useState(false); // Set loading state for spinner
   const [errorInfo, setErrorInfo] = useState<IError | null>(null); // Placeholder to set error messaging
   const { apiPath } = apiOptions;
-  const REACT_APP_API_HOST1 = 'https://wmca-api-portal-staging.azure-api.net';
+
   // Initial api query (to bring back as many results a possible)
   const ticketQuery: any = useMemo(() => {
     // Include stations if stations have been added and an out of county station is selected
@@ -101,7 +101,7 @@ const useTicketingAPI = (
   const getAPIResults = useCallback(() => {
     source.current = axios.CancelToken.source();
     mounted.current = true; // Set mounted to true (used later to make sure we don't do events as component is unmounting)
-    const { REACT_APP_API_KEY } = process.env; // Destructure env vars
+    const { REACT_APP_API_HOST, REACT_APP_API_KEY } = process.env; // Destructure env vars
     setLoading(true); // Update loading state to true as we are hitting API
     startApiTimeout();
     const options = {
@@ -113,12 +113,12 @@ const useTicketingAPI = (
 
     if (apiOptions.get) {
       axios
-        .get(REACT_APP_API_HOST1 + apiOptions.apiPath, options)
+        .get(REACT_APP_API_HOST + apiOptions.apiPath, options)
         .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     } else {
       axios
-        .post(REACT_APP_API_HOST1 + apiOptions.apiPath, ticketQuery, options)
+        .post(REACT_APP_API_HOST + apiOptions.apiPath, ticketQuery, options)
         .then((res) => mounted.current && handleTicketingApiResponse(res))
         .catch(handleTicketingApiError);
     }
