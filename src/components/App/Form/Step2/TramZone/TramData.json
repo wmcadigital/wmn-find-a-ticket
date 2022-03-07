@@ -58,14 +58,6 @@
       "stepFreeAccess": "full"
     },
     {
-      "crsCode": "JYQ",
-      "stationName": "Jewellery Quarter",
-      "metroZone": 2,
-      "metroZoneSecond": 1,
-      "parking": false,
-      "stepFreeAccess": "full"
-    },
-    {
       "crsCode": "SBR",
       "stationName": "Soho Benson Road",
       "metroZone": 2,
@@ -140,14 +132,6 @@
       "stationName": "Black Lake",
       "metroZone": 2,
       "metroZoneSecond": 3,
-      "parking": true,
-      "stepFreeAccess": "full"
-    },
-    {
-      "crsCode": "BKL",
-      "stationName": "Black Lake",
-      "metroZone": 3,
-      "metroZoneSecond": 2,
       "parking": true,
       "stepFreeAccess": "full"
     },
