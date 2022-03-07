@@ -16,7 +16,7 @@ const TravelTime = () => {
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
   // eslint-disable-next-line prettier/prettier
-  const { modesQuery, travellerQuery, operatorQuery, busTravelQuery, railZonesQuery, trainQuery } =
+  const { modesQuery, travellerQuery, operatorQuery, busTravelQuery, railZonesQuery, tramZonesQuery, trainQuery } =
     useTicketQueries();
   let ticketQuery = { ...travellerQuery };
   if (ticketInfo.modes?.includes('bus')) {
@@ -25,7 +25,9 @@ const TravelTime = () => {
   if (ticketInfo.modes?.includes('train')) {
     ticketQuery = { ...modesQuery, ...travellerQuery, ...railZonesQuery, ...trainQuery };
   }
-
+  if (ticketInfo.modes?.includes('tram')) {
+    ticketQuery = { ...modesQuery, ...travellerQuery, ...tramZonesQuery, ...trainQuery };
+  }
   useEffect(() => {
     if ((traveller === 'concessionary' || traveller === 'disabled') && !travelTime) {
       formDispatch({
