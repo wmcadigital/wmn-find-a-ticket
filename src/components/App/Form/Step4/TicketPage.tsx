@@ -15,7 +15,7 @@ const TicketPage = () => {
     get: true,
     apiPath:
       process.env.NODE_ENV === 'development'
-        ? `/ticketing/tickets/${ticketId}/complete/`
+        ? `/ticketing/v2/tickets/${ticketId}/complete/`
         : `/ticketing/v2/tickets/${ticketId}/complete/`,
   };
   const { getAPIResults, results, errorInfo, loading } = useTicketingAPI(apiOptions);
