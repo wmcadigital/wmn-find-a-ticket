@@ -173,8 +173,8 @@
     {
       "crsCode": "PTF",
       "stationName": "Priestfield",
-      "metroZone": 4,
-      "metroZoneSecond": 3,
+      "metroZone": 3,
+      "metroZoneSecond": 4,
       "parking": true,
       "stepFreeAccess": "full"
     },

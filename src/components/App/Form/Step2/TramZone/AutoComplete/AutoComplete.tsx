@@ -8,7 +8,7 @@ import Result from './Result/Result';
 import TrainAutoComplete from './TrainAutoComplete/TrainAutocomplete';
 import s from './AutoComplete.module.scss';
 
-const AutoComplete = () => {
+const AutoComplete = ({ recommendedOption }: { recommendedOption: { text: string } }) => {
   const [{ selectedStations }, autoCompleteDispatch] = useContext(AutoCompleteContext);
   const addStation = () => {
     autoCompleteDispatch({ type: 'ADD_STATION' });
@@ -23,7 +23,6 @@ const AutoComplete = () => {
       linkParams += `&selectedStation${i}=${id}`;
     }
   });
-
   const findRailZones = (url: string) => {
     formDispatch({
       type: 'REMOVE_TICKET_INFO',
@@ -62,7 +61,7 @@ const AutoComplete = () => {
           disabled={selectedStations.length >= 12}
         />
       </div>
-      <Result />
+      <Result recommendedOption={recommendedOption} />
       <div className="wmnds-grid wmnds-grid--spacing-md-2-md">
         <div className="wmnds-col-1 wmnds-col-md-1-2">
           <Button

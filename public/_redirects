@@ -1,3 +1,9 @@
 # domain redirects
+<<<<<<< HEAD
 
+=======
+https://wmn-find-a-ticket.netlify.app/* https://legacy.wmnetwork.co.uk/tickets/ 301!
+https://find-a-ticket.wmnetwork.co.uk/* https://legacy.wmnetwork.co.uk/tickets/ 301!
+https://find-a-ticket.tfwm.org.uk/* https://legacy.wmnetwork.co.uk/tickets/ 301!
+>>>>>>> hb/feat/payment-directives
 /* /index.html 200

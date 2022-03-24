@@ -1,4 +1,7 @@
 import { Ticket } from 'components/App/Form/types/Tickets.types';
+import Icon from 'components/shared/Icon/Icon';
+import Accordion from 'components/shared/Accordion/Accordion';
+import s from './Purchase.module.scss';
 
 const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirectives: any }) => {
   const buttonLink = () => {
@@ -54,19 +57,89 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
     return 'Buy now';
   };
 
+  const groupedDirectives = paymentDirectives.reduce((arr: any, dir: any) => {
+    const array = arr;
+    array[dir.category] = [...(arr[dir.category] || []), dir];
+    return array;
+  }, {});
+
+  const inPerson =
+    groupedDirectives.Tram?.length > 0 ||
+    groupedDirectives.Payzone?.length > 0 ||
+    groupedDirectives['On-bus']?.length > 0 ||
+    groupedDirectives['Train station']?.length > 0 ||
+    groupedDirectives.Tram?.length > 0 ||
+    groupedDirectives['Travel centre']?.length > 0 ||
+    groupedDirectives['Travel centre - No National Express']?.length > 0;
+  const inApp = groupedDirectives['Swift go']?.length > 0;
+
   return (
     <div className="wmnds-col-1 wmnds-col-md-1-3">
-      <div className="bg-white wmnds-p-md">
-        <h2>{buttonText()}</h2>
-        {paymentDirectives.map((directive: any) => (
-          <p key={directive.id}>{directive.description}</p>
-        ))}
-        {buttonLink() && (
-          <a href={buttonLink()!} className="wmnds-btn wmnds-col-1">
-            {buttonText()}
+      {buttonLink() && (
+        <div className="bg-white wmnds-p-md wmnds-m-b-md">
+          <h2>Buy online</h2>
+          {groupedDirectives['Direct Debit'] &&
+            groupedDirectives['Direct Debit'].map((directive: any) => (
+              <p key={directive.id}>{directive.description}</p>
+            ))}
+          <a href={buttonLink()!} className="wmnds-btn wmnds-btn--align-left wmnds-col-1">
+            {buttonText()}{' '}
+            <Icon
+              iconName="general-chevron-right"
+              className="wmnds-btn__icon wmnds-btn__icon--right"
+            />
           </a>
-        )}
-      </div>
+        </div>
+      )}
+      {inApp && (
+        <div className="bg-white wmnds-p-md wmnds-m-b-md">
+          <h2>Buy through the app</h2>
+          <div className={s.accordionContainer}>
+            {groupedDirectives['Swift go'] && (
+              <Accordion id="swiftAppAccordion" title="Swift app">
+                {groupedDirectives['Swift go'].map((directive: any) => (
+                  <p key={directive.id}>{directive.description}</p>
+                ))}
+              </Accordion>
+            )}
+          </div>
+        </div>
+      )}
+      {inPerson && (
+        <div className="bg-white wmnds-p-md wmnds-m-b-md">
+          <h2>Buy in person</h2>
+          <div className={s.accordionContainer}>
+            {groupedDirectives['On-bus'] && (
+              <Accordion id="swiftAppAccordion" title="On the bus">
+                {groupedDirectives['On-bus'].map((directive: any) => (
+                  <p key={directive.id}>{directive.description}</p>
+                ))}
+              </Accordion>
+            )}
+            {groupedDirectives['Train station'] && (
+              <Accordion id="swiftAppAccordion" title="Train station" info="£64.00 per month">
+                {groupedDirectives['Train station'].map((directive: any) => (
+                  <p key={directive.id}>{directive.description}</p>
+                ))}
+              </Accordion>
+            )}
+            {groupedDirectives.Tram && (
+              <Accordion id="swiftAppAccordion" title="Tram stop">
+                {groupedDirectives.Tram.map((directive: any) => (
+                  <p key={directive.id}>{directive.description}</p>
+                ))}
+              </Accordion>
+            )}
+            {groupedDirectives['Travel centre - No National Express'] && (
+              <Accordion id="travelNoNXAccordion" title="Travel centre" info="£64.00 per month">
+                {groupedDirectives['Travel centre - No National Express'].map((directive: any) => (
+                  <p key={directive.id}>{directive.description}</p>
+                ))}
+              </Accordion>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@
 const questions = {
   busNetwork: {
     question: 'Do you want to travel on any bus?',
-    hint: 'Travel on any bus company in the West Midlands Network',
+    hint: 'Travel on any bus company in the West Midlands',
     options: [
       { text: 'Yes', value: 'yes' },
       { text: 'No', value: 'no' },

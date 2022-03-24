@@ -58,25 +58,28 @@ const Step4 = ({ ticket }: { ticket: Ticket | null }) => {
     return icons;
   };
 
-  const directives: any = {};
-  const paymentDirectives: any = [];
+  const directives: any = {}; // directives to use in the you can/can't etc. ticket summary boxes
+  const paymentDirectives: any = []; // other payment directives to be used in the buy section
   if (ticket && ticket.directives) {
     ticket.directives.forEach((directive) => {
       const qualifier = directive.qualifier.length ? directive.qualifier : null;
       const { category } = directive;
       if (qualifier) {
+        // if directive has a qualifier it will be either you can/can't/must so push to directives
         if (directives[qualifier]) {
           directives[qualifier] = [...directives[qualifier], directive];
         } else {
           directives[qualifier] = [directive];
         }
       } else if (directive.category === 'Swift card') {
+        // If directive category is Swift card then push to swift card category
         if (directives[category]) {
           directives[category] = [...directives[category], directive];
         } else {
           directives[category] = [directive];
         }
       } else {
+        // else it's a payment directive
         paymentDirectives.push(directive);
       }
     });

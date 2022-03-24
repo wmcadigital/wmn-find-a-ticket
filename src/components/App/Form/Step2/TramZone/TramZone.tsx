@@ -170,6 +170,8 @@ const TramZone = () => {
       setError({ message: 'Please select an answer' });
     }
   };
+  const recommendedOption: { text: string; value: string } = recommendedOptions[0];
+
   return (
     <>
       {genericError}
@@ -177,7 +179,7 @@ const TramZone = () => {
         <h2 className="wmnds-fe-question">Which tram stops will you use?</h2>
         <p>Tram stops across the West Midlands are in four zones.</p>
         <p>The zones you can travel between is based on your ticket.</p>
-        <AutoComplete />
+        <AutoComplete recommendedOption={recommendedOption} />
 
         {!zonesValid && (
           <Message
@@ -220,7 +222,7 @@ const TramZone = () => {
                             Select a metro zone to continue with an adult ticket.
                           </div>
                         ) : (
-                          <p>Based on the stations you&rsquo;ve told us about</p>
+                          <p>Based on the stops you&rsquo;ve told us about</p>
                         )}
                         {recommendedOptions.length > 0 ? (
                           recommendedOptions.map((option: any) => (
