@@ -117,7 +117,7 @@ const Purchase = ({ ticket, paymentDirectives }: { ticket: Ticket; paymentDirect
               </Accordion>
             )}
             {groupedDirectives['Train station'] && (
-              <Accordion id="swiftAppAccordion" title="Train station" info="£64.00 per month">
+              <Accordion id="swiftAppAccordion" title="Train station">
                 {groupedDirectives['Train station'].map((directive: any) => (
                   <p key={directive.id}>{directive.description}</p>
                 ))}
