@@ -81,7 +81,13 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Bus company"
-            value={ticketInfo.busCompany ? ticketInfo.busCompany : <NIcon str="Bus" />}
+            value={
+              ticketInfo.busCompany !== null && ticketInfo.busCompany !== 'nBus' ? (
+                ticketInfo.busCompany
+              ) : (
+                <NIcon str="Bus" />
+              )
+            }
             onChange={editMode !== 'busCompany' ? () => editStep(1, 'busCompany') : null}
           />
         </>
