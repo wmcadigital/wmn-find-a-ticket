@@ -31,7 +31,7 @@ const useTicketingAPI = (
   const ticketQuery: any = useMemo(() => {
     // Include stations if stations have been added and an out of county station is selected
     const stations =
-      (ticketInfo.outOfCounty) && ticketInfo.stations ? ticketInfo.stations.split(',') : null;
+      ticketInfo.outOfCounty && ticketInfo.stations ? ticketInfo.stations.split(',') : null;
     return {
       allowMetro: ticketInfo.modes?.includes('tram'),
       allowTrain: ticketInfo.modes?.includes('train'),
