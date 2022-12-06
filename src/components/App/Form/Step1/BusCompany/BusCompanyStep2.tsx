@@ -175,8 +175,8 @@ const BusCompanyStep2 = () => {
                       </>
                     )}
                     <p className="wmnds-m-none">
-                      If you want a ticket that only works on {selectedOperator.name} buses, you’ll
-                      need to buy one {selectedOperator.website && 'from their website'}
+                      If you want a ticket that works on {selectedOperator.name}, you’ll need to buy
+                      one {selectedOperator.website && 'from their website'}
                       {selectedOperator.buyOnboard && selectedOperator.website && ' or '}
                       {selectedOperator.buyOnboard && 'on the bus'}.
                     </p>
