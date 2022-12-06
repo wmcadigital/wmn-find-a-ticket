@@ -41,7 +41,7 @@ const useStepLogic = () => {
     const step2Check =
       (travelTime && busArea && (ticketType === 'nBus' || ticketType === 'single')) ||
       (travelTime && railZones && ticketType === 'nTicket') ||
-      (travelTime && ticketType === 'tram');
+      (railZones && ticketType === 'tram');
     // Checks to see if step 3 is complete
     const step3Check =
       (ticketId && ticketDuration && ticketType !== 'nTicket') ||
@@ -50,7 +50,8 @@ const useStepLogic = () => {
       (ticketId &&
         ticketDuration &&
         railZones &&
-        (Math.min(...ticketInfo.railZones!) !== 1 || Math.max(...ticketInfo.railZones!) < 4));
+        (Math.min(...ticketInfo.railZones!) !== 1 || Math.max(...ticketInfo.railZones!) < 4)) ||
+      (travelTime && ticketType === 'tram' && ticketDuration);
 
     // If step checks fail (return false), go to the step to get the correct information
     if (ticketId) {

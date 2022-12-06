@@ -153,9 +153,9 @@ function StartPage() {
                   </div>
                   {selectedModes.bus && selectedModes.train && selectedModes.tram && (
                     <div className="wmnds-inset-text wmnds-m-t-md">
-                      You can travel on any bus and ride the tram to all stations in the West
-                      Midlands Network area with an nNetwork ticket. We will ask you to select which
-                      rail zones you want to travel to.
+                      You can travel on any bus and ride the tram to all stations in the Transport
+                      for West Midlands area with an nNetwork ticket. We will ask you to select
+                      which rail zones you want to travel to.
                     </div>
                   )}
                 </div>
