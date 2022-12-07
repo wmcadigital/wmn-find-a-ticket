@@ -174,6 +174,7 @@ const BusCompanyStep2 = () => {
                         </p>
                       </>
                     )}
+                    <p>{selectedOperator.name} are not part of the nBus scheme. </p>
                     <p className="wmnds-m-none">
                       If you want a ticket that works on {selectedOperator.name}, you’ll need to buy
                       one {selectedOperator.website && 'from their website'}
