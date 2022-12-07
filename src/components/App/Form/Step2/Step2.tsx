@@ -1,6 +1,7 @@
 import { useFormContext } from 'globalState';
 import BusArea from './BusArea/BusArea';
 import RailZone from './RailZone/RailZone';
+import TramZone from './TramZone/TramZone';
 import TravelTime from './TravelTime/TravelTime';
 
 const Step2 = () => {
@@ -19,8 +20,12 @@ const Step2 = () => {
     editMode === 'railZones'
   ) {
     sectionToRender = <RailZone />;
+  } else if (
+    (formState.ticketInfo.ticketType === 'tram' && formState.ticketInfo.modes?.includes('tram')) ||
+    editMode === 'modes'
+  ) {
+    sectionToRender = <TramZone />;
   }
-
   return <>{sectionToRender || <TravelTime />}</>;
 };
 

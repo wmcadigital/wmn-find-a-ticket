@@ -78,6 +78,10 @@ const useTicketQueries = () => {
       fullQuery = { ...fullQuery, ...railZonesQuery, ...trainQuery };
     }
 
+    if (ticketInfo.modes?.includes('tram')) {
+      fullQuery = { ...fullQuery, ...railZonesQuery };
+    }
+
     if (ticketInfo.travelTime) {
       fullQuery = { ...fullQuery, ...travelTimeQuery };
     }

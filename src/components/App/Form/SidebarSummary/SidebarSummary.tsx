@@ -81,7 +81,13 @@ const SidebarSummary = () => {
         <>
           <SummarySection
             title="Bus company"
-            value={ticketInfo.busCompany ? ticketInfo.busCompany : <NIcon str="Bus" />}
+            value={
+              ticketInfo.busCompany !== null && ticketInfo.busCompany !== 'nBus' ? (
+                ticketInfo.busCompany
+              ) : (
+                <NIcon str="Bus" />
+              )
+            }
             onChange={editMode !== 'busCompany' ? () => editStep(1, 'busCompany') : null}
           />
         </>
@@ -109,7 +115,7 @@ const SidebarSummary = () => {
       {ticketInfo.railZones && (
         <>
           <SummarySection
-            title="Rail zones"
+            title={ticketInfo.ticketType === 'tram' ? 'Metro zones' : 'Rail zones'}
             value={<RailZoneSummary railZones={ticketInfo.railZones} />}
             onChange={editMode !== 'railZones' ? () => editStep(2, 'railZones') : null}
             disabled={!!formState.autoAnswered.railZones}
