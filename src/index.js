@@ -3,11 +3,13 @@ import 'react-app-polyfill/stable';
 // React
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as Sentry from '@sentry/react';
+
 import App from './components/App/App';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Sentry.ErrorBoundary>
     <App />
-  </React.StrictMode>,
+  </Sentry.ErrorBoundary>,
   document.getElementById('wmn-app-name'),
 );
