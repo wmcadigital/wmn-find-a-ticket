@@ -16,8 +16,15 @@ const TravelTime = () => {
   const { handleChange, handleContinue, genericError, error } = useHandleChange(name);
   const { question, hint, options } = questions[name];
   // eslint-disable-next-line prettier/prettier
-  const { modesQuery, travellerQuery, operatorQuery, busTravelQuery, railZonesQuery, tramZonesQuery, trainQuery } =
-    useTicketQueries();
+  const {
+    modesQuery,
+    travellerQuery,
+    operatorQuery,
+    busTravelQuery,
+    railZonesQuery,
+    tramZonesQuery,
+    trainQuery,
+  } = useTicketQueries();
   let ticketQuery = { ...travellerQuery };
   if (ticketInfo.modes?.includes('bus')) {
     ticketQuery = { ...travellerQuery, ...busTravelQuery, ...operatorQuery };
