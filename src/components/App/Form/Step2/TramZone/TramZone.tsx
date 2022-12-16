@@ -125,9 +125,23 @@ const TramZone = () => {
   // Split zone options into recommended and additional options
   const getOptions = () => {
     const stations = selectedStations.filter((item: any) => item.id !== null);
-    const zones = [...stations.map((stn: any) => stn.metroZone)];
-    const minZone = Math.min(...zones);
-    const maxZone = Math.max(...zones);
+
+    const zones = [
+      ...stations.map((stn: any) =>
+        stn.metroZoneSecond === null || stn.metroZoneSecond === undefined
+          ? stn.metroZone
+          : stn.metroZoneSecond,
+      ),
+    ];
+
+    const metroZoneFirst = [...stations.map((stn: any) => stn.metroZone)];
+
+    const isToZoneGreater =
+      metroZoneFirst.length > 0 ? metroZoneFirst.reduce((a, b) => a === b) : 0;
+
+    const minZone = isToZoneGreater ? Math.min(...metroZoneFirst) : Math.min(...zones);
+    const maxZone = isToZoneGreater ? Math.max(...metroZoneFirst) : Math.max(...zones);
+
     const allValidOptions = options.filter(
       (o) =>
         o.value.split('+')[0] <= `${minZone}` &&
@@ -139,9 +153,8 @@ const TramZone = () => {
     );
     const recommendedOptions = allValidOptions.filter(
       (o) =>
-        (o.value.split('+')[0] === '1' &&
-          o.value.split('+')[1] === `${maxZone > 5 ? 5 : maxZone}`) ||
-        o.value.split('+')[0] === '2',
+        o.value.split('+')[0] === `${minZone}` &&
+        o.value.split('+')[1] === `${maxZone > 5 ? 5 : maxZone}`,
     );
 
     return {
@@ -170,6 +183,7 @@ const TramZone = () => {
       setError({ message: 'Please select an answer' });
     }
   };
+
   return (
     <>
       {genericError}
